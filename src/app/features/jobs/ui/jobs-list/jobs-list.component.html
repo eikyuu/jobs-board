@@ -53,6 +53,7 @@
           <th pSortableColumn="appliedAt" scope="col">
             Candidaté le <p-sortIcon field="appliedAt" />
           </th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
         </tr>
       </ng-template>
 
@@ -83,12 +84,24 @@
               {{ job.appliedAt | date: 'dd/MM/yyyy' }}
             </time>
           </td>
+          <td>
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              [rounded]="true"
+              size="small"
+              [attr.aria-label]="'Supprimer ' + job.title"
+              label="Supprimer"
+              (onClick)="onDelete(job)"
+            />
+          </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="8" class="text-center py-8 text-gray-400">Aucune candidature trouvée.</td>
+          <td colspan="9" class="text-center py-8 text-gray-400">Aucune candidature trouvée.</td>
         </tr>
       </ng-template>
     </p-table>

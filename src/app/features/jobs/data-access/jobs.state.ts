@@ -23,6 +23,10 @@ export class JobsState {
     this._jobs.update((jobs) => [...jobs, job]);
   }
 
+  removeJob(id: string): void {
+    this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
+  }
+
   load(): void {
     this._loading.set(true);
     this._error.set(null);

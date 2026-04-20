@@ -61,4 +61,10 @@ export class JobsListComponent implements OnInit {
     const { min, max, currency } = job.salary;
     return `${(min / 1000).toFixed(0)}–${(max / 1000).toFixed(0)}k ${currency}`;
   }
+
+  protected onDelete(job: Job): void {
+    if (confirm(`Supprimer la candidature pour "${job.title}" ?`)) {
+      this.state.removeJob(job.id);
+    }
+  }
 }

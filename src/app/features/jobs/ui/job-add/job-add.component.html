@@ -1,0 +1,230 @@
+<div class="max-w-3xl mx-auto p-8">
+  <header class="mb-6">
+    <h1 class="text-2xl font-semibold m-0 mb-1">Nouvelle candidature</h1>
+    <p class="text-sm text-gray-500 m-0">Renseignez les informations de l'offre</p>
+  </header>
+
+  <form (submit)="onSubmit($event)" novalidate class="flex flex-col gap-6" aria-label="Formulaire d'ajout de candidature">
+
+    @if (serverError()) {
+      <div class="bg-red-50 text-red-600 rounded-lg p-4" role="alert">{{ serverError() }}</div>
+    }
+
+    <!-- Poste & Entreprise -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1">
+        <label for="title" class="text-sm font-medium">
+          Intitulé du poste <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          pInputText
+          [formField]="jobForm.title"
+          placeholder="Ex : Développeur Angular Senior"
+          [attr.aria-describedby]="jobForm.title().errors().length ? 'title-error' : null"
+          [attr.aria-invalid]="jobForm.title().invalid() ? true : null"
+        />
+        @if (jobForm.title().touched() && jobForm.title().errors().length > 0) {
+          <small id="title-error" class="text-red-500" role="alert">
+            {{ jobForm.title().errors()[0].message }}
+          </small>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="company" class="text-sm font-medium">
+          Entreprise <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <input
+          id="company"
+          type="text"
+          pInputText
+          [formField]="jobForm.company"
+          placeholder="Ex : Capgemini"
+          [attr.aria-describedby]="jobForm.company().errors().length ? 'company-error' : null"
+          [attr.aria-invalid]="jobForm.company().invalid() ? true : null"
+        />
+        @if (jobForm.company().touched() && jobForm.company().errors().length > 0) {
+          <small id="company-error" class="text-red-500" role="alert">
+            {{ jobForm.company().errors()[0].message }}
+          </small>
+        }
+      </div>
+    </div>
+
+    <!-- Lieu & Remote -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1">
+        <label for="location" class="text-sm font-medium">
+          Lieu <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <input
+          id="location"
+          type="text"
+          pInputText
+          [formField]="jobForm.location"
+          placeholder="Ex : Paris, France"
+          [attr.aria-describedby]="jobForm.location().errors().length ? 'location-error' : null"
+          [attr.aria-invalid]="jobForm.location().invalid() ? true : null"
+        />
+        @if (jobForm.location().touched() && jobForm.location().errors().length > 0) {
+          <small id="location-error" class="text-red-500" role="alert">
+            {{ jobForm.location().errors()[0].message }}
+          </small>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="remote" class="text-sm font-medium">
+          Télétravail <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <p-select
+          inputId="remote"
+          [formField]="$any(jobForm.remote)"
+          [options]="remoteOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Sélectionner"
+          [attr.aria-describedby]="jobForm.remote().errors().length ? 'remote-error' : null"
+        />
+        @if (jobForm.remote().touched() && jobForm.remote().errors().length > 0) {
+          <small id="remote-error" class="text-red-500" role="alert">
+            {{ jobForm.remote().errors()[0].message }}
+          </small>
+        }
+      </div>
+    </div>
+
+    <!-- Contrat & Statut -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1">
+        <label for="contractType" class="text-sm font-medium">
+          Type de contrat <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <p-select
+          inputId="contractType"
+          [formField]="$any(jobForm.contractType)"
+          [options]="contractOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Sélectionner"
+          [attr.aria-describedby]="jobForm.contractType().errors().length ? 'contract-error' : null"
+        />
+        @if (jobForm.contractType().touched() && jobForm.contractType().errors().length > 0) {
+          <small id="contract-error" class="text-red-500" role="alert">
+            {{ jobForm.contractType().errors()[0].message }}
+          </small>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="status" class="text-sm font-medium">
+          Statut <span aria-hidden="true" class="text-red-500">*</span>
+        </label>
+        <p-select
+          inputId="status"
+          [formField]="$any(jobForm.status)"
+          [options]="statusOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Sélectionner"
+          [attr.aria-describedby]="jobForm.status().errors().length ? 'status-error' : null"
+        />
+        @if (jobForm.status().touched() && jobForm.status().errors().length > 0) {
+          <small id="status-error" class="text-red-500" role="alert">
+            {{ jobForm.status().errors()[0].message }}
+          </small>
+        }
+      </div>
+    </div>
+
+    <!-- Date de candidature & URL -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1">
+        <label for="appliedAt" class="text-sm font-medium">Date de candidature</label>
+        <p-datepicker
+          inputId="appliedAt"
+          [formField]="$any(jobForm.appliedAt)"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          placeholder="jj/mm/aaaa"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="url" class="text-sm font-medium">Lien vers l'offre</label>
+        <input
+          id="url"
+          type="url"
+          pInputText
+          [formField]="jobForm.url"
+          placeholder="https://..."
+        />
+      </div>
+    </div>
+
+    <!-- Salaire -->
+    <fieldset class="border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <legend class="text-sm font-medium px-1">Salaire (optionnel)</legend>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="salaryMin" class="text-sm font-medium">Min (€)</label>
+          <p-inputnumber
+            inputId="salaryMin"
+            [formField]="$any(jobForm.salaryMin)"
+            [min]="0"
+            placeholder="40000"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="salaryMax" class="text-sm font-medium">Max (€)</label>
+          <p-inputnumber
+            inputId="salaryMax"
+            [formField]="$any(jobForm.salaryMax)"
+            [min]="0"
+            placeholder="55000"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="salaryCurrency" class="text-sm font-medium">Devise</label>
+          <input
+            id="salaryCurrency"
+            type="text"
+            pInputText
+            [formField]="jobForm.salaryCurrency"
+            placeholder="EUR"
+          />
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Notes -->
+    <div class="flex flex-col gap-1">
+      <label for="notes" class="text-sm font-medium">Notes</label>
+      <textarea
+        id="notes"
+        [formField]="jobForm.notes"
+        rows="4"
+        placeholder="Informations complémentaires, impressions, points à préparer…"
+        class="w-full"
+      ></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-end gap-3 pt-2">
+      <p-button
+        type="button"
+        label="Annuler"
+        severity="secondary"
+        (onClick)="cancel()"
+      />
+      <p-button
+        type="submit"
+        label="Ajouter la candidature"
+        [loading]="submitting()"
+      />
+    </div>
+
+  </form>
+</div>

@@ -25,7 +25,7 @@ npx vitest run src/app/app.spec.ts
 - [src/app/app.config.ts](src/app/app.config.ts) — global providers (router, PrimeNG with Aura theme)
 - [src/app/app.routes.ts](src/app/app.routes.ts) — route definitions
 
-**UI:** PrimeNG 21 components with PrimeFlex utility classes for layout. The Aura theme preset is configured globally in `app.config.ts` via `providePrimeNG`.
+**UI:** PrimeNG 21 components with Tailwind utility classes for layout. The Aura theme preset is configured globally in `app.config.ts` via `providePrimeNG`.
 
 **Styling:** SCSS throughout. Component-scoped styles in `.scss` files co-located with components.
 

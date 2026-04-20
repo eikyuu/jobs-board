@@ -9,7 +9,7 @@ Production-ready Angular 21 application with a scalable feature-based architectu
 | Framework | Angular 21 (standalone components, signals) |
 | Language | TypeScript 5.9 — strict mode |
 | UI components | PrimeNG 21 with Aura theme |
-| Layout utilities | PrimeFlex 4 |
+| Layout utilities | Tailwind |
 | Styling | SCSS with CSS custom-property design tokens |
 | HTTP | `provideHttpClient` with functional interceptors |
 | State | Angular Signals (local & feature state) |

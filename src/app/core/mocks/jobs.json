@@ -1,0 +1,127 @@
+[
+  {
+    "id": "1",
+    "title": "Développeur Frontend Angular",
+    "company": "Capgemini",
+    "location": "Paris, France",
+    "remote": "hybrid",
+    "contractType": "CDI",
+    "salary": { "min": 45000, "max": 55000, "currency": "EUR" },
+    "status": "applied",
+    "appliedAt": "2026-04-10",
+    "updatedAt": "2026-04-12",
+    "url": "https://www.capgemini.com/jobs/1",
+    "description": "Développement d'applications Angular dans un contexte bancaire. Stack : Angular 17, RxJS, NgRx, Jest.",
+    "tags": ["Angular", "TypeScript", "RxJS", "NgRx"],
+    "notes": "Bien lire la stack technique avant l'entretien.",
+    "contacts": [
+      { "name": "Sophie Martin", "role": "RH", "email": "s.martin@capgemini.com" }
+    ],
+    "interviews": [
+      { "date": "2026-04-15", "type": "phone", "notes": "Appel RH 30min, positif" }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Frontend Developer (Angular / React)",
+    "company": "Malt",
+    "location": "Lyon, France",
+    "remote": "full",
+    "contractType": "CDI",
+    "salary": { "min": 50000, "max": 65000, "currency": "EUR" },
+    "status": "interview",
+    "appliedAt": "2026-04-08",
+    "updatedAt": "2026-04-18",
+    "url": "https://jobs.malt.com/jobs/2",
+    "description": "Rejoindre l'équipe produit de Malt pour améliorer l'expérience des freelances. Stack moderne, culture produit forte.",
+    "tags": ["Angular", "React", "TypeScript", "Tailwind"],
+    "notes": "Startup en forte croissance, culture intéressante.",
+    "contacts": [
+      { "name": "Lucas Dupont", "role": "Engineering Manager", "email": "l.dupont@malt.com" }
+    ],
+    "interviews": [
+      { "date": "2026-04-16", "type": "phone", "notes": "Premier contact positif" },
+      { "date": "2026-04-22", "type": "technical", "notes": "Test technique à préparer : live coding Angular" }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Ingénieur Fullstack TypeScript",
+    "company": "Alan",
+    "location": "Paris, France",
+    "remote": "full",
+    "contractType": "CDI",
+    "salary": { "min": 60000, "max": 75000, "currency": "EUR" },
+    "status": "rejected",
+    "appliedAt": "2026-03-28",
+    "updatedAt": "2026-04-05",
+    "url": "https://alan.com/jobs/3",
+    "description": "Développement frontend et backend en TypeScript pour la plateforme de santé Alan.",
+    "tags": ["TypeScript", "Node.js", "React", "PostgreSQL"],
+    "notes": "Refus après test technique. Trop axé backend.",
+    "contacts": [],
+    "interviews": [
+      { "date": "2026-04-02", "type": "technical", "notes": "Test technique, pas passé la barre backend" }
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Développeur Angular Senior",
+    "company": "Société Générale",
+    "location": "La Défense, France",
+    "remote": "hybrid",
+    "contractType": "CDI",
+    "salary": { "min": 55000, "max": 68000, "currency": "EUR" },
+    "status": "saved",
+    "appliedAt": null,
+    "updatedAt": "2026-04-19",
+    "url": "https://careers.societegenerale.com/jobs/4",
+    "description": "Mission au sein de la DSI pour moderniser les outils internes. Environnement bancaire exigeant.",
+    "tags": ["Angular", "Java", "Spring Boot", "Oracle"],
+    "notes": "À postuler avant fin avril. Salaire intéressant mais environnement corporate.",
+    "contacts": [],
+    "interviews": []
+  },
+  {
+    "id": "5",
+    "title": "Software Engineer – Web Platform",
+    "company": "Datadog",
+    "location": "Paris, France",
+    "remote": "hybrid",
+    "contractType": "CDI",
+    "salary": { "min": 70000, "max": 90000, "currency": "EUR" },
+    "status": "applied",
+    "appliedAt": "2026-04-17",
+    "updatedAt": "2026-04-17",
+    "url": "https://www.datadoghq.com/jobs/5",
+    "description": "Contribuer à la plateforme web de Datadog. Très haute qualité d'ingénierie, tests rigoureux.",
+    "tags": ["TypeScript", "Vue.js", "Testing", "Performance"],
+    "notes": "Poste très compétitif. Bien préparer les entretiens système design.",
+    "contacts": [],
+    "interviews": []
+  },
+  {
+    "id": "6",
+    "title": "Développeur Frontend Vue.js / Angular",
+    "company": "BlaBlaCar",
+    "location": "Paris, France",
+    "remote": "hybrid",
+    "contractType": "CDI",
+    "salary": { "min": 52000, "max": 63000, "currency": "EUR" },
+    "status": "offer",
+    "appliedAt": "2026-03-20",
+    "updatedAt": "2026-04-18",
+    "url": "https://blablacar.com/jobs/6",
+    "description": "Rejoindre l'équipe Growth pour développer des features à fort impact sur l'acquisition utilisateurs.",
+    "tags": ["Vue.js", "Angular", "TypeScript", "A/B Testing"],
+    "notes": "Offre reçue le 18/04. Décision avant le 25/04. Salaire légèrement en dessous des attentes.",
+    "contacts": [
+      { "name": "Marie Leclerc", "role": "Talent Acquisition", "email": "m.leclerc@blablacar.com" }
+    ],
+    "interviews": [
+      { "date": "2026-03-25", "type": "phone", "notes": "Premier contact RH" },
+      { "date": "2026-04-01", "type": "technical", "notes": "Live coding réussi" },
+      { "date": "2026-04-10", "type": "final", "notes": "Rencontre avec l'équipe, très bonne ambiance" }
+    ]
+  }
+]

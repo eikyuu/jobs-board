@@ -7,4 +7,10 @@ export const JOBS_ROUTES: Routes = [
       import('./ui/jobs-list.component').then((m) => m.JobsListComponent),
     title: 'Candidatures — Jobs Board',
   },
+  {
+    path: 'new',
+    loadComponent: () =>
+      import('./ui/job-add.component').then((m) => m.JobAddComponent),
+    title: 'Nouvelle candidature — Jobs Board',
+  },
 ];

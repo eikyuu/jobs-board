@@ -19,6 +19,10 @@ export class JobsState {
     this._jobs().filter((j) => j.appliedAt !== null)
   );
 
+  addJob(job: Job): void {
+    this._jobs.update((jobs) => [...jobs, job]);
+  }
+
   load(): void {
     this._loading.set(true);
     this._error.set(null);

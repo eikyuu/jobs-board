@@ -1,7 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
 import { JobsState } from '../data-access/jobs.state';
 import { Job, JobStatus } from '../../../core/models/job.model';
 
@@ -26,13 +28,16 @@ const STATUS_SEVERITY: Record<JobStatus, TagSeverity> = {
 @Component({
   selector: 'app-jobs-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, TableModule, TagModule],
+  imports: [DatePipe, RouterLink, TableModule, TagModule, ButtonModule],
   styleUrl: './jobs-list.component.scss',
   template: `
     <div class="p-8">
-      <header class="mb-6">
-        <h1 class="text-2xl font-semibold m-0 mb-1">Mes candidatures</h1>
-        <p class="text-sm text-gray-500 m-0">{{ state.applied().length }} offre(s) où vous avez postulé</p>
+      <header class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-semibold m-0 mb-1">Mes candidatures</h1>
+          <p class="text-sm text-gray-500 m-0">{{ state.applied().length }} offre(s) où vous avez postulé</p>
+        </div>
+        <p-button label="Nouvelle candidature" icon="pi pi-plus" routerLink="/jobs/new" />
       </header>
 
       @if (state.loading()) {

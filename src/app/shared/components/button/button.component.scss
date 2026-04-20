@@ -1,0 +1,150 @@
+// Button component — uses only design tokens, no hardcoded values
+:host {
+  display: inline-block;
+}
+
+:host(.btn--block),
+.btn--block {
+  display: block;
+  width: 100%;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+
+  // ── Sizes ──────────────────────────────────
+  &--sm {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-sm);
+    min-height: 2rem;
+  }
+
+  &--md {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-base);
+    min-height: 2.5rem;
+  }
+
+  &--lg {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--font-size-lg);
+    min-height: 3rem;
+  }
+
+  // ── Variants ───────────────────────────────
+  &--primary {
+    background-color: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+    color: var(--color-text-inverse);
+
+    &:hover:not(.btn--disabled):not(.btn--loading) {
+      background-color: var(--color-primary-600);
+      border-color: var(--color-primary-600);
+    }
+
+    &:active:not(.btn--disabled):not(.btn--loading) {
+      background-color: var(--color-primary-700);
+    }
+  }
+
+  &--secondary {
+    background-color: var(--color-neutral-0);
+    border-color: var(--color-surface-border);
+    color: var(--color-text-primary);
+
+    &:hover:not(.btn--disabled):not(.btn--loading) {
+      background-color: var(--color-neutral-100);
+    }
+  }
+
+  &--danger {
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: var(--color-text-inverse);
+
+    &:hover:not(.btn--disabled):not(.btn--loading) {
+      background-color: var(--color-danger-dark);
+      border-color: var(--color-danger-dark);
+    }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-text-primary);
+
+    &:hover:not(.btn--disabled):not(.btn--loading) {
+      background-color: var(--color-neutral-100);
+    }
+  }
+
+  &--link {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-primary-600);
+    padding-inline: var(--space-1);
+
+    &:hover:not(.btn--disabled):not(.btn--loading) {
+      text-decoration: underline;
+      color: var(--color-primary-700);
+    }
+  }
+
+  // ── States ─────────────────────────────────
+  &--disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &--loading {
+    cursor: wait;
+    pointer-events: none;
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  // ── Spinner ────────────────────────────────
+  &__spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: var(--radius-full);
+    animation: btn-spin 0.6s linear infinite;
+    flex-shrink: 0;
+  }
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,119 @@
+@use 'sass:map';
+
+// ─────────────────────────────────────────────
+// SCSS Mixins
+// ─────────────────────────────────────────────
+
+// ── Responsive breakpoints ───────────────────
+$breakpoints: (
+  'sm':  576px,
+  'md':  768px,
+  'lg':  992px,
+  'xl':  1200px,
+  '2xl': 1400px,
+);
+
+@mixin respond-to($bp) {
+  @if map.has-key($breakpoints, $bp) {
+    @media (min-width: #{map.get($breakpoints, $bp)}) {
+      @content;
+    }
+  } @else {
+    @warn 'Unknown breakpoint: #{$bp}';
+  }
+}
+
+@mixin respond-below($bp) {
+  @if map.has-key($breakpoints, $bp) {
+    @media (max-width: calc(#{map.get($breakpoints, $bp)} - 1px)) {
+      @content;
+    }
+  }
+}
+
+// ── Flex helpers ─────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// ── Typography ───────────────────────────────
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ── Focus ring (WCAG AA) ─────────────────────
+@mixin focus-ring($color: var(--color-primary-500), $offset: 2px) {
+  outline: 2px solid $color;
+  outline-offset: $offset;
+}
+
+@mixin focus-visible-ring($color: var(--color-primary-500), $offset: 2px) {
+  &:focus-visible {
+    @include focus-ring($color, $offset);
+  }
+}
+
+// ── Card surface ─────────────────────────────
+@mixin card-surface {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+// ── Scrollbar styling ────────────────────────
+@mixin custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-300) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-neutral-300);
+    border-radius: var(--radius-full);
+  }
+}
+
+// ── Visually hidden (accessibility) ──────────
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

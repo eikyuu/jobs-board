@@ -1,0 +1,25 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  &__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__main {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+    background-color: var(--color-surface-ground);
+    scrollbar-width: thin;
+
+    // Skip-to-content focus target
+    &:focus {
+      outline: none;
+    }
+  }
+}

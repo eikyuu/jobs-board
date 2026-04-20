@@ -38,6 +38,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
       },
+      {
+        path: 'jobs',
+        loadChildren: () =>
+          import('./features/jobs/jobs.routes').then((m) => m.JOBS_ROUTES),
+      },
     ],
   },
 

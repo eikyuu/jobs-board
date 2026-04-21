@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { JobsState } from '../../data-access/jobs.state';
 import type { ContractType, JobStatus, RemoteType } from '../../../../core/models/job.model';
+import { toLocalDateString } from '../../../../shared/utils/date.utils';
 
 interface JobFormModel {
   title: string;
@@ -31,13 +32,6 @@ interface JobFormModel {
   salaryMax: number | null;
   salaryCurrency: string;
   notes: string;
-}
-
-function toLocalDateString(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
 }
 
 const REMOTE_OPTIONS: { label: string; value: RemoteType }[] = [

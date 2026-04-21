@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.templateproject.app/api',
-  appName: 'templateproject',
+  apiUrl: 'http://localhost:8080/api',
+  appName: 'jobs-frontend',
   version: '0.0.0',
 } as const;

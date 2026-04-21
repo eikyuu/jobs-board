@@ -33,6 +33,13 @@ interface JobFormModel {
   notes: string;
 }
 
+function toLocalDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 const REMOTE_OPTIONS: { label: string; value: RemoteType }[] = [
   { label: 'Présentiel', value: 'onsite' },
   { label: 'Hybride', value: 'hybrid' },
@@ -124,8 +131,8 @@ export class JobAddComponent {
         remote: value.remote!,
         contractType: value.contractType!,
         status: value.status!,
-        appliedAt: value.appliedAt ? value.appliedAt.toISOString().split('T')[0] : null,
-        updatedAt: new Date().toISOString().split('T')[0],
+        appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : null,
+        updatedAt: toLocalDateString(new Date()),
         url: value.url || undefined,
         salary: value.salaryMin != null && value.salaryMax != null
           ? { min: value.salaryMin, max: value.salaryMax, currency: value.salaryCurrency }

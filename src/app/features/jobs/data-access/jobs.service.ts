@@ -13,4 +13,16 @@ export class JobsService {
   getJobs(): Observable<Job[]> {
     return this.httpClient.get<Job[]>(`${environment.apiUrl}/jobs`);
   }
+
+  createJob(job: Job): Observable<Job> {
+    return this.httpClient.post<Job>(`${environment.apiUrl}/jobs`, job);
+  }
+
+  updateJob(job: Job): Observable<Job> {
+    return this.httpClient.put<Job>(`${environment.apiUrl}/jobs/${job.id}`, job);
+  }
+
+  deleteJob(jobId: string): Observable<void> {
+    return this.httpClient.delete<void>(`${environment.apiUrl}/jobs/${jobId}`);
+  }
 }

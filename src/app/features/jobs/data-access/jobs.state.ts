@@ -20,7 +20,14 @@ export class JobsState {
   );
 
   addJob(job: Job): void {
-    this._jobs.update((jobs) => [...jobs, job]);
+    this.service.createJob(job).subscribe({
+      next: (createdJob) => {
+        this._jobs.update((jobs) => [...jobs, createdJob]);
+      },
+      error: (err: unknown) => {
+        console.error('Error creating job:', err);
+      },
+    });
   }
 
   removeJob(id: string): void {

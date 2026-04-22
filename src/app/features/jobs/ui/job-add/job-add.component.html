@@ -22,8 +22,10 @@
           pInputText
           [formField]="jobForm.title"
           placeholder="Ex : Développeur Angular Senior"
-          [attr.aria-describedby]="jobForm.title().errors().length ? 'title-error' : null"
-          [attr.aria-invalid]="jobForm.title().invalid() ? true : null"
+          [attr.aria-describedby]="jobForm.title().touched() && jobForm.title().errors().length ? 'title-error' : null"
+          [attr.aria-invalid]="jobForm.title().touched() && jobForm.title().invalid() ? true : null"
+          [class.p-invalid]="jobForm.title().touched() && jobForm.title().errors().length > 0"
+
         />
         @if (jobForm.title().touched() && jobForm.title().errors().length > 0) {
           <small id="title-error" class="text-red-500" role="alert">
@@ -42,8 +44,9 @@
           pInputText
           [formField]="jobForm.company"
           placeholder="Ex : Capgemini"
-          [attr.aria-describedby]="jobForm.company().errors().length ? 'company-error' : null"
-          [attr.aria-invalid]="jobForm.company().invalid() ? true : null"
+          [attr.aria-describedby]="jobForm.company().touched() && jobForm.company().errors().length ? 'company-error' : null"
+          [attr.aria-invalid]="jobForm.company().touched() && jobForm.company().invalid() ? true : null"
+          [class.p-invalid]="jobForm.company().touched() && jobForm.company().errors().length > 0"
         />
         @if (jobForm.company().touched() && jobForm.company().errors().length > 0) {
           <small id="company-error" class="text-red-500" role="alert">
@@ -65,8 +68,9 @@
           pInputText
           [formField]="jobForm.location"
           placeholder="Ex : Paris, France"
-          [attr.aria-describedby]="jobForm.location().errors().length ? 'location-error' : null"
-          [attr.aria-invalid]="jobForm.location().invalid() ? true : null"
+          [attr.aria-describedby]="jobForm.location().touched() && jobForm.location().errors().length ? 'location-error' : null"
+          [attr.aria-invalid]="jobForm.location().touched() && jobForm.location().invalid() ? true : null"
+          [class.p-invalid]="jobForm.location().touched() && jobForm.location().errors().length > 0"
         />
         @if (jobForm.location().touched() && jobForm.location().errors().length > 0) {
           <small id="location-error" class="text-red-500" role="alert">
@@ -86,7 +90,9 @@
           optionLabel="label"
           optionValue="value"
           placeholder="Sélectionner"
-          [attr.aria-describedby]="jobForm.remote().errors().length ? 'remote-error' : null"
+          [attr.aria-describedby]="jobForm.remote().touched() && jobForm.remote().errors().length ? 'remote-error' : null"
+          [attr.aria-invalid]="jobForm.remote().touched() && jobForm.remote().invalid() ? true : null"
+          [class.p-invalid]="jobForm.remote().touched() && jobForm.remote().errors().length > 0"
         />
         @if (jobForm.remote().touched() && jobForm.remote().errors().length > 0) {
           <small id="remote-error" class="text-red-500" role="alert">
@@ -109,7 +115,9 @@
           optionLabel="label"
           optionValue="value"
           placeholder="Sélectionner"
-          [attr.aria-describedby]="jobForm.contractType().errors().length ? 'contract-error' : null"
+          [attr.aria-describedby]="jobForm.contractType().touched() && jobForm.contractType().errors().length ? 'contract-error' : null"
+          [attr.aria-invalid]="jobForm.contractType().touched() && jobForm.contractType().invalid() ? true : null"
+          [class.p-invalid]="jobForm.contractType().touched() && jobForm.contractType().errors().length > 0"
         />
         @if (jobForm.contractType().touched() && jobForm.contractType().errors().length > 0) {
           <small id="contract-error" class="text-red-500" role="alert">
@@ -129,7 +137,9 @@
           optionLabel="label"
           optionValue="value"
           placeholder="Sélectionner"
-          [attr.aria-describedby]="jobForm.status().errors().length ? 'status-error' : null"
+          [attr.aria-describedby]="jobForm.status().touched() && jobForm.status().errors().length ? 'status-error' : null"
+          [attr.aria-invalid]="jobForm.status().touched() && jobForm.status().invalid() ? true : null"
+          [class.p-invalid]="jobForm.status().touched() && jobForm.status().errors().length > 0"
         />
         @if (jobForm.status().touched() && jobForm.status().errors().length > 0) {
           <small id="status-error" class="text-red-500" role="alert">

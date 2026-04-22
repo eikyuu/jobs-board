@@ -113,35 +113,36 @@ export class JobAddComponent {
     $event.preventDefault();
     this.serverError.set(null);
 
-    console.log('Submitting form with value:', this.model());
-
-    try {
-      const value = this.model();
-      this.jobsState.addJob({
-        id: crypto.randomUUID(),
-        title: value.title,
-        company: value.company,
-        location: value.location,
-        remote: value.remote!,
-        contractType: value.contractType!,
-        status: value.status!,
-        appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : null,
-        updatedAt: toLocalDateString(new Date()),
-        url: value.url || undefined,
-        salary: value.salaryMin != null && value.salaryMax != null
-          ? { min: value.salaryMin, max: value.salaryMax, currency: value.salaryCurrency }
-          : undefined,
-        notes: value.notes || undefined,
-        tags: [],
-        contacts: [],
-        interviews: [],
-      });
-      this.router.navigate(['/jobs']);
-    } catch {
-      this.serverError.set('Une erreur est survenue, veuillez réessayer.');
-    } finally {
-      this.submitting.set(false);
-    }
+    await submit(this.jobForm, async () => {
+      this.submitting.set(true);
+      try {
+        const value = this.model();
+        this.jobsState.addJob({
+          id: crypto.randomUUID(),
+          title: value.title,
+          company: value.company,
+          location: value.location,
+          remote: value.remote!,
+          contractType: value.contractType!,
+          status: value.status!,
+          appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : null,
+          updatedAt: toLocalDateString(new Date()),
+          url: value.url || undefined,
+          salary: value.salaryMin != null && value.salaryMax != null
+            ? { min: value.salaryMin, max: value.salaryMax, currency: value.salaryCurrency }
+            : undefined,
+          notes: value.notes || undefined,
+          tags: [],
+          contacts: [],
+          interviews: [],
+        });
+        this.router.navigate(['/jobs']);
+      } catch {
+        this.serverError.set('Une erreur est survenue, veuillez réessayer.');
+      } finally {
+        this.submitting.set(false);
+      }
+    });
   }
 
   protected cancel(): void {

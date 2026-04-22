@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Job } from '../../../core/models/job.model';
-import jobsMock from '../../../core/mocks/jobs.json';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment.prod';
 

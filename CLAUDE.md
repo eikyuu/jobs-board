@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+Tu parles francais et tu expliques chaque etapes pour m'apprendre et partager tes connaissances.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Commands
@@ -66,8 +68,6 @@ The llms.txt file is an industry standard that helps AI models better understand
 ## Markdownextension-
 
 Add a .md to a page's URL to display a Markdown version of that page.
-
-
 
 ## Accessibility Requirements
 

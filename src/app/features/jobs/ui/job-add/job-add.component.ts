@@ -16,45 +16,35 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { JobsState } from '../../data-access/jobs.state';
-import type { ContractType, JobStatus, RemoteType } from '../../models/job.model';
 import { toLocalDateString } from '../../../../shared/utils/date.utils';
+import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS } from '../../constants/job-status.const';
+import { Job, JobFormModel, ValidJobFormModel } from '../../models/job.model';
 
-interface JobFormModel {
-  title: string;
-  company: string;
-  location: string;
-  remote: RemoteType | null;
-  contractType: ContractType | null;
-  status: JobStatus | null;
-  appliedAt: Date | null;
-  url: string;
-  salaryMin: number | null;
-  salaryMax: number | null;
-  salaryCurrency: string;
-  notes: string;
+function isValidJobForm(value: JobFormModel): value is ValidJobFormModel {
+  return value.remote !== null && value.contractType !== null && value.status !== null;
 }
 
-const REMOTE_OPTIONS: { label: string; value: RemoteType }[] = [
-  { label: 'Présentiel', value: 'onsite' },
-  { label: 'Hybride', value: 'hybrid' },
-  { label: 'Full remote', value: 'full' },
-];
-
-const CONTRACT_OPTIONS: { label: string; value: ContractType }[] = [
-  { label: 'CDI', value: 'CDI' },
-  { label: 'CDD', value: 'CDD' },
-  { label: 'Freelance', value: 'Freelance' },
-  { label: 'Stage', value: 'Stage' },
-  { label: 'Alternance', value: 'Alternance' },
-];
-
-const STATUS_OPTIONS: { label: string; value: JobStatus }[] = [
-  { label: 'Sauvegardé', value: 'saved' },
-  { label: 'Candidaté', value: 'applied' },
-  { label: 'Entretien', value: 'interview' },
-  { label: 'Offre', value: 'offer' },
-  { label: 'Refus', value: 'rejected' },
-];
+function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
+  return {
+    title: value.title,
+    company: value.company,
+    location: value.location,
+    remote: value.remote,
+    contractType: value.contractType,
+    status: value.status,
+    appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : null,
+    updatedAt: toLocalDateString(new Date()),
+    url: value.url.trim() || undefined,
+    salary:
+      value.salaryMin != null && value.salaryMax != null
+        ? { min: value.salaryMin, max: value.salaryMax, currency: value.salaryCurrency }
+        : undefined,
+    notes: value.notes.trim() || undefined,
+    tags: [],
+    contacts: [],
+    interviews: [],
+  };
+}
 
 const JOB_SCHEMA = schema<JobFormModel>((f) => {
   required(f.title, { message: 'Le poste est requis' });
@@ -109,33 +99,16 @@ export class JobAddComponent {
 
   protected readonly jobForm = form(this.model, JOB_SCHEMA);
 
-  protected async onSubmit($event: Event): Promise<void> {
-    $event.preventDefault();
+  protected async onSubmit(event: Event): Promise<void> {
+    event.preventDefault();
     this.serverError.set(null);
 
     await submit(this.jobForm, async () => {
       this.submitting.set(true);
       try {
         const value = this.model();
-        this.jobsState.addJob({
-          id: crypto.randomUUID(),
-          title: value.title,
-          company: value.company,
-          location: value.location,
-          remote: value.remote!,
-          contractType: value.contractType!,
-          status: value.status!,
-          appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : null,
-          updatedAt: toLocalDateString(new Date()),
-          url: value.url || undefined,
-          salary: value.salaryMin != null && value.salaryMax != null
-            ? { min: value.salaryMin, max: value.salaryMax, currency: value.salaryCurrency }
-            : undefined,
-          notes: value.notes || undefined,
-          tags: [],
-          contacts: [],
-          interviews: [],
-        });
+        if (!isValidJobForm(value)) return;
+        await this.jobsState.addJob(mapFormToJob(value));
         this.router.navigate(['/jobs']);
       } catch {
         this.serverError.set('Une erreur est survenue, veuillez réessayer.');

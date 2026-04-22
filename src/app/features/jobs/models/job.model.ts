@@ -27,7 +27,7 @@ export interface Interview {
 }
 
 export interface Job {
-  id: string;
+  id?: string;
   title: string;
   company: string;
   location: string;
@@ -43,4 +43,26 @@ export interface Job {
   notes?: string;
   contacts: Contact[];
   interviews: Interview[];
+}
+
+
+export interface JobFormModel {
+  title: string;
+  company: string;
+  location: string;
+  remote: RemoteType | null;
+  contractType: ContractType | null;
+  status: JobStatus | null;
+  appliedAt: Date | null;
+  url: string;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  salaryCurrency: string;
+  notes: string;
+}
+
+export interface ValidJobFormModel extends JobFormModel {
+  remote: RemoteType;
+  contractType: ContractType;
+  status: JobStatus;
 }

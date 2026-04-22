@@ -47,7 +47,7 @@ export class JobsListComponent implements OnInit {
 
   protected onDelete(job: Job): void {
     if (confirm(`Supprimer la candidature pour "${job.title}" ?`)) {
-      this.state.removeJob(job.id);
+      this.state.removeJob(job.id!);
     }
   }
 }

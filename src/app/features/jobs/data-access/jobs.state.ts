@@ -31,7 +31,14 @@ export class JobsState {
   }
 
   removeJob(id: string): void {
-    this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
+    this.service.deleteJob(id).subscribe({
+      next: () => {
+        this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
+      },
+      error: (err: unknown) => {
+        console.error('Error deleting job:', err);
+      },
+    });
   }
 
   load(): void {

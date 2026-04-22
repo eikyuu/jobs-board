@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { Job } from '../../../core/models/job.model';
+import { Job } from '../models/job.model';
 import { JobsService } from './jobs.service';
 
 @Injectable({ providedIn: 'root' })

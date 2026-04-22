@@ -5,25 +5,8 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { JobsState } from '../../data-access/jobs.state';
-import { Job, JobStatus } from '../../../../core/models/job.model';
-
-type TagSeverity = 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast';
-
-const STATUS_LABEL: Record<JobStatus, string> = {
-  saved: 'Sauvegardé',
-  applied: 'Candidaté',
-  interview: 'Entretien',
-  offer: 'Offre',
-  rejected: 'Refus',
-};
-
-const STATUS_SEVERITY: Record<JobStatus, TagSeverity> = {
-  saved: 'secondary',
-  applied: 'info',
-  interview: 'warn',
-  offer: 'success',
-  rejected: 'danger',
-};
+import { Job, JobStatus } from '../../models/job.model';
+import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
 
 @Component({
   selector: 'app-jobs-list',

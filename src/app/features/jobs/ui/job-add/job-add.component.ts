@@ -16,7 +16,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { JobsState } from '../../data-access/jobs.state';
-import type { ContractType, JobStatus, RemoteType } from '../../../../core/models/job.model';
+import type { ContractType, JobStatus, RemoteType } from '../../models/job.model';
 import { toLocalDateString } from '../../../../shared/utils/date.utils';
 
 interface JobFormModel {

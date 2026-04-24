@@ -1,0 +1,30 @@
+<div class="max-w-3xl mx-auto p-8">
+  <header class="mb-6">
+    <h1 class="text-2xl font-semibold m-0 mb-1">Modifier la candidature</h1>
+    <p class="text-sm text-gray-500 m-0">Mettez à jour les informations de l'offre</p>
+  </header>
+
+  @if (state.loading()) {
+    <div class="flex items-center gap-2 py-8" role="status" aria-live="polite" aria-label="Chargement de la candidature">
+      <span aria-hidden="true" class="inline-block w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+      <span class="visually-hidden">Chargement…</span>
+    </div>
+  }
+
+  @if (!state.loading() && !job()) {
+    <div class="text-red-600 bg-red-50 rounded-lg p-4" role="alert">
+      Candidature introuvable.
+    </div>
+  }
+
+  @if (job()) {
+    <app-job-form
+      [initialValue]="initialValue()"
+      submitLabel="Enregistrer les modifications"
+      [submitting]="submitting()"
+      [serverError]="serverError()"
+      (formSubmit)="onFormSubmit($event)"
+      (cancelled)="cancel()"
+    />
+  }
+</div>

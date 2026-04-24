@@ -13,4 +13,10 @@ export const JOBS_ROUTES: Routes = [
       import('./ui/job-add/job-add.component').then((m) => m.JobAddComponent),
     title: 'Nouvelle candidature — Jobs Board',
   },
+  {
+    path: ':id/edit',
+    loadComponent: () =>
+      import('./ui/job-edit/job-edit.component').then((m) => m.JobEditComponent),
+    title: 'Modifier la candidature — Jobs Board',
+  },
 ];

@@ -89,16 +89,28 @@
             </time>
           </td>
           <td>
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              [text]="true"
-              [rounded]="true"
-              size="small"
-              [attr.aria-label]="'Supprimer ' + job.title"
-              label="Supprimer"
-              (onClick)="onDelete(job)"
-            />
+            <div class="flex items-center gap-1">
+              <p-button
+                icon="pi pi-pencil"
+                severity="secondary"
+                [text]="true"
+                [rounded]="true"
+                size="small"
+                [attr.aria-label]="'Modifier ' + job.title"
+                label="Modifier"
+                [routerLink]="['/jobs', job.id, 'edit']"
+              />
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                size="small"
+                [attr.aria-label]="'Supprimer ' + job.title"
+                label="Supprimer"
+                (onClick)="onDelete(job)"
+              />
+            </div>
           </td>
         </tr>
       </ng-template>

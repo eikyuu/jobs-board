@@ -19,14 +19,35 @@ export class JobsState {
     this._jobs().filter((j) => j.appliedAt !== null)
   );
 
-  addJob(job: Job): void {
-    this.service.createJob(job).subscribe({
-      next: (createdJob) => {
-        this._jobs.update((jobs) => [...jobs, createdJob]);
-      },
-      error: (err: unknown) => {
-        console.error('Error creating job:', err);
-      },
+  addJob(job: Job): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.service.createJob(job).subscribe({
+        next: (createdJob) => {
+          this._jobs.update((jobs) => [...jobs, createdJob]);
+          resolve();
+        },
+        error: (err: unknown) => {
+          console.error('Error creating job:', err);
+          reject(err);
+        },
+      });
+    });
+  }
+
+  updateJob(job: Job): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.service.updateJob(job).subscribe({
+        next: (updatedJob) => {
+          this._jobs.update((jobs) =>
+            jobs.map((j) => (j.id === updatedJob.id ? updatedJob : j))
+          );
+          resolve();
+        },
+        error: (err: unknown) => {
+          console.error('Error updating job:', err);
+          reject(err);
+        },
+      });
     });
   }
 

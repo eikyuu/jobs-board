@@ -19,6 +19,7 @@ import { JobsState } from '../../data-access/jobs.state';
 import { toLocalDateString } from '../../../../shared/utils/date.utils';
 import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS } from '../../constants/job-status.const';
 import { Job, JobFormModel, ValidJobFormModel } from '../../models/job.model';
+import { MessageService } from 'primeng/api';
 
 function isValidJobForm(value: JobFormModel): value is ValidJobFormModel {
   return value.remote !== null && value.contractType !== null && value.status !== null;
@@ -72,6 +73,7 @@ const JOB_SCHEMA = schema<JobFormModel>((f) => {
   templateUrl: './job-add.component.html',
 })
 export class JobAddComponent {
+  messageService = inject(MessageService)
   private readonly router = inject(Router);
   private readonly jobsState = inject(JobsState);
 
@@ -110,6 +112,11 @@ export class JobAddComponent {
         if (!isValidJobForm(value)) return;
         await this.jobsState.addJob(mapFormToJob(value));
         this.router.navigate(['/jobs']);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Candidature ajoutée',
+          detail: 'La candidature a été ajoutée avec succès.',
+        });
       } catch {
         this.serverError.set('Une erreur est survenue, veuillez réessayer.');
       } finally {

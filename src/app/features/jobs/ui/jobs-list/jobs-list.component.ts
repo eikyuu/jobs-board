@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { JobsState } from '../../data-access/jobs.state';
 import { Job, JobStatus } from '../../models/job.model';
 import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
+import { MessageService } from 'primeng/api'
 
 @Component({
   selector: 'app-jobs-list',
@@ -16,6 +17,7 @@ import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-
   templateUrl: './jobs-list.component.html',
 })
 export class JobsListComponent implements OnInit {
+  messageService = inject(MessageService)
   protected readonly state = inject(JobsState);
 
   ngOnInit(): void {
@@ -49,5 +51,11 @@ export class JobsListComponent implements OnInit {
     if (confirm(`Supprimer la candidature pour "${job.title}" ?`)) {
       this.state.removeJob(job.id!);
     }
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Supprimé',
+      detail: 'La candidature a été supprimée avec succès.',
+    })
   }
 }

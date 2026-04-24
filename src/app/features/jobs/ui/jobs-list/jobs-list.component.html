@@ -6,7 +6,7 @@
     </div>
     <div class="flex items-center gap-2">
       <p-button label="Nouvelle candidature" icon="pi pi-plus" routerLink="/jobs/new" />
-      <p-button label="Exporter" icon="pi pi-download" routerLink="/jobs/export" />
+      <p-button label="Exporter en PDF" icon="pi pi-file-pdf" (onClick)="exportToPdf()" />
     </div>
 
   </header>

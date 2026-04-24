@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, DOCUMENT } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
@@ -8,6 +8,7 @@ import { JobsState } from '../../data-access/jobs.state';
 import { Job, JobStatus } from '../../models/job.model';
 import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
 import { MessageService } from 'primeng/api'
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-jobs-list',
@@ -17,7 +18,8 @@ import { MessageService } from 'primeng/api'
   templateUrl: './jobs-list.component.html',
 })
 export class JobsListComponent implements OnInit {
-  messageService = inject(MessageService)
+  private readonly document = inject(DOCUMENT);
+  private readonly messageService = inject(MessageService)
   protected readonly state = inject(JobsState);
 
   ngOnInit(): void {
@@ -50,12 +52,19 @@ export class JobsListComponent implements OnInit {
   protected onDelete(job: Job): void {
     if (confirm(`Supprimer la candidature pour "${job.title}" ?`)) {
       this.state.removeJob(job.id!);
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Supprimé',
+        detail: 'La candidature a été supprimée avec succès.',
+      })
     }
 
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Supprimé',
-      detail: 'La candidature a été supprimée avec succès.',
-    })
+
+  }
+
+  protected exportToPdf(): void {
+    const url = `${environment.apiUrl}/jobs/export/pdf`;
+    this.document.defaultView?.open(url, '_blank');
   }
 }

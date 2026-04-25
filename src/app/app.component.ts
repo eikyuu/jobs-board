@@ -6,6 +6,6 @@ import { Toast } from 'primeng/toast';
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, Toast],
-  templateUrl: 'app.html',
+  templateUrl: 'app.component.html',
 })
 export class App {}

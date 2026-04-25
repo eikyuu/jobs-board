@@ -43,6 +43,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/jobs/jobs.routes').then((m) => m.JOBS_ROUTES),
       },
+      {
+        path: 'flashcards',
+        loadChildren: () =>
+          import('./features/flashcards/flashcards.routes').then((m) => m.FLASHCARDS_ROUTES),
+      },
     ],
   },
 

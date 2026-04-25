@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "category": "Angular",
+    "question": "Qu'est-ce qu'un Signal en Angular et quel est son avantage principal ?",
+    "answer": "Un Signal est une valeur réactive primitive (signal()) qui notifie automatiquement ses consommateurs (templates, computed, effect) lors de son changement. Son avantage est la granularité : seuls les éléments dépendants du signal sont mis à jour, sans détection de changement globale ni désabonnement.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 2,
+    "category": "Angular",
+    "question": "Quelle est la différence entre signal(), computed() et effect() ?",
+    "answer": "signal() crée une valeur réactive modifiable (lecture + écriture). computed() crée une valeur dérivée en lecture seule, recalculée quand ses dépendances changent. effect() exécute un effet de bord (log, appel DOM) à chaque changement de ses dépendances. On ne modifie jamais d'autres signals dans un effect().",
+    "difficulty": "medium"
+  },
+  {
+    "id": 3,
+    "category": "Angular",
+    "question": "Qu'est-ce que ChangeDetectionStrategy.OnPush et pourquoi l'utiliser ?",
+    "answer": "OnPush indique à Angular de ne vérifier le composant que lorsque : une référence d'input change, un event du composant est émis, ou un observable auquel le template est abonné via async pipe émet une valeur. Résultat : moins de vérifications = meilleures performances dans les grandes applications.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 4,
+    "category": "Angular",
+    "question": "Comment fonctionne le lazy loading des routes en Angular ?",
+    "answer": "Avec loadChildren() ou loadComponent(), Angular charge le code du module/composant uniquement quand l'utilisateur navigue vers cette route. Cela réduit le bundle initial. Exemple : { path: 'jobs', loadChildren: () => import('./jobs/jobs.routes').then(m => m.JOBS_ROUTES) }",
+    "difficulty": "easy"
+  },
+  {
+    "id": 5,
+    "category": "Angular",
+    "question": "Quelle est la différence entre le décorateur @Input() et la fonction input() ?",
+    "answer": "@Input() est l'ancienne API décorateur : la valeur est une propriété classique, non réactive. input() (Angular 17+) retourne un Signal : la valeur est réactive, typée en lecture seule, et compatible avec OnPush sans code supplémentaire.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 6,
+    "category": "Angular",
+    "question": "À quoi sert le flux de contrôle natif @if, @for, @switch introduit en Angular 17 ?",
+    "answer": "Il remplace les directives structurelles *ngIf, *ngFor, *ngSwitch par une syntaxe déclarative dans le template. Avantages : meilleure lisibilité, typage amélioré, pas besoin d'importer CommonModule, et tree-shaking plus fin à la compilation.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 7,
+    "category": "TypeScript",
+    "question": "Quelle est la différence entre interface et type en TypeScript ?",
+    "answer": "Les deux définissent des formes d'objets. interface est extensible (declaration merging, extends), idéale pour les contrats d'objets et de classes. type est plus flexible : unions, intersections, types primitifs, tuples. En pratique : interface pour les shapes d'objets, type pour tout le reste.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 8,
+    "category": "TypeScript",
+    "question": "Quelle est la différence entre unknown et any ?",
+    "answer": "any désactive complètement le typage : on peut appeler n'importe quelle méthode sans erreur. unknown est le type sûr équivalent : on ne peut pas utiliser la valeur sans la valider d'abord (type narrowing). Préférer unknown quand le type n'est pas connu, pour forcer la validation avant usage.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 9,
+    "category": "TypeScript",
+    "question": "Qu'est-ce que le type narrowing en TypeScript ?",
+    "answer": "Le type narrowing consiste à affiner (réduire) le type d'une variable à l'intérieur d'un bloc conditionnel. Exemples : typeof x === 'string', instanceof MyClass, x !== null, ou les type guards (x is MyType). TypeScript comprend automatiquement le type précis dans chaque branche.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 10,
+    "category": "TypeScript",
+    "question": "Qu'est-ce qu'un type générique et dans quel cas l'utiliser ?",
+    "answer": "Un générique <T> permet d'écrire du code réutilisable qui préserve le type. Exemple : function identity<T>(value: T): T retourne le même type que son paramètre. Utiliser quand la logique est identique mais que le type varie : fonctions utilitaires, services, structures de données.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 11,
+    "category": "TypeScript",
+    "question": "À quoi servent les types utilitaires Partial, Required, Readonly et Pick ?",
+    "answer": "Partial<T> rend tous les champs optionnels. Required<T> les rend tous obligatoires. Readonly<T> les rend non modifiables. Pick<T, K> sélectionne un sous-ensemble de propriétés. Omit<T, K> fait l'inverse. Ils permettent de transformer des types existants sans dupliquer les interfaces.",
+    "difficulty": "hard"
+  },
+  {
+    "id": 12,
+    "category": "JavaScript",
+    "question": "Qu'est-ce qu'une closure en JavaScript ?",
+    "answer": "Une closure est une fonction qui se souvient de son environnement lexical même après que la fonction externe ait terminé. Elle capture les variables de la portée parente. Exemple classique : une factory qui retourne une fonction avec un compteur privé. C'est la base des modules et des hooks.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 13,
+    "category": "JavaScript",
+    "question": "Quelle est la différence entre Promise et Observable ?",
+    "answer": "Promise gère une seule valeur asynchrone, s'exécute immédiatement (eager) et n'est pas annulable. Observable (RxJS) gère un flux de valeurs dans le temps, est lazy (s'exécute à l'abonnement), annulable via unsubscribe(), et composable avec des opérateurs (map, filter, debounce). Préférer Observable pour les streams, Promise pour les appels uniques.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 14,
+    "category": "JavaScript",
+    "question": "Quelle est la différence entre debounce et throttle ?",
+    "answer": "debounce retarde l'exécution jusqu'à ce qu'il n'y ait plus d'appel pendant X ms (utile pour la recherche en temps réel). throttle exécute au maximum une fois toutes les X ms, même si l'événement se produit souvent (utile pour le scroll). debounce = 'attends le calme', throttle = 'limite la fréquence'.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 15,
+    "category": "JavaScript",
+    "question": "Qu'est-ce que l'Event Loop en JavaScript et comment fonctionne-t-elle ?",
+    "answer": "JavaScript est single-threadé. L'Event Loop gère la concurrence : la call stack exécute le code synchrone. Les callbacks async sont placés dans la task queue ou microtask queue. L'Event Loop vérifie que la call stack est vide, puis traite d'abord toutes les microtasks (Promises résolues), puis une task à la fois.",
+    "difficulty": "hard"
+  }
+]

@@ -1,0 +1,91 @@
+<div class="mx-auto flex max-w-2xl flex-col items-center gap-6 py-4">
+
+  <header class="text-center">
+    <h1 class="m-0 text-2xl font-bold text-[var(--color-text-primary)]">Flash Cards</h1>
+    <p class="m-0 mt-2 text-[var(--color-text-secondary)]">Entraîne-toi pour tes entretiens techniques</p>
+  </header>
+
+  <div class="flex w-full items-center gap-3">
+    <label for="category-filter" class="whitespace-nowrap text-sm font-medium text-[var(--color-text-secondary)]">
+      Catégorie
+    </label>
+    <p-select
+      inputId="category-filter"
+      [options]="categoryOptions()"
+      [ngModel]="selectedCategory()"
+      (ngModelChange)="onCategoryChange($event)"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Toutes les catégories"
+    />
+  </div>
+
+  @if (currentCard()) {
+    <p class="text-sm text-[var(--color-text-secondary)]" aria-live="polite" aria-atomic="true">
+      Carte <strong>{{ currentIndex() + 1 }}</strong> sur <strong>{{ filteredCards().length }}</strong>
+    </p>
+
+    <button
+      class="h-80 w-full cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary-500)]"
+      (click)="flip()"
+      [attr.aria-pressed]="isFlipped()"
+      [attr.aria-label]="
+        isFlipped()
+          ? 'Carte retournée — cliquer pour voir la question'
+          : 'Cliquer pour révéler la réponse : ' + currentCard().question
+      "
+    >
+      <div
+        class="relative h-full w-full [transform-style:preserve-3d] transition-transform duration-[550ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+        [style.transform]="isFlipped() ? 'rotateY(180deg)' : ''"
+      >
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 shadow-md backface-hidden border-[var(--color-surface-border)] bg-[var(--color-surface-card)]"
+          [attr.aria-hidden]="isFlipped() || null"
+        >
+          <div class="flex flex-wrap justify-center gap-2">
+            <p-tag [value]="currentCard().category" severity="info" />
+            <p-tag
+              [value]="difficultyLabel(currentCard().difficulty)"
+              [severity]="difficultyToSeverity(currentCard().difficulty)"
+            />
+          </div>
+          <p class="m-0 text-center text-lg font-semibold leading-relaxed text-[var(--color-text-primary)]">
+            {{ currentCard().question }}
+          </p>
+          <span class="mt-auto text-xs text-[var(--color-text-secondary)]">Cliquer pour révéler la réponse</span>
+        </div>
+
+        <div
+          class="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 shadow-md backface-hidden [transform:rotateY(180deg)] border-[var(--color-surface-border)] bg-[var(--color-primary-50)]"
+          [attr.aria-hidden]="!isFlipped() || null"
+        >
+          <p class="m-0 text-center text-base leading-relaxed text-[var(--color-primary-700)]">
+            {{ currentCard().answer }}
+          </p>
+        </div>
+      </div>
+    </button>
+
+    <div class="flex gap-4">
+      <p-button
+        label="Précédent"
+        icon="pi pi-chevron-left"
+        severity="secondary"
+        (onClick)="prev()"
+        [disabled]="filteredCards().length <= 1"
+        aria-label="Carte précédente"
+      />
+      <p-button
+        label="Suivant"
+        icon="pi pi-chevron-right"
+        iconPos="right"
+        (onClick)="next()"
+        [disabled]="filteredCards().length <= 1"
+        aria-label="Carte suivante"
+      />
+    </div>
+  } @else {
+    <p class="italic text-[var(--color-text-secondary)]" role="status">Aucune carte disponible.</p>
+  }
+</div>

@@ -3,105 +3,297 @@
     "id": 1,
     "category": "Angular",
     "question": "Qu'est-ce qu'un Signal en Angular et quel est son avantage principal ?",
-    "answer": "Un Signal est une valeur réactive primitive (signal()) qui notifie automatiquement ses consommateurs (templates, computed, effect) lors de son changement. Son avantage est la granularité : seuls les éléments dépendants du signal sont mis à jour, sans détection de changement globale ni désabonnement.",
+    "answer": "Valeur réactive (signal()) qui notifie automatiquement ses dépendants. Avantage : mise à jour granulaire — seuls les consommateurs qui lisent ce signal sont re-rendus.",
     "difficulty": "easy"
   },
   {
     "id": 2,
     "category": "Angular",
     "question": "Quelle est la différence entre signal(), computed() et effect() ?",
-    "answer": "signal() crée une valeur réactive modifiable (lecture + écriture). computed() crée une valeur dérivée en lecture seule, recalculée quand ses dépendances changent. effect() exécute un effet de bord (log, appel DOM) à chaque changement de ses dépendances. On ne modifie jamais d'autres signals dans un effect().",
+    "answer": "signal() = état writable. computed() = valeur dérivée read-only (lazy + mémoïsée). effect() = effet de bord à chaque changement. Ne jamais écrire un signal dans un effect().",
     "difficulty": "medium"
   },
   {
     "id": 3,
     "category": "Angular",
     "question": "Qu'est-ce que ChangeDetectionStrategy.OnPush et pourquoi l'utiliser ?",
-    "answer": "OnPush indique à Angular de ne vérifier le composant que lorsque : une référence d'input change, un event du composant est émis, ou un observable auquel le template est abonné via async pipe émet une valeur. Résultat : moins de vérifications = meilleures performances dans les grandes applications.",
+    "answer": "Le composant n'est vérifié que si une référence d'@Input change, un événement DOM se produit, ou un Signal/Observable émet. Moins de vérifications = meilleures performances.",
     "difficulty": "easy"
   },
   {
     "id": 4,
     "category": "Angular",
     "question": "Comment fonctionne le lazy loading des routes en Angular ?",
-    "answer": "Avec loadChildren() ou loadComponent(), Angular charge le code du module/composant uniquement quand l'utilisateur navigue vers cette route. Cela réduit le bundle initial. Exemple : { path: 'jobs', loadChildren: () => import('./jobs/jobs.routes').then(m => m.JOBS_ROUTES) }",
+    "answer": "loadComponent() ou loadChildren() chargent le code uniquement à la navigation vers la route. Réduit le bundle initial.",
     "difficulty": "easy"
   },
   {
     "id": 5,
     "category": "Angular",
     "question": "Quelle est la différence entre le décorateur @Input() et la fonction input() ?",
-    "answer": "@Input() est l'ancienne API décorateur : la valeur est une propriété classique, non réactive. input() (Angular 17+) retourne un Signal : la valeur est réactive, typée en lecture seule, et compatible avec OnPush sans code supplémentaire.",
+    "answer": "input() retourne un Signal (réactif, compatible OnPush nativement). @Input() est une propriété classique non réactive.",
     "difficulty": "medium"
   },
   {
     "id": 6,
     "category": "Angular",
     "question": "À quoi sert le flux de contrôle natif @if, @for, @switch introduit en Angular 17 ?",
-    "answer": "Il remplace les directives structurelles *ngIf, *ngFor, *ngSwitch par une syntaxe déclarative dans le template. Avantages : meilleure lisibilité, typage amélioré, pas besoin d'importer CommonModule, et tree-shaking plus fin à la compilation.",
+    "answer": "Remplace *ngIf/*ngFor/*ngSwitch. Plus lisible, pas d'import CommonModule, track obligatoire dans @for.",
     "difficulty": "easy"
   },
   {
     "id": 7,
     "category": "TypeScript",
     "question": "Quelle est la différence entre interface et type en TypeScript ?",
-    "answer": "Les deux définissent des formes d'objets. interface est extensible (declaration merging, extends), idéale pour les contrats d'objets et de classes. type est plus flexible : unions, intersections, types primitifs, tuples. En pratique : interface pour les shapes d'objets, type pour tout le reste.",
+    "answer": "interface : contrats d'objets/classes, extensible (extends, declaration merging). type : unions, intersections, tuples. Préférer interface pour les shapes d'objets.",
     "difficulty": "easy"
   },
   {
     "id": 8,
     "category": "TypeScript",
     "question": "Quelle est la différence entre unknown et any ?",
-    "answer": "any désactive complètement le typage : on peut appeler n'importe quelle méthode sans erreur. unknown est le type sûr équivalent : on ne peut pas utiliser la valeur sans la valider d'abord (type narrowing). Préférer unknown quand le type n'est pas connu, pour forcer la validation avant usage.",
+    "answer": "any désactive le typage. unknown force à valider le type avant usage (type narrowing). Toujours préférer unknown.",
     "difficulty": "medium"
   },
   {
     "id": 9,
     "category": "TypeScript",
     "question": "Qu'est-ce que le type narrowing en TypeScript ?",
-    "answer": "Le type narrowing consiste à affiner (réduire) le type d'une variable à l'intérieur d'un bloc conditionnel. Exemples : typeof x === 'string', instanceof MyClass, x !== null, ou les type guards (x is MyType). TypeScript comprend automatiquement le type précis dans chaque branche.",
+    "answer": "Affiner le type d'une variable dans un bloc conditionnel. Techniques : typeof, instanceof, !== null, type guards (x is T).",
     "difficulty": "medium"
   },
   {
     "id": 10,
     "category": "TypeScript",
     "question": "Qu'est-ce qu'un type générique et dans quel cas l'utiliser ?",
-    "answer": "Un générique <T> permet d'écrire du code réutilisable qui préserve le type. Exemple : function identity<T>(value: T): T retourne le même type que son paramètre. Utiliser quand la logique est identique mais que le type varie : fonctions utilitaires, services, structures de données.",
+    "answer": "Code réutilisable qui préserve le type. Utiliser quand la logique est identique mais le type varie : utils, services, structures de données.",
     "difficulty": "medium"
   },
   {
     "id": 11,
     "category": "TypeScript",
     "question": "À quoi servent les types utilitaires Partial, Required, Readonly et Pick ?",
-    "answer": "Partial<T> rend tous les champs optionnels. Required<T> les rend tous obligatoires. Readonly<T> les rend non modifiables. Pick<T, K> sélectionne un sous-ensemble de propriétés. Omit<T, K> fait l'inverse. Ils permettent de transformer des types existants sans dupliquer les interfaces.",
+    "answer": "Partial<T> : tous optionnels. Required<T> : tous obligatoires. Readonly<T> : non modifiables. Pick<T,K> : sous-ensemble. Omit<T,K> : tout sauf K.",
     "difficulty": "hard"
   },
   {
     "id": 12,
     "category": "JavaScript",
     "question": "Qu'est-ce qu'une closure en JavaScript ?",
-    "answer": "Une closure est une fonction qui se souvient de son environnement lexical même après que la fonction externe ait terminé. Elle capture les variables de la portée parente. Exemple classique : une factory qui retourne une fonction avec un compteur privé. C'est la base des modules et des hooks.",
+    "answer": "Fonction qui mémorise son environnement lexical après la fin de la fonction parente. Base des modules et de l'encapsulation.",
     "difficulty": "medium"
   },
   {
     "id": 13,
     "category": "JavaScript",
     "question": "Quelle est la différence entre Promise et Observable ?",
-    "answer": "Promise gère une seule valeur asynchrone, s'exécute immédiatement (eager) et n'est pas annulable. Observable (RxJS) gère un flux de valeurs dans le temps, est lazy (s'exécute à l'abonnement), annulable via unsubscribe(), et composable avec des opérateurs (map, filter, debounce). Préférer Observable pour les streams, Promise pour les appels uniques.",
+    "answer": "Promise : une valeur, eager, non annulable. Observable : flux de valeurs, lazy, annulable (unsubscribe), composable avec opérateurs RxJS.",
     "difficulty": "medium"
   },
   {
     "id": 14,
     "category": "JavaScript",
     "question": "Quelle est la différence entre debounce et throttle ?",
-    "answer": "debounce retarde l'exécution jusqu'à ce qu'il n'y ait plus d'appel pendant X ms (utile pour la recherche en temps réel). throttle exécute au maximum une fois toutes les X ms, même si l'événement se produit souvent (utile pour le scroll). debounce = 'attends le calme', throttle = 'limite la fréquence'.",
+    "answer": "debounce : attend X ms de calme avant d'exécuter (recherche). throttle : exécute max une fois toutes les X ms (scroll). 'calme' vs 'fréquence'.",
     "difficulty": "medium"
   },
   {
     "id": 15,
     "category": "JavaScript",
     "question": "Qu'est-ce que l'Event Loop en JavaScript et comment fonctionne-t-elle ?",
-    "answer": "JavaScript est single-threadé. L'Event Loop gère la concurrence : la call stack exécute le code synchrone. Les callbacks async sont placés dans la task queue ou microtask queue. L'Event Loop vérifie que la call stack est vide, puis traite d'abord toutes les microtasks (Promises résolues), puis une task à la fois.",
+    "answer": "JS est single-threadé. Event Loop : vide la call stack synchrone, traite d'abord les microtasks (Promises), puis les tasks (setTimeout) une par une.",
     "difficulty": "hard"
+  },
+  {
+    "id": 16,
+    "category": "Chronologie",
+    "question": "Quelle est la grande différence entre Angular ≤15 et Angular 16+ ?",
+    "answer": "Angular 16 introduit les Signals : réactivité granulaire sans Zone.js. Avant : Zone.js monkey-patche les APIs async et déclenche la CD sur tout l'arbre.",
+    "difficulty": "easy",
+    "version": "v16+"
+  },
+  {
+    "id": 17,
+    "category": "Signals & Réactivité",
+    "question": "Qu'est-ce qu'un Signal ? Quelle est la différence avec un BehaviorSubject ?",
+    "answer": "Signal : réactif natif Angular, pas de subscribe(), synchrone, lecture avec count(). BehaviorSubject : flux async avec opérateurs RxJS. Convertir avec toSignal() / toObservable().",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 18,
+    "category": "Signals & Réactivité",
+    "question": "Explique computed(), effect() et leurs cas d'usage respectifs.",
+    "answer": "computed() : valeur dérivée read-only, lazy, mémoïsée → calculs d'état. effect() : effet de bord (logs, localStorage) à chaque changement. Ne pas écrire de signal dans un effect().",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 19,
+    "category": "Signals & Réactivité",
+    "question": "Qu'est-ce que linkedSignal() ? Quand l'utiliser ?",
+    "answer": "Signal writable qui se réinitialise quand sa source change. Entre signal() (writable) et computed() (read-only). Utile pour un état local lié à une prop parent.",
+    "difficulty": "hard",
+    "version": "v19"
+  },
+  {
+    "id": 20,
+    "category": "Signals & Réactivité",
+    "question": "Qu'est-ce que resource() ? Comment gérer les données async avec les Signals ?",
+    "answer": "Intègre l'async dans les Signals. Expose isLoading, value, error comme signals. Se re-déclenche et annule la requête précédente quand ses dépendances changent.",
+    "difficulty": "hard",
+    "version": "v19"
+  },
+  {
+    "id": 21,
+    "category": "Signals & Réactivité",
+    "question": "Comment fonctionne le Change Detection avec les Signals ? Qu'est-ce que le mode Zoneless ?",
+    "answer": "Signals → seuls les composants qui lisent un signal modifié sont re-rendus. Zoneless (v18+) supprime Zone.js : CD uniquement par Signals ou markForCheck().",
+    "difficulty": "hard",
+    "version": "v18"
+  },
+  {
+    "id": 22,
+    "category": "Composants",
+    "question": "Nouvelle API input(), output(), model() — quelle différence avec @Input/@Output ?",
+    "answer": "input<T>() retourne un Signal read-only (composable avec computed()). model<T>() = binding bidirectionnel (remplace @Input + @Output). Stabilisé en v19.",
+    "difficulty": "medium",
+    "version": "v17"
+  },
+  {
+    "id": 23,
+    "category": "Composants",
+    "question": "Qu'est-ce que @defer ? Comment optimiser le chargement avec les Deferrable Views ?",
+    "answer": "Charge lazily un bloc de template. Triggers : on viewport, on idle, on interaction, on timer. Blocs associés : @placeholder, @loading, @error. Impact sur LCP/TTI.",
+    "difficulty": "medium",
+    "version": "v17"
+  },
+  {
+    "id": 24,
+    "category": "Composants",
+    "question": "Nouvelle syntaxe de template @if, @for, @switch — quels avantages sur *ngIf/*ngFor ?",
+    "answer": "Syntaxe native sans import. @else if intégré, @empty dans @for pour la liste vide, track obligatoire, @let pour les variables locales.",
+    "difficulty": "easy",
+    "version": "v17"
+  },
+  {
+    "id": 25,
+    "category": "Composants",
+    "question": "Qu'est-ce qu'un standalone component ? Pourquoi remplacer les NgModules ?",
+    "answer": "Composant qui déclare ses imports directement, sans NgModule. Défaut depuis v17. Meilleur tree-shaking, lazy loading avec loadComponent, moins de boilerplate.",
+    "difficulty": "easy",
+    "version": "v16+"
+  },
+  {
+    "id": 26,
+    "category": "DI & Services",
+    "question": "Quelle est la hiérarchie des injectors Angular ?",
+    "answer": "EnvironmentInjector (Root = providedIn:'root', Route = Route.providers[]) + ElementInjector (composant, résolution remontante). Modificateurs : @Self, @SkipSelf, @Host, @Optional.",
+    "difficulty": "hard",
+    "version": "v16+"
+  },
+  {
+    "id": 27,
+    "category": "DI & Services",
+    "question": "inject() vs constructeur : pourquoi et quand utiliser inject() ?",
+    "answer": "inject() est fonctionnel, composable dans des fonctions helper réutilisables ('composables' Angular). Préférer inject() pour la composition. L'injection constructeur reste valide.",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 28,
+    "category": "DI & Services",
+    "question": "Qu'est-ce qu'un InjectionToken ? Quand l'utiliser ?",
+    "answer": "Injecte des valeurs non-classe (primitives, config, feature flags). new InjectionToken<T>('desc', { factory }). Override avec { provide: TOKEN, useValue: val }.",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 29,
+    "category": "Routing",
+    "question": "Guards fonctionnels vs Guards classe — quelle différence ?",
+    "answer": "Guards classe dépréciés depuis v15. Guards fonctionnels (CanActivateFn) = fonctions pures avec inject(). Plus simples, composables, testables.",
+    "difficulty": "easy",
+    "version": "v16+"
+  },
+  {
+    "id": 30,
+    "category": "Routing",
+    "question": "Lazy loading : loadComponent vs loadChildren — quand utiliser quoi ?",
+    "answer": "loadComponent : un seul composant standalone. loadChildren : feature entière avec sous-routes et providers scopés. Les deux génèrent un chunk JS séparé.",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 31,
+    "category": "Routing",
+    "question": "Qu'est-ce que l'hydratation et comment Angular SSR la gère-t-il ?",
+    "answer": "SSR génère le HTML. L'hydratation = Angular prend le contrôle sans reconstruire le DOM (non-destructive, v16+). Évite le CLS, améliore le SEO.",
+    "difficulty": "hard",
+    "version": "v17"
+  },
+  {
+    "id": 32,
+    "category": "Performance",
+    "question": "OnPush Change Detection : comment ça marche et quand l'utiliser ?",
+    "answer": "Vérifie uniquement si : référence @Input change, événement DOM, Signal/async pipe émet, ou markForCheck() explicite. Piège : muter un objet Input sans changer sa référence.",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 33,
+    "category": "Performance",
+    "question": "Quelles sont les principales optimisations de performance Angular ?",
+    "answer": "Bundle : lazy loading + @defer. Runtime : OnPush/Signals, track dans @for, takeUntilDestroyed(). Images : NgOptimizedImage.",
+    "difficulty": "hard",
+    "version": "v16+"
+  },
+  {
+    "id": 34,
+    "category": "Performance",
+    "question": "Qu'est-ce que le build Vite/esbuild d'Angular 17+ ? En quoi est-ce différent ?",
+    "answer": "Remplace Webpack. Build 2-3x plus rapide, HMR instantané. Activé par défaut via le builder @angular-devkit/build-angular:application.",
+    "difficulty": "easy",
+    "version": "v17"
+  },
+  {
+    "id": 35,
+    "category": "Pièges & Classiques",
+    "question": "Quelle est la différence entre un pipe pure et un pipe impure ?",
+    "answer": "Pure (défaut) : appelé uniquement si la référence change, mémoïsé. Impure (pure: false) : appelé à chaque CD, coûteux. Préférer immutabilité + pipe pure.",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 36,
+    "category": "Pièges & Classiques",
+    "question": "Pourquoi track est-il obligatoire dans @for ? Que se passe-t-il sans ?",
+    "answer": "track identifie chaque élément pour réutiliser les nœuds DOM. Sans track : tout est recréé à chaque re-render (perfs dégradées, état des enfants perdu).",
+    "difficulty": "easy",
+    "version": "v17"
+  },
+  {
+    "id": 37,
+    "category": "Pièges & Classiques",
+    "question": "Quand utiliser RxJS vs Signals ?",
+    "answer": "Signals : état UI synchrone, réactivité template. RxJS : flux async complexes (debounce, combineLatest, switchMap, retry). Convertir avec toSignal() / toObservable().",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 38,
+    "category": "Pièges & Classiques",
+    "question": "Qu'est-ce qu'un memory leak en Angular et comment l'éviter ?",
+    "answer": "Observable manuellement souscrit mais jamais unsubscribed après destruction. Solutions : AsyncPipe, takeUntilDestroyed() (v16+), toSignal().",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 39,
+    "category": "Pièges & Classiques",
+    "question": "Quelle est la différence entre viewProviders et providers dans un composant ?",
+    "answer": "providers : accessible aussi au contenu projeté (ng-content). viewProviders : uniquement dans le template propre du composant, pas au contenu projeté.",
+    "difficulty": "hard",
+    "version": "v16+"
   }
 ]

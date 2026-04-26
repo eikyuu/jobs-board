@@ -11,15 +11,14 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, HeaderComponent, SidebarComponent],
-  styleUrl: './shell.component.scss',
   template: `
-    <div class="shell">
+    <div class="flex flex-col h-screen overflow-hidden">
       <app-header (menuToggled)="toggleSidebar()" />
 
-      <div class="shell__body">
+      <div class="flex flex-1 overflow-hidden">
         <app-sidebar [collapsed]="sidebarCollapsed()" />
 
-        <main class="shell__main" id="main-content" tabindex="-1">
+        <main class="flex-1 overflow-y-auto p-[var(--space-6)] bg-[var(--color-surface-ground)] [scrollbar-width:thin] focus:outline-none" id="main-content" tabindex="-1">
           <router-outlet />
         </main>
       </div>

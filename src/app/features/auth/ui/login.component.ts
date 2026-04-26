@@ -11,6 +11,7 @@ import { PasswordModule } from 'primeng/password';
 import { CardModule } from 'primeng/card';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { Button } from "primeng/button";
 
 /**
  * Login page component.
@@ -20,7 +21,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 @Component({
   selector: 'app-login',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, CardModule, ButtonComponent],
+  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, CardModule, ButtonComponent, Button],
   styleUrl: './login.component.scss',
   template: `
     <div class="login-page" role="main">
@@ -90,17 +91,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
                 </span>
               }
             </div>
-
-            <app-button
-              type="submit"
-              variant="primary"
-              [block]="true"
-              [loading]="isLoading()"
-              [disabled]="form.invalid"
-              ariaLabel="Sign in"
-            >
-              Sign in
-            </app-button>
+            <p-button type="submit" label="Sign in" [loading]="isLoading()" aria-label="Sign in" [disabled]="form.invalid" />
           </form>
         </ng-template>
       </p-card>

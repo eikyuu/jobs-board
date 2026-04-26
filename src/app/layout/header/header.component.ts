@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, inject, output } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { ButtonComponent } from '../../shared/components/button/button.component';
+import { Button } from "primeng/button";
 
 /**
  * Top-level application header.
@@ -10,7 +11,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonComponent],
+  imports: [RouterLink, ButtonComponent, Button],
   styleUrl: './header.component.scss',
   template: `
     <header class="header" role="banner">
@@ -37,14 +38,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
         @if (user()) {
           <div class="header__user">
             <span class="header__user-name" aria-hidden="true">{{ user()?.name }}</span>
-            <app-button
-              variant="ghost"
-              size="sm"
-              ariaLabel="Log out"
-              (clicked)="logout()"
-            >
-              Log out
-            </app-button>
+            <p-button label="Log out" (click)="logout()" aria-label="Log out" severity="secondary" />
           </div>
         }
       </nav>

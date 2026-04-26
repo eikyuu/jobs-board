@@ -33,9 +33,7 @@ const STATUS_SEVERITY: Record<ActivityRow['status'], TagSeverity> = {
           <h1 class="dashboard__title">Dashboard</h1>
           <p class="dashboard__subtitle">Welcome back. Here's what's happening today.</p>
         </div>
-        <app-button variant="secondary" size="sm" (clicked)="reload()">
-          Refresh
-        </app-button>
+        <p-button label="Refresh" (click)="reload()" />
       </header>
 
       @if (state.isLoading()) {
@@ -48,7 +46,7 @@ const STATUS_SEVERITY: Record<ActivityRow['status'], TagSeverity> = {
       @if (state.hasError()) {
         <div class="dashboard__error" role="alert">
           <p>{{ state.error() }}</p>
-          <app-button variant="secondary" size="sm" (clicked)="reload()">Try again</app-button>
+          <p-button severity="secondary" label="Try again" (click)="reload()" />
         </div>
       }
 

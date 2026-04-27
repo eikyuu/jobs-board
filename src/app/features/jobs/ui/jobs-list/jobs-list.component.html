@@ -64,6 +64,10 @@
       <ng-template pTemplate="body" let-job>
         <tr>
           <td>
+
+            @if (isOldApplication(job.appliedAt)) {
+            <p-badge severity="warn" value="Relance" />
+            }
             @if (job.url) {
               <a [href]="job.url" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
                 {{ job.title }}

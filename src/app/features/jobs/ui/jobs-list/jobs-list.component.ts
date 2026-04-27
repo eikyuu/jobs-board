@@ -9,11 +9,12 @@ import { Job, JobStatus } from '../../models/job.model';
 import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
 import { MessageService } from 'primeng/api'
 import { environment } from '../../../../../environments/environment';
+import { Badge } from "primeng/badge";
 
 @Component({
   selector: 'app-jobs-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterLink, TableModule, TagModule, ButtonModule],
+  imports: [DatePipe, RouterLink, TableModule, TagModule, ButtonModule, Badge],
   styleUrl: './jobs-list.component.scss',
   templateUrl: './jobs-list.component.html',
 })
@@ -66,5 +67,14 @@ export class JobsListComponent implements OnInit {
   protected exportToPdf(): void {
     const url = `${environment.apiUrl}/jobs/export/pdf`;
     this.document.defaultView?.open(url, '_blank');
+  }
+
+  protected isOldApplication(appliedAt: string): boolean {
+    if (!appliedAt) return false;
+    const appliedDate = new Date(appliedAt);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - appliedDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 15;
   }
 }

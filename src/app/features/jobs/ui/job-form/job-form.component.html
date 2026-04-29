@@ -167,6 +167,60 @@
     </div>
   </div>
 
+  <!-- Dates d'entretiens -->
+  <div class="flex flex-col gap-3">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium">Entretiens (optionnel)</span>
+      <p-button
+        type="button"
+        label="Ajouter un entretien"
+        icon="pi pi-plus"
+        severity="secondary"
+        size="small"
+        (onClick)="addInterview()"
+      />
+    </div>
+
+    @for (entry of interviews(); track $index) {
+      <div class="flex flex-col gap-1">
+        <div class="grid grid-cols-[1fr_1fr_auto] gap-3 items-center">
+          <p-datepicker
+            name="interviewDate{{$index}}"
+            [ngModel]="entry.date"
+            (ngModelChange)="updateInterviewDate($index, $event)"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            [showClear]="true"
+            placeholder="jj/mm/aaaa"
+            [attr.aria-label]="'Date de l\'entretien ' + ($index + 1)"
+          />
+          <p-select
+            name="interviewType{{$index}}"
+            [ngModel]="entry.type"
+            (ngModelChange)="updateInterviewType($index, $event)"
+            [options]="interviewTypeOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Type *"
+            [class.p-invalid]="hasInterviewError(entry)"
+            [attr.aria-label]="'Type de l\'entretien ' + ($index + 1)"
+          />
+          <p-button
+            type="button"
+            icon="pi pi-trash"
+            severity="danger"
+            [text]="true"
+            [attr.aria-label]="'Supprimer l\'entretien ' + ($index + 1)"
+            (onClick)="removeInterview($index)"
+          />
+        </div>
+        @if (hasInterviewError(entry)) {
+          <small class="text-red-500" role="alert">Le type est obligatoire quand une date est saisie.</small>
+        }
+      </div>
+    }
+  </div>
+
   <!-- Salaire -->
   <fieldset class="border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
     <legend class="text-sm font-medium px-1">Salaire (optionnel)</legend>

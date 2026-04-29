@@ -4,6 +4,8 @@ import {
   input,
   output,
   linkedSignal,
+  computed,
+  signal,
 } from '@angular/core';
 import {
   form,
@@ -13,14 +15,15 @@ import {
   minLength,
   submit,
 } from '@angular/forms/signals';
+import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
-import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS } from '../../constants/job-status.const';
-import { Job, JobFormModel, ValidJobFormModel } from '../../models/job.model';
+import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS, INTERVIEW_TYPE_OPTIONS } from '../../constants/job-status.const';
+import { Job, JobFormModel, ValidJobFormModel, InterviewFormEntry, InterviewType } from '../../models/job.model';
 import { toLocalDateString } from '../../../../shared/utils/date.utils';
 
 export const DEFAULT_JOB_FORM: JobFormModel = {
@@ -36,6 +39,7 @@ export const DEFAULT_JOB_FORM: JobFormModel = {
   salaryMax: null,
   salaryCurrency: 'EUR',
   notes: '',
+  interviews: [],
 };
 
 export function jobToFormModel(job: Job): JobFormModel {
@@ -52,6 +56,10 @@ export function jobToFormModel(job: Job): JobFormModel {
     salaryMax: job.salary?.max ?? null,
     salaryCurrency: job.salary?.currency ?? 'EUR',
     notes: job.notes ?? '',
+    interviews: job.interviews.map((i) => ({
+      date: new Date(i.date),
+      type: i.type ?? null,
+    })),
   };
 }
 
@@ -73,7 +81,9 @@ export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
     notes: value.notes.trim() || undefined,
     tags: [],
     contacts: [],
-    interviews: [],
+    interviews: (value.interviews ?? [])
+      .filter((e): e is { date: Date; type: InterviewType } => e.date !== null && e.type !== null)
+      .map((e) => ({ date: toLocalDateString(e.date), type: e.type })),
   };
 }
 
@@ -95,6 +105,7 @@ const JOB_SCHEMA = schema<JobFormModel>((f) => {
   selector: 'app-job-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FormsModule,
     FormField,
     SelectModule,
     InputTextModule,
@@ -114,16 +125,62 @@ export class JobFormComponent {
   readonly formSubmit = output<ValidJobFormModel>();
   readonly cancelled = output();
 
-  // linkedSignal : se réinitialise quand initialValue change (utile en mode édition)
   protected readonly model = linkedSignal(() => this.initialValue());
   protected readonly jobForm = form(this.model, JOB_SCHEMA);
 
   protected readonly remoteOptions = REMOTE_OPTIONS;
   protected readonly contractOptions = CONTRACT_OPTIONS;
   protected readonly statusOptions = STATUS_OPTIONS;
+  protected readonly interviewTypeOptions = INTERVIEW_TYPE_OPTIONS;
+
+  protected readonly interviews = computed(() => this.model().interviews);
+  protected readonly submitted = signal(false);
+
+  protected hasInterviewError(entry: InterviewFormEntry): boolean {
+    return this.submitted() && entry.date !== null && entry.type === null;
+  }
+
+  protected addInterview(): void {
+    this.model.update((m) => ({
+      ...m,
+      interviews: [...m.interviews, { date: null, type: null }],
+    }));
+  }
+
+  protected removeInterview(index: number): void {
+    this.model.update((m) => ({
+      ...m,
+      interviews: m.interviews.filter((_, i) => i !== index),
+    }));
+  }
+
+  protected updateInterviewDate(index: number, date: Date | null): void {
+    this.model.update((m) => ({
+      ...m,
+      interviews: m.interviews.map((entry, i) =>
+        i === index ? { ...entry, date } : entry
+      ),
+    }));
+  }
+
+  protected updateInterviewType(index: number, type: InterviewType | null): void {
+    this.model.update((m) => ({
+      ...m,
+      interviews: m.interviews.map((entry, i) =>
+        i === index ? { ...entry, type } : entry
+      ),
+    }));
+  }
 
   protected async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
+    this.submitted.set(true);
+
+    const hasIncompleteInterview = this.model().interviews.some(
+      (e) => e.date !== null && e.type === null
+    );
+    if (hasIncompleteInterview) return;
+
     await submit(this.jobForm, async () => {
       const value = this.model();
       if (!isValidJobForm(value)) return;

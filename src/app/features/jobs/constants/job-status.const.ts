@@ -1,4 +1,4 @@
-import { ContractType, JobStatus, RemoteType } from "../models/job.model";
+import { ContractType, InterviewType, JobStatus, RemoteType } from "../models/job.model";
 
 
 export type TagSeverity = 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast';
@@ -39,4 +39,11 @@ export const STATUS_OPTIONS: { label: string; value: JobStatus }[] = [
   { label: 'Entretien', value: 'interview' },
   { label: 'Offre', value: 'offer' },
   { label: 'Refus', value: 'rejected' },
+];
+
+export const INTERVIEW_TYPE_OPTIONS: { label: string; value: InterviewType }[] = [
+  { label: 'Téléphonique', value: 'phone' },
+  { label: 'Technique', value: 'technical' },
+  { label: 'RH', value: 'hr' },
+  { label: 'Final', value: 'finalInterview' },
 ];

@@ -59,7 +59,6 @@ export class JobEditComponent implements OnInit {
         id: job.id,
         tags: job.tags,
         contacts: job.contacts,
-        interviews: job.interviews,
       });
       this.messageService.add({
         severity: 'success',

@@ -4,7 +4,7 @@ export type RemoteType = 'onsite' | 'hybrid' | 'full';
 
 export type ContractType = 'CDI' | 'CDD' | 'Freelance' | 'Stage' | 'Alternance';
 
-export type InterviewType = 'phone' | 'technical' | 'final' | 'hr';
+export type InterviewType = 'phone' | 'technical' | 'finalInterview' | 'hr';
 
 export interface Salary {
   min: number;
@@ -22,7 +22,7 @@ export interface Contact {
 
 export interface Interview {
   date: string;
-  type: InterviewType;
+  type?: InterviewType;
   notes?: string;
 }
 
@@ -46,6 +46,11 @@ export interface Job {
 }
 
 
+export interface InterviewFormEntry {
+  date: Date | null;
+  type: InterviewType | null;
+}
+
 export interface JobFormModel {
   title: string;
   company: string;
@@ -59,6 +64,7 @@ export interface JobFormModel {
   salaryMax: number | null;
   salaryCurrency: string;
   notes: string;
+  interviews: InterviewFormEntry[];
 }
 
 export interface ValidJobFormModel extends JobFormModel {

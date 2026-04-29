@@ -1,14 +1,29 @@
 <div class="p-8">
-  <header class="flex items-center justify-between mb-6">
-    <div>
-      <h1 class="text-2xl font-semibold m-0 mb-1">Mes candidatures</h1>
-      <p class="text-sm text-gray-500 m-0">{{ state.applied().length }} offre(s) où vous avez postulé</p>
+  <header class="mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-semibold m-0 mb-1">Mes candidatures</h1>
+        <p class="text-sm text-gray-500 m-0">
+          {{ filteredJobs().length }} / {{ state.applied().length }} offre(s) affichée(s)
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <p-button label="Nouvelle candidature" icon="pi pi-plus" routerLink="/jobs/new" />
+        <p-button label="Exporter en PDF" icon="pi pi-file-pdf" (onClick)="exportToPdf()" />
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <p-button label="Nouvelle candidature" icon="pi pi-plus" routerLink="/jobs/new" />
-      <p-button label="Exporter en PDF" icon="pi pi-file-pdf" (onClick)="exportToPdf()" />
-    </div>
-
+    <p-iconfield>
+      <p-inputicon class="pi pi-search" />
+      <input
+        pInputText
+        type="search"
+        placeholder="Rechercher par poste, entreprise ou lieu…"
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)"
+        aria-label="Rechercher une candidature"
+        class="w-full"
+      />
+    </p-iconfield>
   </header>
 
   @if (state.loading()) {
@@ -26,13 +41,13 @@
 
   @if (!state.loading() && !state.hasError()) {
     <p-table
-      [value]="state.applied()"
+      [value]="filteredJobs()"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[5, 10, 25]"
       sortMode="multiple"
       [tableStyle]="{ 'min-width': '60rem' }"
-      styleClass="p-datatable-sm"
+      class="p-datatable-sm"
       aria-label="Liste des candidatures"
     >
       <ng-template pTemplate="header">

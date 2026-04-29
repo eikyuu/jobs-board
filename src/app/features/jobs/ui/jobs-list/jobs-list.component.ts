@@ -1,9 +1,12 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, DOCUMENT } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, DOCUMENT, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { JobsState } from '../../data-access/jobs.state';
 import { Job, JobStatus } from '../../models/job.model';
 import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
@@ -14,7 +17,7 @@ import { Badge } from "primeng/badge";
 @Component({
   selector: 'app-jobs-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterLink, TableModule, TagModule, ButtonModule, Badge],
+  imports: [DatePipe, RouterLink, TableModule, TagModule, ButtonModule, Badge, InputTextModule, IconFieldModule, InputIconModule],
   styleUrl: './jobs-list.component.scss',
   templateUrl: './jobs-list.component.html',
 })
@@ -22,6 +25,18 @@ export class JobsListComponent implements OnInit {
   private readonly document = inject(DOCUMENT);
   private readonly messageService = inject(MessageService)
   protected readonly state = inject(JobsState);
+
+  protected readonly searchQuery = signal('');
+
+  protected readonly filteredJobs = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    if (!query) return this.state.applied();
+    return this.state.applied().filter(job =>
+      job.title.toLowerCase().includes(query) ||
+      job.company.toLowerCase().includes(query) ||
+      job.location.toLowerCase().includes(query)
+    );
+  });
 
   ngOnInit(): void {
     this.state.load();

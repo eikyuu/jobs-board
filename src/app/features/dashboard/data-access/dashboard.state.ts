@@ -1,6 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { DashboardService, StatCard, ActivityRow } from './dashboard.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 

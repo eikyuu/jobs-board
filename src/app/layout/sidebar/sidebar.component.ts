@@ -87,6 +87,7 @@ export class SidebarComponent {
 
   protected readonly navItems = NAV_ITEMS;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected isActive(_path: string): boolean {
     // routerLinkActive handles this; used only for aria-current
     return false;

@@ -186,13 +186,14 @@
         <div class="grid grid-cols-[1fr_1fr_auto] gap-3 items-center">
           <p-datepicker
             name="interviewDate{{$index}}"
-            [ngModel]="entry.date"
+            [ngModel]="entry.scheduledAt"
             (ngModelChange)="updateInterviewDate($index, $event)"
-            dateFormat="dd/mm/yy"
             [showIcon]="true"
             [showClear]="true"
-            placeholder="jj/mm/aaaa"
+            placeholder="jj/mm/aaaa hh:mm"
             [attr.aria-label]="'Date de l\'entretien ' + ($index + 1)"
+            [showTime]="true"
+            hourFormat="24"
           />
           <p-select
             name="interviewType{{$index}}"

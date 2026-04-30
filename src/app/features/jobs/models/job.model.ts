@@ -21,7 +21,7 @@ export interface Contact {
 }
 
 export interface Interview {
-  date: string;
+  scheduledAt: string;
   type?: InterviewType;
   notes?: string;
 }
@@ -47,7 +47,7 @@ export interface Job {
 
 
 export interface InterviewFormEntry {
-  date: Date | null;
+  scheduledAt: Date | null;
   type: InterviewType | null;
 }
 

@@ -24,7 +24,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
 import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS, INTERVIEW_TYPE_OPTIONS } from '../../constants/job-status.const';
 import { Job, JobFormModel, ValidJobFormModel, InterviewFormEntry, InterviewType } from '../../models/job.model';
-import { toLocalDateString } from '../../../../shared/utils/date.utils';
+import { toLocalDateString, toLocalDateTimeString } from '../../../../shared/utils/date.utils';
 
 export const DEFAULT_JOB_FORM: JobFormModel = {
   title: '',
@@ -57,13 +57,14 @@ export function jobToFormModel(job: Job): JobFormModel {
     salaryCurrency: job.salary?.currency ?? 'EUR',
     notes: job.notes ?? '',
     interviews: job.interviews.map((i) => ({
-      date: new Date(i.date),
+      scheduledAt: new Date(i.scheduledAt),
       type: i.type ?? null,
     })),
   };
 }
 
 export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
+  console.log('Mapping form to job with value:', value);
   return {
     title: value.title,
     company: value.company,
@@ -82,8 +83,11 @@ export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
     tags: [],
     contacts: [],
     interviews: (value.interviews ?? [])
-      .filter((e): e is { date: Date; type: InterviewType } => e.date !== null && e.type !== null)
-      .map((e) => ({ date: toLocalDateString(e.date), type: e.type })),
+      .filter((e): e is { scheduledAt: Date; type: InterviewType } => e.scheduledAt !== null && e.type !== null)
+      .map((e) => ({
+        scheduledAt: toLocalDateTimeString(e.scheduledAt),
+        type: e.type,
+      })),
   };
 }
 
@@ -137,13 +141,13 @@ export class JobFormComponent {
   protected readonly submitted = signal(false);
 
   protected hasInterviewError(entry: InterviewFormEntry): boolean {
-    return this.submitted() && entry.date !== null && entry.type === null;
+    return this.submitted() && entry.scheduledAt !== null && entry.type === null;
   }
 
   protected addInterview(): void {
     this.model.update((m) => ({
       ...m,
-      interviews: [...m.interviews, { date: null, type: null }],
+      interviews: [...m.interviews, { scheduledAt: null, type: null }],
     }));
   }
 
@@ -158,7 +162,7 @@ export class JobFormComponent {
     this.model.update((m) => ({
       ...m,
       interviews: m.interviews.map((entry, i) =>
-        i === index ? { ...entry, date } : entry
+        i === index ? { ...entry, scheduledAt: date } : entry
       ),
     }));
   }
@@ -177,7 +181,7 @@ export class JobFormComponent {
     this.submitted.set(true);
 
     const hasIncompleteInterview = this.model().interviews.some(
-      (e) => e.date !== null && e.type === null
+      (e) => e.scheduledAt !== null && e.type === null
     );
     if (hasIncompleteInterview) return;
 

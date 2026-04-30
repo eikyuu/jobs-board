@@ -106,7 +106,7 @@
   },
   {
     "id": 16,
-    "category": "Chronologie",
+    "category": "Angular",
     "question": "Quelle est la grande différence entre Angular ≤15 et Angular 16+ ?",
     "answer": "Angular 16 introduit les Signals : réactivité granulaire sans Zone.js. Avant : Zone.js monkey-patche les APIs async et déclenche la CD sur tout l'arbre.",
     "difficulty": "easy",
@@ -295,5 +295,362 @@
     "answer": "providers : accessible aussi au contenu projeté (ng-content). viewProviders : uniquement dans le template propre du composant, pas au contenu projeté.",
     "difficulty": "hard",
     "version": "v16+"
+  },
+  {
+    "id": 40,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que les principes SOLID et pourquoi sont-ils importants ?",
+    "answer": "5 principes de conception OOP : S = Single Responsibility, O = Open/Closed, L = Liskov Substitution, I = Interface Segregation, D = Dependency Inversion. Objectif : code maintenable, testable et extensible sans craindre les effets de bord.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 41,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le principe SRP (Single Responsibility) ? Donner un exemple Angular.",
+    "answer": "Une classe/fonction = une seule raison de changer. En Angular : UserService gère les utilisateurs, AuthService gère l'authentification — on ne mélange pas. Résultat : chaque service est testable isolément.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 42,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le principe OCP (Open/Closed) ? Comment l'appliquer en pratique ?",
+    "answer": "Ouvert à l'extension, fermé à la modification. On ajoute des comportements sans toucher au code existant. En pratique : abstractions (interfaces, classes abstraites), injection de dépendances, composition plutôt qu'héritage.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 43,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le principe DIP (Dependency Inversion) et comment Angular l'applique-t-il ?",
+    "answer": "Les modules de haut niveau ne dépendent pas des modules de bas niveau : tous deux dépendent d'abstractions. Angular l'applique nativement via son système DI — on injecte une interface/token, pas une classe concrète. Facilite les mocks en tests.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 44,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Observer ? Comment se manifeste-t-il en Angular ?",
+    "answer": "Un sujet notifie automatiquement ses observateurs quand son état change. En Angular : RxJS Subjects (BehaviorSubject), EventEmitter, et les Signals jouent ce rôle. Le producteur et le consommateur sont découplés — l'un ne connaît pas l'autre.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 45,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Strategy ? Donner un exemple concret en JS.",
+    "answer": "Définit une famille d'algorithmes interchangeables encapsulés séparément. Ex : une fonction sortItems(items, strategy) reçoit en paramètre la stratégie de tri (par date, par nom, par priorité) plutôt qu'un switch/case. Très naturel en JS grâce aux fonctions de première classe.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 46,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Facade ? Pourquoi l'utiliser dans une app Angular ?",
+    "answer": "Expose une interface simplifiée devant un sous-système complexe. En Angular : un service Facade orchestre plusieurs services métier (UserService, OrderService, NotifService) et expose une API claire aux composants. Le composant n'appelle que la façade — pas les services internes.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 47,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Pattern Repository ? Quel problème résout-il ?",
+    "answer": "Couche d'abstraction entre la logique métier et la source de données (API HTTP, localStorage, BDD). Ex : UserRepository expose findById(), save(), delete() — le service métier ne sait pas si la donnée vient d'un HTTP GET ou d'un cache. Facilite les tests (on mock le repo) et le changement de source de données.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 48,
+    "category": "Architecture & Patterns",
+    "question": "Quelle est la différence entre MVC et MVVM ? Dans quelle architecture Angular s'inscrit-il ?",
+    "answer": "MVC : Model-View-Controller (le Controller contient la logique). MVVM : Model-View-ViewModel (le ViewModel expose l'état et les commandes, lié à la View par data binding). Angular = MVVM : le composant TypeScript est le ViewModel, le template HTML est la View, les services sont le Model.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 49,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que la Clean Architecture ? Quelle est sa règle fondamentale ?",
+    "answer": "Architecture en couches concentriques : Entities (règles métier) → Use Cases → Adapters (controllers, presenters) → Infrastructure (HTTP, BDD, UI). Règle unique : les dépendances ne pointent que vers l'intérieur. Le cœur métier n'importe rien du framework — testable sans Angular, sans HTTP, sans BDD.",
+    "difficulty": "hard"
+  },
+  {
+    "id": 50,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Singleton ? Quand Angular crée-t-il un singleton automatiquement ?",
+    "answer": "Une seule instance de la classe pour toute l'app. En Angular : tout service avec providedIn: 'root' est un singleton — l'injecteur root crée l'instance une fois et la partage partout. Attention : un service fourni dans providers: [] d'un composant crée une instance par composant.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 51,
+    "category": "Java & Spring Boot",
+    "question": "Qu'est-ce que l'IoC (Inversion of Control) et comment Spring la met-il en œuvre ?",
+    "answer": "L'IoC inverse le contrôle : ce n'est plus le code qui crée ses dépendances, c'est le conteneur Spring qui les instancie et les injecte. Spring crée un ApplicationContext qui gère le cycle de vie des beans et résout les dépendances via @Autowired ou le constructeur.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 52,
+    "category": "Java & Spring Boot",
+    "question": "Quelle est la différence entre @Component, @Service, @Repository et @Controller ?",
+    "answer": "Tous sont des alias de @Component (détection automatique par le component scan). La différence est sémantique et fonctionnelle : @Repository active la traduction des exceptions JPA en DataAccessException. @Controller/@RestController intègrent la gestion des requêtes HTTP. @Service = couche métier, aucun comportement supplémentaire.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 53,
+    "category": "Java & Spring Boot",
+    "question": "Quels sont les scopes d'un Bean Spring ? Lequel est utilisé par défaut ?",
+    "answer": "Singleton (défaut) : une instance partagée. Prototype : nouvelle instance à chaque injection. Request/Session/Application : uniquement en contexte web (une instance par requête HTTP / session / application). Piège : injecter un bean Prototype dans un Singleton — le Prototype ne sera instancié qu'une fois.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 54,
+    "category": "Java & Spring Boot",
+    "question": "À quoi sert @Transactional ? Quels sont les pièges courants ?",
+    "answer": "@Transactional démarre une transaction avant la méthode et la commit ou rollback à la fin. Pièges : (1) appel interne dans la même classe → le proxy Spring est contourné, pas de transaction. (2) exceptions checked ne déclenchent pas de rollback par défaut (ajouter rollbackFor). (3) méthode private ignorée.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 55,
+    "category": "Java & Spring Boot",
+    "question": "Quelle est la différence entre @Controller et @RestController ?",
+    "answer": "@RestController = @Controller + @ResponseBody sur chaque méthode. Avec @Controller seul, la valeur retournée est résolue comme un nom de vue (Thymeleaf, JSP). Avec @RestController, la valeur est sérialisée directement en JSON/XML dans le corps de la réponse HTTP.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 56,
+    "category": "Java & Spring Boot",
+    "question": "Comment Spring Boot fonctionne-t-il avec l'auto-configuration ?",
+    "answer": "Spring Boot scanne le classpath et active automatiquement des configurations selon les dépendances présentes (ex : si H2 est dans le classpath → configure un DataSource en mémoire). Mécanisme : @EnableAutoConfiguration + fichiers META-INF/spring/AutoConfiguration.imports. On peut exclure une auto-config avec exclude = {...}.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 57,
+    "category": "Java & Spring Boot",
+    "question": "Quels types de Repository Spring Data JPA existent et que proposent-ils ?",
+    "answer": "Repository (marqueur), CrudRepository (save/findById/delete), PagingAndSortingRepository (+ pagination/tri), JpaRepository (+ flush/batch). On dérive le plus adapté. Les méthodes findByXxx sont auto-générées par le nom. @Query permet du JPQL ou SQL natif.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 58,
+    "category": "Java & Spring Boot",
+    "question": "Comment gérer les exceptions globalement dans Spring Boot ?",
+    "answer": "@ControllerAdvice (ou @RestControllerAdvice) + @ExceptionHandler centralisent la gestion des erreurs pour tous les controllers. On mappe chaque exception à un statut HTTP et un corps d'erreur structuré. Alternative : implémenter ResponseEntityExceptionHandler pour les exceptions Spring standard.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 59,
+    "category": "Java & Spring Boot",
+    "question": "À quoi servent les Profiles Spring ? Comment les activer ?",
+    "answer": "Séparent la configuration par environnement (dev, staging, prod). Fichiers : application-dev.yml, application-prod.yml. Activation : variable d'env SPRING_PROFILES_ACTIVE=prod, propriété spring.profiles.active, ou @ActiveProfiles dans les tests. Les beans peuvent être conditionnés avec @Profile('dev').",
+    "difficulty": "easy"
+  },
+  {
+    "id": 60,
+    "category": "Java & Spring Boot",
+    "question": "Qu'est-ce que le problème N+1 en JPA/Hibernate et comment le résoudre ?",
+    "answer": "Pour 1 requête qui charge N entités, JPA exécute N requêtes supplémentaires pour charger chaque association en LAZY. Solution : JOIN FETCH dans une @Query JPQL, ou @EntityGraph pour définir les associations à charger eagerly ponctuellement. Éviter FetchType.EAGER global qui charge tout en permanence.",
+    "difficulty": "hard"
+  },
+  {
+    "id": 61,
+    "category": "Web",
+    "question": "Quelle est la différence entre GET, POST, PUT, PATCH et DELETE ?",
+    "answer": "GET : lire (idempotent, cacheable, pas de body). POST : créer une ressource (non idempotent). PUT : remplacer entièrement (idempotent). PATCH : modifier partiellement (idempotent). DELETE : supprimer (idempotent). Idempotent = appeler N fois donne le même résultat qu'une seule fois.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 62,
+    "category": "Web",
+    "question": "Qu'est-ce qu'une API REST ? Quelles sont ses 3 contraintes principales ?",
+    "answer": "API qui expose des ressources via HTTP avec des URI claires et des verbes HTTP sémantiques. 3 contraintes clés : (1) Stateless — chaque requête est autonome, pas de session serveur. (2) Interface uniforme — URI + verbes HTTP + représentations JSON. (3) Cacheable — les réponses indiquent si elles peuvent être mises en cache.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 63,
+    "category": "Web",
+    "question": "Qu'est-ce que le CORS et comment fonctionne-t-il ?",
+    "answer": "Cross-Origin Resource Sharing : politique de sécurité du navigateur qui bloque les requêtes vers un domaine différent de la page. Le serveur répond avec Access-Control-Allow-Origin pour autoriser. Les requêtes 'non-simples' (PUT, DELETE, headers custom) déclenchent un preflight OPTIONS. La solution se configure côté serveur, jamais côté client.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 64,
+    "category": "Web",
+    "question": "Quelle est la différence entre cookie, localStorage et sessionStorage ?",
+    "answer": "Cookie : envoyé automatiquement dans chaque requête HTTP, durée configurable, peut être HttpOnly (inaccessible au JS → sécurisé pour les tokens). localStorage : persiste jusqu'à suppression manuelle, ~5MB, jamais envoyé au serveur. sessionStorage : effacé à la fermeture de l'onglet. Règle senior : tokens d'auth → cookie HttpOnly Secure. Préférences UI → localStorage.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 65,
+    "category": "Web",
+    "question": "Quelle est la différence entre SSR, CSR et SSG ? Quand choisir quoi ?",
+    "answer": "CSR (Client-Side Rendering) : le navigateur génère le HTML via JS — bon pour les apps interactives, mauvais SEO initial. SSR (Server-Side Rendering) : HTML généré à chaque requête côté serveur — bon SEO, temps de réponse variable. SSG (Static Site Generation) : HTML généré au build — ultra-rapide, idéal pour le contenu statique (blog, doc). Angular supporte SSR nativement depuis v17.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 66,
+    "category": "Web",
+    "question": "Qu'est-ce que le XSS (Cross-Site Scripting) et comment s'en protéger ?",
+    "answer": "Injection de scripts malveillants dans une page consultée par d'autres utilisateurs (vol de cookies, sessions, données). Types : Reflected (via URL), Stored (en BDD), DOM-based. Protection : ne jamais utiliser innerHTML avec des données utilisateur, encoder les sorties, Content Security Policy (CSP), cookies HttpOnly. Angular échappe automatiquement les interpolations {{ }}.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 67,
+    "category": "Web",
+    "question": "Qu'est-ce que les Core Web Vitals ? Quels sont les 3 indicateurs clés ?",
+    "answer": "Métriques Google de qualité UX, intégrées au classement SEO. LCP (Largest Contentful Paint) : temps d'affichage du plus grand élément visible — cible < 2,5s. INP (Interaction to Next Paint) : réactivité aux clics/touches — cible < 200ms. CLS (Cumulative Layout Shift) : stabilité visuelle, éviter que le contenu 'saute' — cible < 0,1.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 68,
+    "category": "Web",
+    "question": "Quelle est la différence entre Flexbox et CSS Grid ? Quand utiliser l'un ou l'autre ?",
+    "answer": "Flexbox = 1 dimension : aligner des éléments sur un axe (ligne OU colonne). Idéal pour les composants internes, nav bars, boutons groupés. Grid = 2 dimensions : placer des éléments en lignes ET colonnes simultanément. Idéal pour la mise en page globale d'une page. Les deux sont complémentaires et souvent combinés.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 69,
+    "category": "Web",
+    "question": "Qu'est-ce que le Critical Rendering Path et comment l'optimiser ?",
+    "answer": "Séquence que le navigateur suit pour afficher une page : Parse HTML → construire DOM + CSSOM → Render Tree → Layout → Paint. Le CSS bloque le rendu (render-blocking). Le JS bloque le parsing HTML (sauf async/defer). Optimisations : CSS critique inline, defer/async les scripts, lazy-load les images hors viewport, minification/compression.",
+    "difficulty": "hard"
+  },
+  {
+    "id": 70,
+    "category": "Web",
+    "question": "Quelles sont les principales différences entre HTTP/1.1 et HTTP/2 ?",
+    "answer": "HTTP/2 : multiplexage (plusieurs requêtes en parallèle sur une seule connexion TCP), compression des headers (HPACK), Server Push, protocole binaire. HTTP/1.1 : une requête bloquante à la fois par connexion → les dev utilisaient des workarounds (sprites CSS, bundling, domain sharding) devenus inutiles avec HTTP/2.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 71,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce qu'un LLM (Large Language Model) ? Comment fonctionne-t-il fondamentalement ?",
+    "answer": "Modèle de deep learning entraîné sur d'immenses corpus de texte pour prédire le token suivant, de manière probabiliste. Le modèle apprend des patterns linguistiques et factuels. Ex : GPT-4, Claude, Gemini, Llama. Les capacités émergentes (raisonnement, code) ne sont pas explicitement programmées mais apparaissent grâce à la taille du modèle et des données.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 72,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce qu'un token dans le contexte des LLMs ? Pourquoi est-ce important ?",
+    "answer": "Unité minimale de traitement du texte : ~1 token par mot en anglais, ~1,5-2 tokens en français. Importance : (1) la context window est limitée en tokens, (2) la facturation API est en tokens (input + output), (3) plus de tokens = plus lent et plus cher. Exemple : 'bonjour' = 1 token, 'développeur' peut en valoir 3.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 73,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce que le paramètre 'température' d'un LLM ? Quand l'augmenter ou la baisser ?",
+    "answer": "Contrôle l'aléatoire dans le choix des tokens générés. Température 0 = déterministe (toujours le token le plus probable, réponses reproductibles). Température élevée (0,8-1,2) = plus de variété et de créativité, mais moins de précision. Règle : basse pour du code/factuel, haute pour de la créativité/brainstorming.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 74,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce que le Prompt Engineering ? Quelles sont les 3 techniques les plus efficaces ?",
+    "answer": "L'art de formuler les instructions à un LLM pour maximiser la qualité des réponses. 3 techniques clés : (1) Few-shot — donner des exemples input/output dans le prompt. (2) Chain-of-Thought — demander 'pense étape par étape' pour des raisonnements complexes. (3) Role prompting — 'tu es un expert en X' contextualise le ton et le niveau de réponse.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 75,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce que le RAG (Retrieval-Augmented Generation) et quel problème résout-il ?",
+    "answer": "Technique qui enrichit le prompt avec des documents récupérés dynamiquement avant d'appeler le LLM. Résout : (1) la knowledge cutoff (données postérieures à l'entraînement), (2) les hallucinations sur des données privées/propriétaires. Pipeline : embed la question → chercher les passages similaires dans une vector DB → injecter dans le prompt → générer.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 76,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce qu'un embedding vectoriel ? À quoi sert-il concrètement ?",
+    "answer": "Représentation numérique d'un texte sous forme de vecteur de nombres flottants (ex : 1536 dimensions). Les textes sémantiquement proches ont des vecteurs proches (mesure par similarité cosinus). Utilisations : recherche sémantique, moteur RAG, clustering, recommandation. Un modèle d'embedding (ex : text-embedding-3-small) transforme n'importe quel texte en vecteur comparable.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 77,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce que le fine-tuning d'un LLM ? Quand l'utiliser plutôt que le prompting ?",
+    "answer": "Ré-entraînement partiel du modèle sur un dataset spécifique pour adapter son comportement, son style ou son domaine. Utiliser quand : format de sortie très spécifique et répétitif, style maison non reproductible par prompt, domaine très spécialisé. Mais coûteux en données et en compute — toujours essayer l'optimisation du prompt et le RAG en premier.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 78,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce que l'hallucination d'un LLM ? Comment la réduire ?",
+    "answer": "Le modèle génère des informations plausibles syntaxiquement mais factuellement incorrectes, avec assurance. Cause : optimisation sur la cohérence linguistique, pas sur la vérité factuelle. Réduction : RAG (ancrer la réponse dans des documents vérifiés), température basse, demander 'cite tes sources', prompt 'si tu ne sais pas, dis-le', vérification humaine sur les sujets critiques.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 79,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce qu'un Agent IA ? En quoi diffère-t-il d'un simple appel LLM ?",
+    "answer": "Système où le LLM peut utiliser des outils (functions/tools) et boucler sur ses propres sorties pour atteindre un objectif. Pattern ReAct : Reason (planifier) → Act (appeler un outil : web, code, API) → Observe → boucler. Un appel LLM simple est stateless et produit une réponse. Un agent itère, a de la mémoire et prend des décisions autonomes.",
+    "difficulty": "hard"
+  },
+  {
+    "id": 80,
+    "category": "Intelligence Artificielle",
+    "question": "Qu'est-ce que la context window d'un LLM et quelle est son importance pratique ?",
+    "answer": "Quantité maximale de tokens traités en une seule fois (prompt + réponse). Ex : Claude 3.5 Sonnet = 200k tokens (~150k mots). Plus elle est grande, plus on peut passer de documents longs. Limites : le modèle peut perdre des informations placées au milieu d'un très long contexte ('lost in the middle'). Chaque token de la fenêtre est facturé, même ceux du début.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 81,
+    "category": "Ressources Humaines",
+    "question": "Comment structurer sa réponse à 'Parlez-moi de vous' en entretien ?",
+    "answer": "Structure en 3 temps (2-3 min max) : (1) Formation et démarrage de carrière (bref). (2) Expériences clés et compétences acquises, reliées au poste visé. (3) Situation actuelle et pourquoi ce poste maintenant. Conseil senior : adapter le récit aux besoins lus dans la fiche de poste. Ne pas réciter le CV — raconter une trajectoire cohérente avec une direction claire.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 82,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre à 'Quels sont vos points forts ?' de façon convaincante ?",
+    "answer": "Citer 2-3 points forts directement liés au poste (pas de qualités génériques). Structure : nommer la qualité + illustrer avec un exemple concret (méthode STAR). Exemples tech : rigueur sur la qualité du code (tests, revues), capacité à monter en compétence rapidement, communication entre technique et non-technique. Éviter 'je suis perfectionniste' sans exemple.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 83,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre honnêtement à 'Quels sont vos points faibles ?' sans se piéger ?",
+    "answer": "Citer un vrai axe d'amélioration (pas un faux défaut comme 'je travaille trop'). Structure : nommer le défaut réel → actions concrètes déjà prises → progrès mesurable. Ex : 'J'avais du mal à déléguer, j'ai appris à structurer le suivi et faire confiance à l'équipe.' Le recruteur cherche l'auto-critique et la capacité d'apprentissage, pas la perfection.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 84,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre à 'Quelle est votre prétention salariale ?' et comment négocier ?",
+    "answer": "Se préparer : rechercher les fourchettes du marché (LinkedIn Salary, Glassdoor, conventions collectives, réseau). Donner une fourchette cohérente avec son expérience, légèrement haute (marge de négociation). Si possible, laisser parler l'entreprise en premier. Ne jamais sous-estimer (difficile de remonter). Distinguer fixe, variable, avantages (RTT, remote, formation).",
+    "difficulty": "medium"
+  },
+  {
+    "id": 85,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre à 'Pourquoi voulez-vous rejoindre notre entreprise ?' de façon percutante ?",
+    "answer": "Montrer qu'on a fait ses recherches : produit/mission, stack technique, actualité récente, culture d'équipe. Structure : (1) Ce qui attire spécifiquement dans l'entreprise. (2) Ce que ce poste apporte à sa trajectoire. (3) Ce qu'on peut apporter à l'équipe. Éviter les réponses génériques ('bonne réputation', 'entreprise innovante') — être précis et sincère.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 86,
+    "category": "Ressources Humaines",
+    "question": "Qu'est-ce que la méthode STAR et quand l'utiliser en entretien ?",
+    "answer": "Framework pour répondre aux questions comportementales : Situation (contexte précis), Tâche (ton rôle et l'objectif), Action (ce que TU as fait — pas 'nous'), Résultat (impact mesurable : délai, %, satisfaction). Utiliser pour : 'Décrivez un conflit', 'Parlez d'un échec', 'Votre plus grande réussite'. Le recruteur cherche des faits concrets, pas des généralités.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 87,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre à 'Où vous voyez-vous dans 5 ans ?' sans paraître opportuniste ?",
+    "answer": "Montrer une ambition réaliste et alignée avec ce que l'entreprise peut offrir. Ne pas dire 'à votre poste' (maladroit) ni 'je ne sais pas' (manque de projection). Exemples : 'Devenir tech lead ou expert sur ce domaine', 'Avoir eu l'occasion de travailler sur des projets à fort impact utilisateur'. Relier à la trajectoire d'évolution visible dans l'entreprise.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 88,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre à 'Comment gérez-vous un conflit avec un collègue ?' ?",
+    "answer": "Utiliser la méthode STAR avec un exemple réel. Points clés attendus : dialogue direct et bienveillant (pas d'évitement), écoute active, recherche d'une solution commune centrée sur l'objectif partagé, escalade hiérarchique en dernier recours. Éviter : blâmer l'autre entièrement, dire 'je n'ai jamais eu de conflit' (non-crédible), rester vague et théorique.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 89,
+    "category": "Ressources Humaines",
+    "question": "Quelles questions pertinentes poser à la fin d'un entretien technique ?",
+    "answer": "Toujours préparer 3-4 questions — c'est un signal d'intérêt et de sérieux. Bonnes questions : stack technique et choix architecturaux actuels, pratiques d'équipe (code review, tests, CI/CD, méthodo), défis techniques actuels du projet, opportunités d'évolution et de montée en compétence, culture d'équipe et onboarding. Éviter : congés, avantages, salaire (si non abordé) à ce stade.",
+    "difficulty": "easy"
+  },
+  {
+    "id": 90,
+    "category": "Ressources Humaines",
+    "question": "Comment répondre à 'Parlez-moi d'un échec professionnel' sans se disqualifier ?",
+    "answer": "Le recruteur cherche : honnêteté, prise de responsabilité, capacité d'apprentissage. Structure STAR : décrire l'échec clairement sans minimiser, expliquer ta part de responsabilité (pas celle des autres), les leçons concrètes tirées, ce que tu ferais différemment. Éviter : un 'échec' où tu es en réalité le héros, blâmer les circonstances ou les collègues, choisir un échec trop anodin.",
+    "difficulty": "medium"
   }
 ]

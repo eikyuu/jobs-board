@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, model } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
 
 interface NavItem {
   label: string;
@@ -36,27 +38,26 @@ const NAV_ITEMS: NavItem[] = [
 @Component({
   selector: 'app-sidebar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive],
-  styleUrl: './sidebar.component.scss',
+  imports: [RouterLink, RouterLinkActive, DrawerModule, ButtonModule],
   template: `
-    <aside
-      class="sidebar"
-      [class.sidebar--collapsed]="collapsed()"
+  <div>
+    <p-drawer
       aria-label="Main navigation"
+      [(visible)]="visible"
     >
       <nav>
-        <ul class="sidebar__nav" role="list">
+        <ul role="list" class="flex flex-col gap-1 p-2">
           @for (item of navItems; track item.path) {
             <li>
               <a
                 [routerLink]="item.path"
-                routerLinkActive="sidebar__link--active"
+                routerLinkActive="!bg-indigo-50 !text-indigo-700"
                 [attr.aria-label]="item.ariaLabel"
                 [attr.aria-current]="isActive(item.path) ? 'page' : null"
-                class="sidebar__link"
+                class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all duration-150"
               >
                 <svg
-                  class="sidebar__icon"
+                  class="shrink-0"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -70,20 +71,22 @@ const NAV_ITEMS: NavItem[] = [
                   <path [attr.d]="item.icon" />
                 </svg>
 
-                @if (!collapsed()) {
-                  <span class="sidebar__label">{{ item.label }}</span>
+                @if (visible()) {
+                  <span class="truncate">{{ item.label }}</span>
                 }
               </a>
             </li>
           }
         </ul>
       </nav>
-    </aside>
+    </p-drawer>
+  </div>
+
   `,
 })
 export class SidebarComponent {
-  /** When true, only icons are shown */
-  readonly collapsed = input(false);
+
+  visible = model(false);
 
   protected readonly navItems = NAV_ITEMS;
 

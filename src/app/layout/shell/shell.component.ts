@@ -16,7 +16,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
       <app-header (menuToggled)="toggleSidebar()" />
 
       <div class="flex flex-1 overflow-hidden">
-        <app-sidebar [collapsed]="sidebarCollapsed()" />
+        <app-sidebar [(visible)]="open" />
 
         <main class="flex-1 overflow-y-auto p-[var(--space-6)] bg-[var(--color-surface-ground)] [scrollbar-width:thin] focus:outline-none" id="main-content" tabindex="-1">
           <router-outlet />
@@ -26,9 +26,9 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   `,
 })
 export class ShellComponent {
-  protected readonly sidebarCollapsed = signal(false);
+  protected open = signal(false);
 
   protected toggleSidebar(): void {
-    this.sidebarCollapsed.update((v) => !v);
+    this.open.update((v) => !v);
   }
 }

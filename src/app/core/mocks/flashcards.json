@@ -3,112 +3,112 @@
     "id": 1,
     "category": "Angular",
     "question": "Qu'est-ce qu'un Signal en Angular et quel est son avantage principal ?",
-    "answer": "Valeur réactive (signal()) qui notifie automatiquement ses dépendants. Avantage : mise à jour granulaire — seuls les consommateurs qui lisent ce signal sont re-rendus.",
+    "answer": "<strong>Signal</strong> = valeur réactive qui notifie automatiquement ses dépendants.<br><br><strong>Avantage :</strong> re-rendu <strong>granulaire</strong> — seuls les composants qui lisent ce signal sont mis à jour, pas tout l'arbre.",
     "difficulty": "easy"
   },
   {
     "id": 2,
     "category": "Angular",
     "question": "Quelle est la différence entre signal(), computed() et effect() ?",
-    "answer": "signal() = état writable. computed() = valeur dérivée read-only (lazy + mémoïsée). effect() = effet de bord à chaque changement. Ne jamais écrire un signal dans un effect().",
+    "answer": "<ul><li><strong>signal()</strong> — état writable (lecture + écriture)</li><li><strong>computed()</strong> — valeur dérivée, lazy, mémoïsée (lecture seule)</li><li><strong>effect()</strong> — effet de bord déclenché à chaque changement</li></ul><span class='fc-rule'>Ne jamais écrire un signal dans un effect()</span>",
     "difficulty": "medium"
   },
   {
     "id": 3,
     "category": "Angular",
     "question": "Qu'est-ce que ChangeDetectionStrategy.OnPush et pourquoi l'utiliser ?",
-    "answer": "Le composant n'est vérifié que si une référence d'@Input change, un événement DOM se produit, ou un Signal/Observable émet. Moins de vérifications = meilleures performances.",
+    "answer": "Le composant n'est vérifié que dans <strong>3 cas</strong> :<ul><li>Une référence d'<strong>@Input</strong> change</li><li>Un <strong>Signal</strong> ou <strong>async pipe</strong> émet</li><li>Un <strong>événement DOM</strong> se produit dans ce composant</li></ul><span class='fc-rule'>Moins de vérifications = meilleures performances</span>",
     "difficulty": "easy"
   },
   {
     "id": 4,
     "category": "Angular",
     "question": "Comment fonctionne le lazy loading des routes en Angular ?",
-    "answer": "loadComponent() ou loadChildren() chargent le code uniquement à la navigation vers la route. Réduit le bundle initial.",
+    "answer": "<code>loadComponent()</code> ou <code>loadChildren()</code> chargent le code <strong>uniquement à la navigation</strong>.<br><br>Résultat : le bundle initial est plus petit, l'app démarre plus vite.",
     "difficulty": "easy"
   },
   {
     "id": 5,
     "category": "Angular",
     "question": "Quelle est la différence entre le décorateur @Input() et la fonction input() ?",
-    "answer": "input() retourne un Signal (réactif, compatible OnPush nativement). @Input() est une propriété classique non réactive.",
+    "answer": "<ul><li><strong>input()</strong> — retourne un <strong>Signal</strong> (réactif, compatible OnPush nativement)</li><li><strong>@Input()</strong> — propriété classique, non réactive</li></ul><span class='fc-rule'>Préférer input() en Angular 17+</span>",
     "difficulty": "medium"
   },
   {
     "id": 6,
     "category": "Angular",
     "question": "À quoi sert le flux de contrôle natif @if, @for, @switch introduit en Angular 17 ?",
-    "answer": "Remplace *ngIf/*ngFor/*ngSwitch. Plus lisible, pas d'import CommonModule, track obligatoire dans @for.",
+    "answer": "Remplace <code>*ngIf</code> / <code>*ngFor</code> / <code>*ngSwitch</code>.<ul><li>Syntaxe native — pas d'import CommonModule</li><li><code>@else if</code> intégré dans @if</li><li><code>@empty</code> dans @for pour la liste vide</li><li><code>track</code> obligatoire dans @for</li></ul>",
     "difficulty": "easy"
   },
   {
     "id": 7,
     "category": "TypeScript",
     "question": "Quelle est la différence entre interface et type en TypeScript ?",
-    "answer": "interface : contrats d'objets/classes, extensible (extends, declaration merging). type : unions, intersections, tuples. Préférer interface pour les shapes d'objets.",
+    "answer": "<ul><li><strong>interface</strong> — contrat d'objet, extensible (<code>extends</code>, declaration merging)</li><li><strong>type</strong> — unions, intersections, tuples</li></ul><span class='fc-rule'>Préférer interface pour décrire la forme d'un objet</span>",
     "difficulty": "easy"
   },
   {
     "id": 8,
     "category": "TypeScript",
     "question": "Quelle est la différence entre unknown et any ?",
-    "answer": "any désactive le typage. unknown force à valider le type avant usage (type narrowing). Toujours préférer unknown.",
+    "answer": "<ul><li><strong>any</strong> — désactive le typage (dangereux)</li><li><strong>unknown</strong> — force à valider le type avant de l'utiliser (type narrowing)</li></ul><span class='fc-rule'>Toujours préférer unknown à any</span>",
     "difficulty": "medium"
   },
   {
     "id": 9,
     "category": "TypeScript",
     "question": "Qu'est-ce que le type narrowing en TypeScript ?",
-    "answer": "Affiner le type d'une variable dans un bloc conditionnel. Techniques : typeof, instanceof, !== null, type guards (x is T).",
+    "answer": "Affiner le type d'une variable dans un bloc conditionnel.<br><br>Techniques :<ul><li><code>typeof x === 'string'</code></li><li><code>x instanceof Date</code></li><li><code>x !== null</code></li><li>Type guard : <code>function isUser(x): x is User</code></li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 10,
     "category": "TypeScript",
     "question": "Qu'est-ce qu'un type générique et dans quel cas l'utiliser ?",
-    "answer": "Code réutilisable qui préserve le type. Utiliser quand la logique est identique mais le type varie : utils, services, structures de données.",
+    "answer": "Code réutilisable qui <strong>préserve le type</strong>.<br><br><code>function identity&lt;T&gt;(value: T): T</code><br><br><span class='fc-rule'>Utiliser quand la même logique s'applique à plusieurs types : utils, services, structures de données</span>",
     "difficulty": "medium"
   },
   {
     "id": 11,
     "category": "TypeScript",
     "question": "À quoi servent les types utilitaires Partial, Required, Readonly et Pick ?",
-    "answer": "Partial<T> : tous optionnels. Required<T> : tous obligatoires. Readonly<T> : non modifiables. Pick<T,K> : sous-ensemble. Omit<T,K> : tout sauf K.",
+    "answer": "<ul><li><strong>Partial&lt;T&gt;</strong> — tous les champs optionnels</li><li><strong>Required&lt;T&gt;</strong> — tous obligatoires</li><li><strong>Readonly&lt;T&gt;</strong> — non modifiables</li><li><strong>Pick&lt;T,K&gt;</strong> — garder seulement K</li><li><strong>Omit&lt;T,K&gt;</strong> — tout sauf K</li></ul>",
     "difficulty": "hard"
   },
   {
     "id": 12,
     "category": "JavaScript",
     "question": "Qu'est-ce qu'une closure en JavaScript ?",
-    "answer": "Fonction qui mémorise son environnement lexical après la fin de la fonction parente. Base des modules et de l'encapsulation.",
+    "answer": "Fonction qui <strong>mémorise son environnement lexical</strong> après la fin de la fonction parente.<br><br><code>function counter() { let n = 0; return () => ++n; }</code><br><br>Base des modules et de l'encapsulation en JS.",
     "difficulty": "medium"
   },
   {
     "id": 13,
     "category": "JavaScript",
     "question": "Quelle est la différence entre Promise et Observable ?",
-    "answer": "Promise : une valeur, eager, non annulable. Observable : flux de valeurs, lazy, annulable (unsubscribe), composable avec opérateurs RxJS.",
+    "answer": "<ul><li><strong>Promise</strong> — 1 valeur, eager, non annulable</li><li><strong>Observable</strong> — flux de valeurs, lazy, annulable (<code>unsubscribe()</code>), composable avec RxJS</li></ul><span class='fc-rule'>HttpClient retourne un Observable — lazy = pas de requête sans subscribe</span>",
     "difficulty": "medium"
   },
   {
     "id": 14,
     "category": "JavaScript",
     "question": "Quelle est la différence entre debounce et throttle ?",
-    "answer": "debounce : attend X ms de calme avant d'exécuter (recherche). throttle : exécute max une fois toutes les X ms (scroll). 'calme' vs 'fréquence'.",
+    "answer": "<ul><li><strong>debounce</strong> — attend X ms de <em>calme</em> puis exécute → recherche en temps réel</li><li><strong>throttle</strong> — exécute max 1 fois par X ms → scroll, resize</li></ul><span class='fc-rule'>Mnémo : debounce = \"attends que ça s'arrête\", throttle = \"pas plus souvent que\"</span>",
     "difficulty": "medium"
   },
   {
     "id": 15,
     "category": "JavaScript",
     "question": "Qu'est-ce que l'Event Loop en JavaScript et comment fonctionne-t-elle ?",
-    "answer": "JS est single-threadé. Event Loop : vide la call stack synchrone, traite d'abord les microtasks (Promises), puis les tasks (setTimeout) une par une.",
+    "answer": "JS est <strong>single-threadé</strong>. Ordre de l'Event Loop :<ol><li>Vide la <strong>call stack</strong> synchrone</li><li>Traite toutes les <strong>microtasks</strong> (Promises)</li><li>Traite une <strong>task</strong> (setTimeout, I/O)</li><li>Recommence</li></ol>",
     "difficulty": "hard"
   },
   {
     "id": 16,
     "category": "Angular",
     "question": "Quelle est la grande différence entre Angular ≤15 et Angular 16+ ?",
-    "answer": "Angular 16 introduit les Signals : réactivité granulaire sans Zone.js. Avant : Zone.js monkey-patche les APIs async et déclenche la CD sur tout l'arbre.",
+    "answer": "<ul><li><strong>≤ v15</strong> — Zone.js monkey-patche les APIs async et déclenche la CD sur tout l'arbre</li><li><strong>v16+</strong> — Signals = réactivité granulaire sans Zone.js</li></ul><span class='fc-rule'>Zone.js = marteau-piquer. Signals = scalpel.</span>",
     "difficulty": "easy",
     "version": "v16+"
   },
@@ -116,7 +116,7 @@
     "id": 17,
     "category": "Signals & Réactivité",
     "question": "Qu'est-ce qu'un Signal ? Quelle est la différence avec un BehaviorSubject ?",
-    "answer": "Signal : réactif natif Angular, pas de subscribe(), synchrone, lecture avec count(). BehaviorSubject : flux async avec opérateurs RxJS. Convertir avec toSignal() / toObservable().",
+    "answer": "<ul><li><strong>Signal</strong> — natif Angular, synchrone, pas de subscribe(), lecture directe : <code>count()</code></li><li><strong>BehaviorSubject</strong> — flux async avec opérateurs RxJS</li></ul>Convertir : <code>toSignal()</code> / <code>toObservable()</code>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -124,7 +124,7 @@
     "id": 18,
     "category": "Signals & Réactivité",
     "question": "Explique computed(), effect() et leurs cas d'usage respectifs.",
-    "answer": "computed() : valeur dérivée read-only, lazy, mémoïsée → calculs d'état. effect() : effet de bord (logs, localStorage) à chaque changement. Ne pas écrire de signal dans un effect().",
+    "answer": "<ul><li><strong>computed()</strong> — valeur dérivée read-only, lazy, mémoïsée → calculs d'état</li><li><strong>effect()</strong> — effet de bord (logs, localStorage) à chaque changement</li></ul><span class='fc-rule'>Ne pas écrire de signal dans un effect()</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -132,7 +132,7 @@
     "id": 19,
     "category": "Signals & Réactivité",
     "question": "Qu'est-ce que linkedSignal() ? Quand l'utiliser ?",
-    "answer": "Signal writable qui se réinitialise quand sa source change. Entre signal() (writable) et computed() (read-only). Utile pour un état local lié à une prop parent.",
+    "answer": "Signal <strong>writable</strong> qui se <strong>réinitialise</strong> quand sa source change.<br><br>Entre <code>signal()</code> (writable) et <code>computed()</code> (read-only).<br><br><span class='fc-rule'>Cas d'usage : état local lié à une prop parent (ex: page courante qui reset si le filtre change)</span>",
     "difficulty": "hard",
     "version": "v19"
   },
@@ -140,7 +140,7 @@
     "id": 20,
     "category": "Signals & Réactivité",
     "question": "Qu'est-ce que resource() ? Comment gérer les données async avec les Signals ?",
-    "answer": "Intègre l'async dans les Signals. Expose isLoading, value, error comme signals. Se re-déclenche et annule la requête précédente quand ses dépendances changent.",
+    "answer": "Intègre l'<strong>async</strong> dans les Signals. Expose :<ul><li><strong>isLoading</strong> — signal booléen</li><li><strong>value</strong> — résultat</li><li><strong>error</strong> — erreur éventuelle</li></ul>Se re-déclenche et <strong>annule</strong> la requête précédente quand ses dépendances changent.",
     "difficulty": "hard",
     "version": "v19"
   },
@@ -148,7 +148,7 @@
     "id": 21,
     "category": "Signals & Réactivité",
     "question": "Comment fonctionne le Change Detection avec les Signals ? Qu'est-ce que le mode Zoneless ?",
-    "answer": "Signals → seuls les composants qui lisent un signal modifié sont re-rendus. Zoneless (v18+) supprime Zone.js : CD uniquement par Signals ou markForCheck().",
+    "answer": "<ul><li><strong>Signals</strong> → seuls les composants qui lisent un signal modifié sont re-rendus</li><li><strong>Zoneless</strong> (v18+) → supprime Zone.js : CD uniquement via Signals ou <code>markForCheck()</code></li></ul><span class='fc-rule'>Zoneless = plus léger et plus rapide, mais nécessite des Signals partout</span>",
     "difficulty": "hard",
     "version": "v18"
   },
@@ -156,7 +156,7 @@
     "id": 22,
     "category": "Composants",
     "question": "Nouvelle API input(), output(), model() — quelle différence avec @Input/@Output ?",
-    "answer": "input<T>() retourne un Signal read-only (composable avec computed()). model<T>() = binding bidirectionnel (remplace @Input + @Output). Stabilisé en v19.",
+    "answer": "<ul><li><strong>input&lt;T&gt;()</strong> — Signal read-only, composable avec <code>computed()</code></li><li><strong>output()</strong> — remplace <code>@Output EventEmitter</code></li><li><strong>model&lt;T&gt;()</strong> — binding bidirectionnel (remplace @Input + @Output)</li></ul><span class='fc-rule'>Stabilisé en Angular v19</span>",
     "difficulty": "medium",
     "version": "v17"
   },
@@ -164,7 +164,7 @@
     "id": 23,
     "category": "Composants",
     "question": "Qu'est-ce que @defer ? Comment optimiser le chargement avec les Deferrable Views ?",
-    "answer": "Charge lazily un bloc de template. Triggers : on viewport, on idle, on interaction, on timer. Blocs associés : @placeholder, @loading, @error. Impact sur LCP/TTI.",
+    "answer": "Charge <strong>lazily</strong> un bloc de template. Triggers :<ul><li><code>on viewport</code> — quand visible à l'écran</li><li><code>on idle</code> — en arrière-plan</li><li><code>on interaction</code> — au clic/focus</li></ul>Blocs : <code>@placeholder</code> · <code>@loading</code> · <code>@error</code><br><span class='fc-rule'>Améliore le LCP et le TTI</span>",
     "difficulty": "medium",
     "version": "v17"
   },
@@ -172,7 +172,7 @@
     "id": 24,
     "category": "Composants",
     "question": "Nouvelle syntaxe de template @if, @for, @switch — quels avantages sur *ngIf/*ngFor ?",
-    "answer": "Syntaxe native sans import. @else if intégré, @empty dans @for pour la liste vide, track obligatoire, @let pour les variables locales.",
+    "answer": "Syntaxe <strong>native</strong>, sans import CommonModule :<ul><li><code>@else if</code> intégré dans @if</li><li><code>@empty</code> dans @for pour la liste vide</li><li><code>track</code> obligatoire dans @for</li><li><code>@let</code> pour les variables locales</li></ul>",
     "difficulty": "easy",
     "version": "v17"
   },
@@ -180,7 +180,7 @@
     "id": 25,
     "category": "Composants",
     "question": "Qu'est-ce qu'un standalone component ? Pourquoi remplacer les NgModules ?",
-    "answer": "Composant qui déclare ses imports directement, sans NgModule. Défaut depuis v17. Meilleur tree-shaking, lazy loading avec loadComponent, moins de boilerplate.",
+    "answer": "Composant qui déclare ses <strong>imports directement</strong>, sans NgModule. Défaut depuis v17.<ul><li>Meilleur tree-shaking</li><li>Lazy loading avec <code>loadComponent()</code></li><li>Moins de boilerplate</li></ul>",
     "difficulty": "easy",
     "version": "v16+"
   },
@@ -188,7 +188,7 @@
     "id": 26,
     "category": "DI & Services",
     "question": "Quelle est la hiérarchie des injectors Angular ?",
-    "answer": "EnvironmentInjector (Root = providedIn:'root', Route = Route.providers[]) + ElementInjector (composant, résolution remontante). Modificateurs : @Self, @SkipSelf, @Host, @Optional.",
+    "answer": "<ul><li><strong>EnvironmentInjector</strong> — Root (<code>providedIn:'root'</code>) + Route (<code>Route.providers[]</code>)</li><li><strong>ElementInjector</strong> — composant, résolution remontante</li></ul>Modificateurs : <code>@Self</code> · <code>@SkipSelf</code> · <code>@Host</code> · <code>@Optional</code>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -196,7 +196,7 @@
     "id": 27,
     "category": "DI & Services",
     "question": "inject() vs constructeur : pourquoi et quand utiliser inject() ?",
-    "answer": "inject() est fonctionnel, composable dans des fonctions helper réutilisables ('composables' Angular). Préférer inject() pour la composition. L'injection constructeur reste valide.",
+    "answer": "<ul><li><strong>inject()</strong> — fonctionnel, composable dans des fonctions helper réutilisables</li><li><strong>constructeur</strong> — injection classique, toujours valide</li></ul><span class='fc-rule'>Préférer inject() pour créer des \"composables\" Angular réutilisables entre composants</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -204,7 +204,7 @@
     "id": 28,
     "category": "DI & Services",
     "question": "Qu'est-ce qu'un InjectionToken ? Quand l'utiliser ?",
-    "answer": "Injecte des valeurs non-classe (primitives, config, feature flags). new InjectionToken<T>('desc', { factory }). Override avec { provide: TOKEN, useValue: val }.",
+    "answer": "Injecte des <strong>valeurs non-classe</strong> (primitives, config, feature flags).<br><br><code>const API_URL = new InjectionToken&lt;string&gt;('API_URL');</code><br><br>Override : <code>{ provide: API_URL, useValue: 'https://...' }</code>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -212,7 +212,7 @@
     "id": 29,
     "category": "Routing",
     "question": "Guards fonctionnels vs Guards classe — quelle différence ?",
-    "answer": "Guards classe dépréciés depuis v15. Guards fonctionnels (CanActivateFn) = fonctions pures avec inject(). Plus simples, composables, testables.",
+    "answer": "<ul><li><strong>Guards classe</strong> — dépréciés depuis v15</li><li><strong>Guards fonctionnels</strong> — fonctions pures (<code>CanActivateFn</code>) avec <code>inject()</code></li></ul><span class='fc-rule'>Plus simples, composables et testables sans classe</span>",
     "difficulty": "easy",
     "version": "v16+"
   },
@@ -220,7 +220,7 @@
     "id": 30,
     "category": "Routing",
     "question": "Lazy loading : loadComponent vs loadChildren — quand utiliser quoi ?",
-    "answer": "loadComponent : un seul composant standalone. loadChildren : feature entière avec sous-routes et providers scopés. Les deux génèrent un chunk JS séparé.",
+    "answer": "<ul><li><strong>loadComponent</strong> — un seul composant standalone</li><li><strong>loadChildren</strong> — feature entière avec sous-routes et providers scopés</li></ul>Les deux génèrent un <strong>chunk JS séparé</strong> chargé à la navigation.",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -228,7 +228,7 @@
     "id": 31,
     "category": "Routing",
     "question": "Qu'est-ce que l'hydratation et comment Angular SSR la gère-t-il ?",
-    "answer": "SSR génère le HTML. L'hydratation = Angular prend le contrôle sans reconstruire le DOM (non-destructive, v16+). Évite le CLS, améliore le SEO.",
+    "answer": "<ol><li><strong>SSR</strong> génère le HTML côté serveur (bon SEO)</li><li><strong>Hydratation</strong> = Angular reprend le contrôle sans reconstruire le DOM (v16+)</li></ol><span class='fc-rule'>Évite le CLS (saut visuel) et améliore le SEO sans sacrifier l'interactivité</span>",
     "difficulty": "hard",
     "version": "v17"
   },
@@ -236,7 +236,7 @@
     "id": 32,
     "category": "Performance",
     "question": "OnPush Change Detection : comment ça marche et quand l'utiliser ?",
-    "answer": "Vérifie uniquement si : référence @Input change, événement DOM, Signal/async pipe émet, ou markForCheck() explicite. Piège : muter un objet Input sans changer sa référence.",
+    "answer": "Vérifie uniquement si :<ul><li>Référence <strong>@Input</strong> change</li><li><strong>Signal</strong> ou <strong>async pipe</strong> émet</li><li>Événement DOM dans ce composant</li><li><code>markForCheck()</code> explicite</li></ul><span class='fc-rule'>Piège : muter un objet Input sans changer sa référence → pas de mise à jour !</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -244,7 +244,7 @@
     "id": 33,
     "category": "Performance",
     "question": "Quelles sont les principales optimisations de performance Angular ?",
-    "answer": "Bundle : lazy loading + @defer. Runtime : OnPush/Signals, track dans @for, takeUntilDestroyed(). Images : NgOptimizedImage.",
+    "answer": "<ul><li><strong>Bundle</strong> — lazy loading + @defer</li><li><strong>Runtime</strong> — OnPush + Signals, <code>track</code> dans @for, <code>takeUntilDestroyed()</code></li><li><strong>Images</strong> — NgOptimizedImage</li></ul>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -252,7 +252,7 @@
     "id": 34,
     "category": "Performance",
     "question": "Qu'est-ce que le build Vite/esbuild d'Angular 17+ ? En quoi est-ce différent ?",
-    "answer": "Remplace Webpack. Build 2-3x plus rapide, HMR instantané. Activé par défaut via le builder @angular-devkit/build-angular:application.",
+    "answer": "Remplace <strong>Webpack</strong>.<ul><li>Build <strong>2-3x plus rapide</strong></li><li>HMR (Hot Module Replacement) quasi-instantané</li></ul>Activé par défaut via <code>@angular-devkit/build-angular:application</code>.",
     "difficulty": "easy",
     "version": "v17"
   },
@@ -260,7 +260,7 @@
     "id": 35,
     "category": "Pièges & Classiques",
     "question": "Quelle est la différence entre un pipe pure et un pipe impure ?",
-    "answer": "Pure (défaut) : appelé uniquement si la référence change, mémoïsé. Impure (pure: false) : appelé à chaque CD, coûteux. Préférer immutabilité + pipe pure.",
+    "answer": "<ul><li><strong>Pure</strong> (défaut) — appelé uniquement si la référence change, mémoïsé</li><li><strong>Impure</strong> (<code>pure: false</code>) — appelé à chaque cycle de CD, très coûteux</li></ul><span class='fc-rule'>Préférer l'immutabilité + pipe pure</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -268,7 +268,7 @@
     "id": 36,
     "category": "Pièges & Classiques",
     "question": "Pourquoi track est-il obligatoire dans @for ? Que se passe-t-il sans ?",
-    "answer": "track identifie chaque élément pour réutiliser les nœuds DOM. Sans track : tout est recréé à chaque re-render (perfs dégradées, état des enfants perdu).",
+    "answer": "<code>track</code> identifie chaque élément pour <strong>réutiliser les nœuds DOM</strong>.<br><br>Sans <code>track</code> : tout est <strong>recréé</strong> à chaque re-render.<br><span class='fc-rule'>Conséquences : performances dégradées + état des composants enfants perdu</span>",
     "difficulty": "easy",
     "version": "v17"
   },
@@ -276,7 +276,7 @@
     "id": 37,
     "category": "Pièges & Classiques",
     "question": "Quand utiliser RxJS vs Signals ?",
-    "answer": "Signals : état UI synchrone, réactivité template. RxJS : flux async complexes (debounce, combineLatest, switchMap, retry). Convertir avec toSignal() / toObservable().",
+    "answer": "<ul><li><strong>Signals</strong> — état UI synchrone, réactivité template</li><li><strong>RxJS</strong> — flux async complexes (debounce, combineLatest, switchMap, retry)</li></ul>Ponts : <code>toSignal()</code> et <code>toObservable()</code>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -284,7 +284,7 @@
     "id": 38,
     "category": "Pièges & Classiques",
     "question": "Qu'est-ce qu'un memory leak en Angular et comment l'éviter ?",
-    "answer": "Observable manuellement souscrit mais jamais unsubscribed après destruction. Solutions : AsyncPipe, takeUntilDestroyed() (v16+), toSignal().",
+    "answer": "Observable manuellement souscrit mais <strong>jamais unsubscribed</strong> après destruction.<br><br>Solutions :<ul><li><strong>AsyncPipe</strong> — subscribe/unsubscribe automatique</li><li><strong>takeUntilDestroyed()</strong> — v16+</li><li><strong>toSignal()</strong> — se nettoie automatiquement</li></ul>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -292,7 +292,7 @@
     "id": 39,
     "category": "Pièges & Classiques",
     "question": "Quelle est la différence entre viewProviders et providers dans un composant ?",
-    "answer": "providers : accessible aussi au contenu projeté (ng-content). viewProviders : uniquement dans le template propre du composant, pas au contenu projeté.",
+    "answer": "<ul><li><strong>providers</strong> — accessible aussi au contenu projeté (<code>ng-content</code>)</li><li><strong>viewProviders</strong> — uniquement dans le template propre du composant</li></ul><span class='fc-rule'>Différence visible uniquement quand on utilise ng-content</span>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -300,357 +300,767 @@
     "id": 40,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que les principes SOLID et pourquoi sont-ils importants ?",
-    "answer": "5 principes de conception OOP : S = Single Responsibility, O = Open/Closed, L = Liskov Substitution, I = Interface Segregation, D = Dependency Inversion. Objectif : code maintenable, testable et extensible sans craindre les effets de bord.",
+    "answer": "5 principes de conception OOP :<ul><li><strong>S</strong> — Single Responsibility</li><li><strong>O</strong> — Open/Closed</li><li><strong>L</strong> — Liskov Substitution</li><li><strong>I</strong> — Interface Segregation</li><li><strong>D</strong> — Dependency Inversion</li></ul><span class='fc-rule'>Objectif : code maintenable, testable, extensible sans effets de bord</span>",
     "difficulty": "easy"
   },
   {
     "id": 41,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le principe SRP (Single Responsibility) ? Donner un exemple Angular.",
-    "answer": "Une classe/fonction = une seule raison de changer. En Angular : UserService gère les utilisateurs, AuthService gère l'authentification — on ne mélange pas. Résultat : chaque service est testable isolément.",
+    "answer": "Une classe/fonction = <strong>une seule raison de changer</strong>.<br><br><span class='fc-rule'>Angular : UserService gère les utilisateurs, AuthService gère l'auth — on ne mélange pas. Résultat : chaque service est testable isolément.</span>",
     "difficulty": "easy"
   },
   {
     "id": 42,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le principe OCP (Open/Closed) ? Comment l'appliquer en pratique ?",
-    "answer": "Ouvert à l'extension, fermé à la modification. On ajoute des comportements sans toucher au code existant. En pratique : abstractions (interfaces, classes abstraites), injection de dépendances, composition plutôt qu'héritage.",
+    "answer": "<strong>Ouvert</strong> à l'extension, <strong>fermé</strong> à la modification.<br><br>On ajoute des comportements sans toucher au code existant :<ul><li>Abstractions (interfaces, classes abstraites)</li><li>Injection de dépendances</li><li>Composition plutôt qu'héritage</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 43,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le principe DIP (Dependency Inversion) et comment Angular l'applique-t-il ?",
-    "answer": "Les modules de haut niveau ne dépendent pas des modules de bas niveau : tous deux dépendent d'abstractions. Angular l'applique nativement via son système DI — on injecte une interface/token, pas une classe concrète. Facilite les mocks en tests.",
+    "answer": "Les modules de haut niveau ne dépendent pas des bas niveau : tous dépendent d'<strong>abstractions</strong>.<br><br>Angular l'applique nativement : on injecte une interface/token, pas une classe concrète.<br><span class='fc-rule'>Facilite les mocks en tests</span>",
     "difficulty": "medium"
   },
   {
     "id": 44,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le Design Pattern Observer ? Comment se manifeste-t-il en Angular ?",
-    "answer": "Un sujet notifie automatiquement ses observateurs quand son état change. En Angular : RxJS Subjects (BehaviorSubject), EventEmitter, et les Signals jouent ce rôle. Le producteur et le consommateur sont découplés — l'un ne connaît pas l'autre.",
+    "answer": "Un <strong>sujet</strong> notifie automatiquement ses <strong>observateurs</strong> quand son état change.<br><br>Angular : <code>BehaviorSubject</code>, <code>EventEmitter</code>, <strong>Signals</strong>.<br><br><span class='fc-rule'>Producteur et consommateur sont découplés — l'un ne connaît pas l'autre</span>",
     "difficulty": "medium"
   },
   {
     "id": 45,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le Design Pattern Strategy ? Donner un exemple concret en JS.",
-    "answer": "Définit une famille d'algorithmes interchangeables encapsulés séparément. Ex : une fonction sortItems(items, strategy) reçoit en paramètre la stratégie de tri (par date, par nom, par priorité) plutôt qu'un switch/case. Très naturel en JS grâce aux fonctions de première classe.",
+    "answer": "Algorithmes <strong>interchangeables</strong> encapsulés séparément.<br><br><code>sortItems(items, strategy)</code> — reçoit la stratégie en paramètre plutôt qu'un switch/case.<br><br><span class='fc-rule'>Naturel en JS grâce aux fonctions de première classe</span>",
     "difficulty": "medium"
   },
   {
     "id": 46,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le Design Pattern Facade ? Pourquoi l'utiliser dans une app Angular ?",
-    "answer": "Expose une interface simplifiée devant un sous-système complexe. En Angular : un service Facade orchestre plusieurs services métier (UserService, OrderService, NotifService) et expose une API claire aux composants. Le composant n'appelle que la façade — pas les services internes.",
+    "answer": "Interface <strong>simplifiée</strong> devant un sous-système complexe.<br><br><span class='fc-rule'>Angular : un service Facade orchestre UserService + OrderService + NotifService. Le composant n'appelle que la façade, jamais les services internes.</span>",
     "difficulty": "easy"
   },
   {
     "id": 47,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le Pattern Repository ? Quel problème résout-il ?",
-    "answer": "Couche d'abstraction entre la logique métier et la source de données (API HTTP, localStorage, BDD). Ex : UserRepository expose findById(), save(), delete() — le service métier ne sait pas si la donnée vient d'un HTTP GET ou d'un cache. Facilite les tests (on mock le repo) et le changement de source de données.",
+    "answer": "Abstraction entre la <strong>logique métier</strong> et la <strong>source de données</strong>.<br><br><code>UserRepository.findById()</code> — le service ne sait pas si ça vient d'HTTP ou d'un cache.<ul><li>Facilite les tests (on mock le repo)</li><li>Changement de source sans toucher au métier</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 48,
     "category": "Architecture & Patterns",
     "question": "Quelle est la différence entre MVC et MVVM ? Dans quelle architecture Angular s'inscrit-il ?",
-    "answer": "MVC : Model-View-Controller (le Controller contient la logique). MVVM : Model-View-ViewModel (le ViewModel expose l'état et les commandes, lié à la View par data binding). Angular = MVVM : le composant TypeScript est le ViewModel, le template HTML est la View, les services sont le Model.",
+    "answer": "<ul><li><strong>MVC</strong> — Model-View-Controller (le Controller contient la logique)</li><li><strong>MVVM</strong> — Model-View-ViewModel (lié à la View par data binding)</li></ul><span class='fc-rule'>Angular = MVVM : composant TS = ViewModel, template HTML = View, services = Model</span>",
     "difficulty": "medium"
   },
   {
     "id": 49,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que la Clean Architecture ? Quelle est sa règle fondamentale ?",
-    "answer": "Architecture en couches concentriques : Entities (règles métier) → Use Cases → Adapters (controllers, presenters) → Infrastructure (HTTP, BDD, UI). Règle unique : les dépendances ne pointent que vers l'intérieur. Le cœur métier n'importe rien du framework — testable sans Angular, sans HTTP, sans BDD.",
+    "answer": "Couches concentriques :<ul><li><strong>Entities</strong> — règles métier</li><li><strong>Use Cases</strong> — logique applicative</li><li><strong>Adapters</strong> — controllers, presenters</li><li><strong>Infrastructure</strong> — HTTP, BDD, UI</li></ul><span class='fc-rule'>Règle unique : les dépendances ne pointent que vers l'intérieur</span>",
     "difficulty": "hard"
   },
   {
     "id": 50,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le Design Pattern Singleton ? Quand Angular crée-t-il un singleton automatiquement ?",
-    "answer": "Une seule instance de la classe pour toute l'app. En Angular : tout service avec providedIn: 'root' est un singleton — l'injecteur root crée l'instance une fois et la partage partout. Attention : un service fourni dans providers: [] d'un composant crée une instance par composant.",
+    "answer": "Une seule <strong>instance</strong> pour toute l'app.<br><br>Angular : <code>providedIn: 'root'</code> = singleton automatique.<br><br><span class='fc-rule'>Attention : <code>providers: []</code> dans un composant = 1 instance par composant</span>",
     "difficulty": "easy"
   },
   {
     "id": 51,
     "category": "Java & Spring Boot",
     "question": "Qu'est-ce que l'IoC (Inversion of Control) et comment Spring la met-il en œuvre ?",
-    "answer": "L'IoC inverse le contrôle : ce n'est plus le code qui crée ses dépendances, c'est le conteneur Spring qui les instancie et les injecte. Spring crée un ApplicationContext qui gère le cycle de vie des beans et résout les dépendances via @Autowired ou le constructeur.",
+    "answer": "L'<strong>IoC</strong> inverse le contrôle : ce n'est plus le code qui crée ses dépendances, c'est le <strong>conteneur Spring</strong>.<br><br>Spring crée un <code>ApplicationContext</code> qui gère les beans et résout les dépendances via constructeur ou <code>@Autowired</code>.",
     "difficulty": "easy"
   },
   {
     "id": 52,
     "category": "Java & Spring Boot",
     "question": "Quelle est la différence entre @Component, @Service, @Repository et @Controller ?",
-    "answer": "Tous sont des alias de @Component (détection automatique par le component scan). La différence est sémantique et fonctionnelle : @Repository active la traduction des exceptions JPA en DataAccessException. @Controller/@RestController intègrent la gestion des requêtes HTTP. @Service = couche métier, aucun comportement supplémentaire.",
+    "answer": "Tous sont des alias de <strong>@Component</strong>. La différence est sémantique + fonctionnelle :<ul><li><strong>@Repository</strong> — traduit les exceptions JPA en DataAccessException</li><li><strong>@Controller/@RestController</strong> — gestion des requêtes HTTP</li><li><strong>@Service</strong> — couche métier, aucun comportement supplémentaire</li></ul>",
     "difficulty": "easy"
   },
   {
     "id": 53,
     "category": "Java & Spring Boot",
     "question": "Quels sont les scopes d'un Bean Spring ? Lequel est utilisé par défaut ?",
-    "answer": "Singleton (défaut) : une instance partagée. Prototype : nouvelle instance à chaque injection. Request/Session/Application : uniquement en contexte web (une instance par requête HTTP / session / application). Piège : injecter un bean Prototype dans un Singleton — le Prototype ne sera instancié qu'une fois.",
+    "answer": "<ul><li><strong>Singleton</strong> (défaut) — une instance partagée</li><li><strong>Prototype</strong> — nouvelle instance à chaque injection</li><li><strong>Request/Session/Application</strong> — contexte web uniquement</li></ul><span class='fc-rule'>Piège : injecter un Prototype dans un Singleton → le Prototype n'est instancié qu'une fois !</span>",
     "difficulty": "medium"
   },
   {
     "id": 54,
     "category": "Java & Spring Boot",
     "question": "À quoi sert @Transactional ? Quels sont les pièges courants ?",
-    "answer": "@Transactional démarre une transaction avant la méthode et la commit ou rollback à la fin. Pièges : (1) appel interne dans la même classe → le proxy Spring est contourné, pas de transaction. (2) exceptions checked ne déclenchent pas de rollback par défaut (ajouter rollbackFor). (3) méthode private ignorée.",
+    "answer": "Démarre une transaction avant la méthode, commit ou rollback à la fin.<br><br>Pièges courants :<ul><li><strong>Appel interne</strong> — proxy contourné, pas de transaction</li><li><strong>Checked exceptions</strong> — pas de rollback par défaut (ajouter <code>rollbackFor</code>)</li><li><strong>Méthode private</strong> — ignorée</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 55,
     "category": "Java & Spring Boot",
     "question": "Quelle est la différence entre @Controller et @RestController ?",
-    "answer": "@RestController = @Controller + @ResponseBody sur chaque méthode. Avec @Controller seul, la valeur retournée est résolue comme un nom de vue (Thymeleaf, JSP). Avec @RestController, la valeur est sérialisée directement en JSON/XML dans le corps de la réponse HTTP.",
+    "answer": "<ul><li><strong>@Controller</strong> — retourne un nom de vue (Thymeleaf, JSP)</li><li><strong>@RestController</strong> — <code>@Controller</code> + <code>@ResponseBody</code> → sérialise directement en JSON</li></ul><span class='fc-rule'>API REST → toujours @RestController</span>",
     "difficulty": "easy"
   },
   {
     "id": 56,
     "category": "Java & Spring Boot",
     "question": "Comment Spring Boot fonctionne-t-il avec l'auto-configuration ?",
-    "answer": "Spring Boot scanne le classpath et active automatiquement des configurations selon les dépendances présentes (ex : si H2 est dans le classpath → configure un DataSource en mémoire). Mécanisme : @EnableAutoConfiguration + fichiers META-INF/spring/AutoConfiguration.imports. On peut exclure une auto-config avec exclude = {...}.",
+    "answer": "Spring Boot scanne le <strong>classpath</strong> et active automatiquement des configs selon les dépendances.<br><br>Ex : H2 dans le classpath → configure un DataSource en mémoire.<br><br>Exclure : <code>exclude = {DataSourceAutoConfiguration.class}</code>",
     "difficulty": "medium"
   },
   {
     "id": 57,
     "category": "Java & Spring Boot",
     "question": "Quels types de Repository Spring Data JPA existent et que proposent-ils ?",
-    "answer": "Repository (marqueur), CrudRepository (save/findById/delete), PagingAndSortingRepository (+ pagination/tri), JpaRepository (+ flush/batch). On dérive le plus adapté. Les méthodes findByXxx sont auto-générées par le nom. @Query permet du JPQL ou SQL natif.",
+    "answer": "Hiérarchie :<ul><li><code>CrudRepository</code> — save / findById / delete</li><li><code>PagingAndSortingRepository</code> — + pagination/tri</li><li><code>JpaRepository</code> — + flush/batch</li></ul>Les <code>findByXxx</code> sont <strong>auto-générées</strong> par le nom de la méthode.",
     "difficulty": "medium"
   },
   {
     "id": 58,
     "category": "Java & Spring Boot",
     "question": "Comment gérer les exceptions globalement dans Spring Boot ?",
-    "answer": "@ControllerAdvice (ou @RestControllerAdvice) + @ExceptionHandler centralisent la gestion des erreurs pour tous les controllers. On mappe chaque exception à un statut HTTP et un corps d'erreur structuré. Alternative : implémenter ResponseEntityExceptionHandler pour les exceptions Spring standard.",
+    "answer": "<code>@RestControllerAdvice</code> + <code>@ExceptionHandler</code> centralisent la gestion des erreurs.<br><br>On mappe chaque exception à un statut HTTP + un corps d'erreur structuré.<br><br><span class='fc-rule'>Étendre ResponseEntityExceptionHandler pour les exceptions Spring standard</span>",
     "difficulty": "medium"
   },
   {
     "id": 59,
     "category": "Java & Spring Boot",
     "question": "À quoi servent les Profiles Spring ? Comment les activer ?",
-    "answer": "Séparent la configuration par environnement (dev, staging, prod). Fichiers : application-dev.yml, application-prod.yml. Activation : variable d'env SPRING_PROFILES_ACTIVE=prod, propriété spring.profiles.active, ou @ActiveProfiles dans les tests. Les beans peuvent être conditionnés avec @Profile('dev').",
+    "answer": "Séparent la config par environnement (dev, staging, prod).<br><br>Fichiers : <code>application-dev.yml</code>, <code>application-prod.yml</code><br><br>Activation : <code>SPRING_PROFILES_ACTIVE=prod</code> ou <code>@Profile(\"dev\")</code> sur un bean.",
     "difficulty": "easy"
   },
   {
     "id": 60,
     "category": "Java & Spring Boot",
     "question": "Qu'est-ce que le problème N+1 en JPA/Hibernate et comment le résoudre ?",
-    "answer": "Pour 1 requête qui charge N entités, JPA exécute N requêtes supplémentaires pour charger chaque association en LAZY. Solution : JOIN FETCH dans une @Query JPQL, ou @EntityGraph pour définir les associations à charger eagerly ponctuellement. Éviter FetchType.EAGER global qui charge tout en permanence.",
+    "answer": "Pour charger N entités, JPA exécute <strong>N requêtes supplémentaires</strong> pour chaque association LAZY.<br><br>Solutions :<ul><li><code>JOIN FETCH</code> dans une @Query JPQL</li><li><code>@EntityGraph</code> pour charger ponctuellement</li></ul><span class='fc-rule'>Éviter FetchType.EAGER global (charge tout en permanence)</span>",
     "difficulty": "hard"
   },
   {
     "id": 61,
     "category": "Web",
     "question": "Quelle est la différence entre GET, POST, PUT, PATCH et DELETE ?",
-    "answer": "GET : lire (idempotent, cacheable, pas de body). POST : créer une ressource (non idempotent). PUT : remplacer entièrement (idempotent). PATCH : modifier partiellement (idempotent). DELETE : supprimer (idempotent). Idempotent = appeler N fois donne le même résultat qu'une seule fois.",
+    "answer": "<ul><li><strong>GET</strong> — lire (idempotent, cacheable)</li><li><strong>POST</strong> — créer (non idempotent)</li><li><strong>PUT</strong> — remplacer entièrement (idempotent)</li><li><strong>PATCH</strong> — modifier partiellement (idempotent)</li><li><strong>DELETE</strong> — supprimer (idempotent)</li></ul><span class='fc-rule'>Idempotent = appeler N fois = même résultat qu'1 fois</span>",
     "difficulty": "easy"
   },
   {
     "id": 62,
     "category": "Web",
     "question": "Qu'est-ce qu'une API REST ? Quelles sont ses 3 contraintes principales ?",
-    "answer": "API qui expose des ressources via HTTP avec des URI claires et des verbes HTTP sémantiques. 3 contraintes clés : (1) Stateless — chaque requête est autonome, pas de session serveur. (2) Interface uniforme — URI + verbes HTTP + représentations JSON. (3) Cacheable — les réponses indiquent si elles peuvent être mises en cache.",
+    "answer": "Expose des ressources via HTTP avec des URI claires et des verbes sémantiques.<br><br>3 contraintes clés :<ul><li><strong>Stateless</strong> — chaque requête est autonome, pas de session serveur</li><li><strong>Interface uniforme</strong> — URI + verbes HTTP + JSON</li><li><strong>Cacheable</strong> — les réponses indiquent si elles peuvent être mises en cache</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 63,
     "category": "Web",
     "question": "Qu'est-ce que le CORS et comment fonctionne-t-il ?",
-    "answer": "Cross-Origin Resource Sharing : politique de sécurité du navigateur qui bloque les requêtes vers un domaine différent de la page. Le serveur répond avec Access-Control-Allow-Origin pour autoriser. Les requêtes 'non-simples' (PUT, DELETE, headers custom) déclenchent un preflight OPTIONS. La solution se configure côté serveur, jamais côté client.",
+    "answer": "Politique de sécurité du <strong>navigateur</strong> qui bloque les requêtes vers un domaine différent.<br><br>Le serveur répond avec <code>Access-Control-Allow-Origin</code> pour autoriser.<br><br><span class='fc-rule'>Requêtes \"non-simples\" → preflight OPTIONS d'abord. Configure côté serveur uniquement.</span>",
     "difficulty": "medium"
   },
   {
     "id": 64,
     "category": "Web",
     "question": "Quelle est la différence entre cookie, localStorage et sessionStorage ?",
-    "answer": "Cookie : envoyé automatiquement dans chaque requête HTTP, durée configurable, peut être HttpOnly (inaccessible au JS → sécurisé pour les tokens). localStorage : persiste jusqu'à suppression manuelle, ~5MB, jamais envoyé au serveur. sessionStorage : effacé à la fermeture de l'onglet. Règle senior : tokens d'auth → cookie HttpOnly Secure. Préférences UI → localStorage.",
+    "answer": "<ul><li><strong>Cookie</strong> — envoyé avec chaque requête, peut être HttpOnly (JS ne peut pas lire)</li><li><strong>localStorage</strong> — persiste jusqu'à suppression manuelle (~5MB)</li><li><strong>sessionStorage</strong> — effacé à la fermeture de l'onglet</li></ul><span class='fc-rule'>Tokens d'auth → cookie HttpOnly Secure. Préférences UI → localStorage.</span>",
     "difficulty": "easy"
   },
   {
     "id": 65,
     "category": "Web",
     "question": "Quelle est la différence entre SSR, CSR et SSG ? Quand choisir quoi ?",
-    "answer": "CSR (Client-Side Rendering) : le navigateur génère le HTML via JS — bon pour les apps interactives, mauvais SEO initial. SSR (Server-Side Rendering) : HTML généré à chaque requête côté serveur — bon SEO, temps de réponse variable. SSG (Static Site Generation) : HTML généré au build — ultra-rapide, idéal pour le contenu statique (blog, doc). Angular supporte SSR nativement depuis v17.",
+    "answer": "<ul><li><strong>CSR</strong> — navigateur génère le HTML via JS → interactif, mauvais SEO initial</li><li><strong>SSR</strong> — HTML à chaque requête côté serveur → bon SEO</li><li><strong>SSG</strong> — HTML au build → ultra-rapide, contenu statique (blog, doc)</li></ul><span class='fc-rule'>Angular supporte SSR nativement depuis v17</span>",
     "difficulty": "medium"
   },
   {
     "id": 66,
     "category": "Web",
     "question": "Qu'est-ce que le XSS (Cross-Site Scripting) et comment s'en protéger ?",
-    "answer": "Injection de scripts malveillants dans une page consultée par d'autres utilisateurs (vol de cookies, sessions, données). Types : Reflected (via URL), Stored (en BDD), DOM-based. Protection : ne jamais utiliser innerHTML avec des données utilisateur, encoder les sorties, Content Security Policy (CSP), cookies HttpOnly. Angular échappe automatiquement les interpolations {{ }}.",
+    "answer": "Injection de <strong>scripts malveillants</strong> dans une page (vol de cookies, sessions).<br><br>Types : Reflected · Stored · DOM-based<br><br>Protection :<ul><li>Ne jamais utiliser innerHTML avec des données utilisateur</li><li>Content Security Policy (CSP)</li><li>Cookies HttpOnly</li></ul><span class='fc-rule'>Angular échappe automatiquement les interpolations {{ }}</span>",
     "difficulty": "medium"
   },
   {
     "id": 67,
     "category": "Web",
     "question": "Qu'est-ce que les Core Web Vitals ? Quels sont les 3 indicateurs clés ?",
-    "answer": "Métriques Google de qualité UX, intégrées au classement SEO. LCP (Largest Contentful Paint) : temps d'affichage du plus grand élément visible — cible < 2,5s. INP (Interaction to Next Paint) : réactivité aux clics/touches — cible < 200ms. CLS (Cumulative Layout Shift) : stabilité visuelle, éviter que le contenu 'saute' — cible < 0,1.",
+    "answer": "Métriques Google de qualité UX, intégrées au classement SEO :<ul><li><strong>LCP</strong> — Largest Contentful Paint → cible &lt; 2,5s</li><li><strong>INP</strong> — Interaction to Next Paint → cible &lt; 200ms</li><li><strong>CLS</strong> — Cumulative Layout Shift (sauts visuels) → cible &lt; 0,1</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 68,
     "category": "Web",
     "question": "Quelle est la différence entre Flexbox et CSS Grid ? Quand utiliser l'un ou l'autre ?",
-    "answer": "Flexbox = 1 dimension : aligner des éléments sur un axe (ligne OU colonne). Idéal pour les composants internes, nav bars, boutons groupés. Grid = 2 dimensions : placer des éléments en lignes ET colonnes simultanément. Idéal pour la mise en page globale d'une page. Les deux sont complémentaires et souvent combinés.",
+    "answer": "<ul><li><strong>Flexbox</strong> — 1 dimension (ligne OU colonne) → nav bars, boutons groupés</li><li><strong>Grid</strong> — 2 dimensions (lignes ET colonnes) → mise en page globale</li></ul><span class='fc-rule'>Les deux sont complémentaires et souvent combinés</span>",
     "difficulty": "easy"
   },
   {
     "id": 69,
     "category": "Web",
     "question": "Qu'est-ce que le Critical Rendering Path et comment l'optimiser ?",
-    "answer": "Séquence que le navigateur suit pour afficher une page : Parse HTML → construire DOM + CSSOM → Render Tree → Layout → Paint. Le CSS bloque le rendu (render-blocking). Le JS bloque le parsing HTML (sauf async/defer). Optimisations : CSS critique inline, defer/async les scripts, lazy-load les images hors viewport, minification/compression.",
+    "answer": "Parse HTML → DOM + CSSOM → Render Tree → Layout → Paint<br><br><ul><li><strong>CSS</strong> bloque le rendu</li><li><strong>JS</strong> bloque le parsing (sauf <code>async/defer</code>)</li></ul>Optimisations : CSS critique inline · <code>defer</code> les scripts · lazy-load les images hors viewport",
     "difficulty": "hard"
   },
   {
     "id": 70,
     "category": "Web",
     "question": "Quelles sont les principales différences entre HTTP/1.1 et HTTP/2 ?",
-    "answer": "HTTP/2 : multiplexage (plusieurs requêtes en parallèle sur une seule connexion TCP), compression des headers (HPACK), Server Push, protocole binaire. HTTP/1.1 : une requête bloquante à la fois par connexion → les dev utilisaient des workarounds (sprites CSS, bundling, domain sharding) devenus inutiles avec HTTP/2.",
+    "answer": "<ul><li><strong>HTTP/1.1</strong> — 1 requête bloquante par connexion TCP</li><li><strong>HTTP/2</strong> — multiplexage (N requêtes en parallèle), compression HPACK, Server Push</li></ul><span class='fc-rule'>HTTP/2 rend obsolètes : sprites CSS, bundling, domain sharding</span>",
     "difficulty": "medium"
   },
   {
     "id": 71,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce qu'un LLM (Large Language Model) ? Comment fonctionne-t-il fondamentalement ?",
-    "answer": "Modèle de deep learning entraîné sur d'immenses corpus de texte pour prédire le token suivant, de manière probabiliste. Le modèle apprend des patterns linguistiques et factuels. Ex : GPT-4, Claude, Gemini, Llama. Les capacités émergentes (raisonnement, code) ne sont pas explicitement programmées mais apparaissent grâce à la taille du modèle et des données.",
+    "answer": "Modèle de deep learning entraîné pour <strong>prédire le token suivant</strong>, de manière probabiliste.<br><br>Ex : GPT-4, Claude, Gemini, Llama.<br><br><span class='fc-rule'>Les capacités (raisonnement, code) ne sont pas programmées — elles émergent de la taille et des données</span>",
     "difficulty": "easy"
   },
   {
     "id": 72,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce qu'un token dans le contexte des LLMs ? Pourquoi est-ce important ?",
-    "answer": "Unité minimale de traitement du texte : ~1 token par mot en anglais, ~1,5-2 tokens en français. Importance : (1) la context window est limitée en tokens, (2) la facturation API est en tokens (input + output), (3) plus de tokens = plus lent et plus cher. Exemple : 'bonjour' = 1 token, 'développeur' peut en valoir 3.",
+    "answer": "Unité minimale de traitement : ~1 token/mot en anglais, ~1,5-2 tokens en français.<br><br>Importance :<ul><li>La <strong>context window</strong> est limitée en tokens</li><li>La <strong>facturation API</strong> est en tokens (input + output)</li><li>Plus de tokens = plus lent et plus cher</li></ul>",
     "difficulty": "easy"
   },
   {
     "id": 73,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce que le paramètre 'température' d'un LLM ? Quand l'augmenter ou la baisser ?",
-    "answer": "Contrôle l'aléatoire dans le choix des tokens générés. Température 0 = déterministe (toujours le token le plus probable, réponses reproductibles). Température élevée (0,8-1,2) = plus de variété et de créativité, mais moins de précision. Règle : basse pour du code/factuel, haute pour de la créativité/brainstorming.",
+    "answer": "Contrôle l'<strong>aléatoire</strong> dans le choix des tokens.<ul><li><strong>0</strong> — déterministe, reproductible</li><li><strong>0,8-1,2</strong> — variété et créativité</li></ul><span class='fc-rule'>Basse → code/factuel. Haute → créativité/brainstorming.</span>",
     "difficulty": "medium"
   },
   {
     "id": 74,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce que le Prompt Engineering ? Quelles sont les 3 techniques les plus efficaces ?",
-    "answer": "L'art de formuler les instructions à un LLM pour maximiser la qualité des réponses. 3 techniques clés : (1) Few-shot — donner des exemples input/output dans le prompt. (2) Chain-of-Thought — demander 'pense étape par étape' pour des raisonnements complexes. (3) Role prompting — 'tu es un expert en X' contextualise le ton et le niveau de réponse.",
+    "answer": "L'art de formuler des instructions à un LLM.<br><br>3 techniques clés :<ul><li><strong>Few-shot</strong> — donner des exemples input/output dans le prompt</li><li><strong>Chain-of-Thought</strong> — \"pense étape par étape\"</li><li><strong>Role prompting</strong> — \"tu es un expert en X\"</li></ul>",
     "difficulty": "easy"
   },
   {
     "id": 75,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce que le RAG (Retrieval-Augmented Generation) et quel problème résout-il ?",
-    "answer": "Technique qui enrichit le prompt avec des documents récupérés dynamiquement avant d'appeler le LLM. Résout : (1) la knowledge cutoff (données postérieures à l'entraînement), (2) les hallucinations sur des données privées/propriétaires. Pipeline : embed la question → chercher les passages similaires dans une vector DB → injecter dans le prompt → générer.",
+    "answer": "Enrichit le prompt avec des <strong>documents récupérés dynamiquement</strong> avant d'appeler le LLM.<br><br>Résout :<ul><li><strong>Knowledge cutoff</strong> — données postérieures à l'entraînement</li><li><strong>Hallucinations</strong> — ancre la réponse dans des sources vérifiées</li></ul>Pipeline : embed → vector DB → injecter → générer",
     "difficulty": "medium"
   },
   {
     "id": 76,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce qu'un embedding vectoriel ? À quoi sert-il concrètement ?",
-    "answer": "Représentation numérique d'un texte sous forme de vecteur de nombres flottants (ex : 1536 dimensions). Les textes sémantiquement proches ont des vecteurs proches (mesure par similarité cosinus). Utilisations : recherche sémantique, moteur RAG, clustering, recommandation. Un modèle d'embedding (ex : text-embedding-3-small) transforme n'importe quel texte en vecteur comparable.",
+    "answer": "Représentation d'un texte sous forme de <strong>vecteur de nombres</strong> (ex : 1536 dimensions).<br><br>Textes sémantiquement proches → vecteurs proches (mesure par <strong>similarité cosinus</strong>).<br><br>Utilisations : recherche sémantique, RAG, clustering, recommandation.",
     "difficulty": "medium"
   },
   {
     "id": 77,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce que le fine-tuning d'un LLM ? Quand l'utiliser plutôt que le prompting ?",
-    "answer": "Ré-entraînement partiel du modèle sur un dataset spécifique pour adapter son comportement, son style ou son domaine. Utiliser quand : format de sortie très spécifique et répétitif, style maison non reproductible par prompt, domaine très spécialisé. Mais coûteux en données et en compute — toujours essayer l'optimisation du prompt et le RAG en premier.",
+    "answer": "Ré-entraînement <strong>partiel</strong> du modèle sur un dataset spécifique.<br><br>Utiliser quand :<ul><li>Format de sortie très spécifique et répétitif</li><li>Style maison non reproductible par prompt</li></ul><span class='fc-rule'>Coûteux → essayer d'abord l'optimisation du prompt et le RAG</span>",
     "difficulty": "medium"
   },
   {
     "id": 78,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce que l'hallucination d'un LLM ? Comment la réduire ?",
-    "answer": "Le modèle génère des informations plausibles syntaxiquement mais factuellement incorrectes, avec assurance. Cause : optimisation sur la cohérence linguistique, pas sur la vérité factuelle. Réduction : RAG (ancrer la réponse dans des documents vérifiés), température basse, demander 'cite tes sources', prompt 'si tu ne sais pas, dis-le', vérification humaine sur les sujets critiques.",
+    "answer": "Le modèle génère des informations <strong>plausibles mais factuellement fausses</strong>, avec assurance.<br><br>Réduction :<ul><li><strong>RAG</strong> — ancrer dans des documents vérifiés</li><li><strong>Température basse</strong></li><li>Prompt : \"si tu ne sais pas, dis-le\"</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 79,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce qu'un Agent IA ? En quoi diffère-t-il d'un simple appel LLM ?",
-    "answer": "Système où le LLM peut utiliser des outils (functions/tools) et boucler sur ses propres sorties pour atteindre un objectif. Pattern ReAct : Reason (planifier) → Act (appeler un outil : web, code, API) → Observe → boucler. Un appel LLM simple est stateless et produit une réponse. Un agent itère, a de la mémoire et prend des décisions autonomes.",
+    "answer": "Système où le LLM peut <strong>utiliser des outils</strong> et boucler pour atteindre un objectif.<br><br>Pattern <strong>ReAct</strong> : Reason → Act (outil) → Observe → boucler<br><br><span class='fc-rule'>Vs appel LLM simple : l'agent itère, a de la mémoire et prend des décisions autonomes</span>",
     "difficulty": "hard"
   },
   {
     "id": 80,
     "category": "Intelligence Artificielle",
     "question": "Qu'est-ce que la context window d'un LLM et quelle est son importance pratique ?",
-    "answer": "Quantité maximale de tokens traités en une seule fois (prompt + réponse). Ex : Claude 3.5 Sonnet = 200k tokens (~150k mots). Plus elle est grande, plus on peut passer de documents longs. Limites : le modèle peut perdre des informations placées au milieu d'un très long contexte ('lost in the middle'). Chaque token de la fenêtre est facturé, même ceux du début.",
+    "answer": "Quantité max de tokens traités en une seule fois (prompt + réponse).<br><br>Ex : Claude = 200k tokens (~150k mots).<br><br>Limites :<ul><li>Perte d'infos au milieu du contexte (<em>\"lost in the middle\"</em>)</li><li>Chaque token est facturé, même ceux du début</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 81,
     "category": "Ressources Humaines",
     "question": "Comment structurer sa réponse à 'Parlez-moi de vous' en entretien ?",
-    "answer": "Structure en 3 temps (2-3 min max) : (1) Formation et démarrage de carrière (bref). (2) Expériences clés et compétences acquises, reliées au poste visé. (3) Situation actuelle et pourquoi ce poste maintenant. Conseil senior : adapter le récit aux besoins lus dans la fiche de poste. Ne pas réciter le CV — raconter une trajectoire cohérente avec une direction claire.",
+    "answer": "Structure en 3 temps (2-3 min) :<ol><li>Formation et démarrage de carrière (bref)</li><li>Expériences clés reliées au poste visé</li><li>Situation actuelle + pourquoi ce poste maintenant</li></ol><span class='fc-rule'>Adapter le récit à la fiche de poste. Raconter une trajectoire, pas réciter le CV.</span>",
     "difficulty": "easy"
   },
   {
     "id": 82,
     "category": "Ressources Humaines",
     "question": "Comment répondre à 'Quels sont vos points forts ?' de façon convaincante ?",
-    "answer": "Citer 2-3 points forts directement liés au poste (pas de qualités génériques). Structure : nommer la qualité + illustrer avec un exemple concret (méthode STAR). Exemples tech : rigueur sur la qualité du code (tests, revues), capacité à monter en compétence rapidement, communication entre technique et non-technique. Éviter 'je suis perfectionniste' sans exemple.",
+    "answer": "2-3 points forts <strong>directement liés au poste</strong> + exemple concret (méthode STAR).<br><br>Exemples tech :<ul><li>Rigueur sur la qualité du code (tests, revues)</li><li>Montée en compétence rapide</li><li>Communication technique/non-technique</li></ul><span class='fc-rule'>Éviter \"je suis perfectionniste\" sans exemple</span>",
     "difficulty": "easy"
   },
   {
     "id": 83,
     "category": "Ressources Humaines",
     "question": "Comment répondre honnêtement à 'Quels sont vos points faibles ?' sans se piéger ?",
-    "answer": "Citer un vrai axe d'amélioration (pas un faux défaut comme 'je travaille trop'). Structure : nommer le défaut réel → actions concrètes déjà prises → progrès mesurable. Ex : 'J'avais du mal à déléguer, j'ai appris à structurer le suivi et faire confiance à l'équipe.' Le recruteur cherche l'auto-critique et la capacité d'apprentissage, pas la perfection.",
+    "answer": "Un <strong>vrai</strong> axe d'amélioration (pas \"je travaille trop\").<br><br>Structure : nommer le défaut → actions prises → progrès mesurable.<br><br>Ex : \"J'avais du mal à déléguer, j'ai appris à faire confiance à l'équipe.\"<br><span class='fc-rule'>Le recruteur cherche l'auto-critique et la capacité d'apprentissage</span>",
     "difficulty": "medium"
   },
   {
     "id": 84,
     "category": "Ressources Humaines",
     "question": "Comment répondre à 'Quelle est votre prétention salariale ?' et comment négocier ?",
-    "answer": "Se préparer : rechercher les fourchettes du marché (LinkedIn Salary, Glassdoor, conventions collectives, réseau). Donner une fourchette cohérente avec son expérience, légèrement haute (marge de négociation). Si possible, laisser parler l'entreprise en premier. Ne jamais sous-estimer (difficile de remonter). Distinguer fixe, variable, avantages (RTT, remote, formation).",
+    "answer": "Préparation : LinkedIn Salary, Glassdoor, réseau.<br><br>Donner une <strong>fourchette légèrement haute</strong> (marge de négociation).<ul><li>Si possible, laisser parler l'entreprise en premier</li><li>Ne jamais sous-estimer (difficile de remonter)</li><li>Distinguer fixe · variable · avantages (remote, formation)</li></ul>",
     "difficulty": "medium"
   },
   {
     "id": 85,
     "category": "Ressources Humaines",
     "question": "Comment répondre à 'Pourquoi voulez-vous rejoindre notre entreprise ?' de façon percutante ?",
-    "answer": "Montrer qu'on a fait ses recherches : produit/mission, stack technique, actualité récente, culture d'équipe. Structure : (1) Ce qui attire spécifiquement dans l'entreprise. (2) Ce que ce poste apporte à sa trajectoire. (3) Ce qu'on peut apporter à l'équipe. Éviter les réponses génériques ('bonne réputation', 'entreprise innovante') — être précis et sincère.",
+    "answer": "Montrer qu'on a <strong>fait ses recherches</strong> (produit, stack, actualité).<br><br>Structure :<ol><li>Ce qui attire spécifiquement dans l'entreprise</li><li>Ce que ce poste apporte à sa trajectoire</li><li>Ce qu'on peut apporter à l'équipe</li></ol><span class='fc-rule'>Éviter \"bonne réputation\" — être précis et sincère</span>",
     "difficulty": "easy"
   },
   {
     "id": 86,
     "category": "Ressources Humaines",
     "question": "Qu'est-ce que la méthode STAR et quand l'utiliser en entretien ?",
-    "answer": "Framework pour répondre aux questions comportementales : Situation (contexte précis), Tâche (ton rôle et l'objectif), Action (ce que TU as fait — pas 'nous'), Résultat (impact mesurable : délai, %, satisfaction). Utiliser pour : 'Décrivez un conflit', 'Parlez d'un échec', 'Votre plus grande réussite'. Le recruteur cherche des faits concrets, pas des généralités.",
+    "answer": "Framework pour les questions comportementales :<ul><li><strong>S</strong>ituation — contexte précis</li><li><strong>T</strong>âche — ton rôle et l'objectif</li><li><strong>A</strong>ction — ce que <em>toi</em> tu as fait (pas \"nous\")</li><li><strong>R</strong>ésultat — impact mesurable (%, délai, satisfaction)</li></ul><span class='fc-rule'>Le recruteur cherche des faits concrets, pas des généralités</span>",
     "difficulty": "easy"
   },
   {
     "id": 87,
     "category": "Ressources Humaines",
     "question": "Comment répondre à 'Où vous voyez-vous dans 5 ans ?' sans paraître opportuniste ?",
-    "answer": "Montrer une ambition réaliste et alignée avec ce que l'entreprise peut offrir. Ne pas dire 'à votre poste' (maladroit) ni 'je ne sais pas' (manque de projection). Exemples : 'Devenir tech lead ou expert sur ce domaine', 'Avoir eu l'occasion de travailler sur des projets à fort impact utilisateur'. Relier à la trajectoire d'évolution visible dans l'entreprise.",
+    "answer": "Montrer une ambition <strong>réaliste et alignée</strong> avec ce que l'entreprise offre.<br><br>Exemples :<ul><li>\"Devenir tech lead ou expert sur ce domaine\"</li><li>\"Avoir travaillé sur des projets à fort impact utilisateur\"</li></ul><span class='fc-rule'>Éviter \"à votre poste\" (maladroit) et \"je ne sais pas\" (manque de projection)</span>",
     "difficulty": "easy"
   },
   {
     "id": 88,
     "category": "Ressources Humaines",
     "question": "Comment répondre à 'Comment gérez-vous un conflit avec un collègue ?' ?",
-    "answer": "Utiliser la méthode STAR avec un exemple réel. Points clés attendus : dialogue direct et bienveillant (pas d'évitement), écoute active, recherche d'une solution commune centrée sur l'objectif partagé, escalade hiérarchique en dernier recours. Éviter : blâmer l'autre entièrement, dire 'je n'ai jamais eu de conflit' (non-crédible), rester vague et théorique.",
+    "answer": "Structure STAR avec un exemple réel.<br><br>Points clés attendus :<ul><li>Dialogue direct et bienveillant</li><li>Écoute active</li><li>Solution centrée sur l'objectif partagé</li><li>Escalade hiérarchique en dernier recours</li></ul><span class='fc-rule'>Éviter : blâmer l'autre, \"jamais eu de conflit\", rester vague</span>",
     "difficulty": "medium"
   },
   {
     "id": 89,
     "category": "Ressources Humaines",
     "question": "Quelles questions pertinentes poser à la fin d'un entretien technique ?",
-    "answer": "Toujours préparer 3-4 questions — c'est un signal d'intérêt et de sérieux. Bonnes questions : stack technique et choix architecturaux actuels, pratiques d'équipe (code review, tests, CI/CD, méthodo), défis techniques actuels du projet, opportunités d'évolution et de montée en compétence, culture d'équipe et onboarding. Éviter : congés, avantages, salaire (si non abordé) à ce stade.",
+    "answer": "Toujours préparer <strong>3-4 questions</strong>. Bonnes questions :<ul><li>Stack technique et choix architecturaux</li><li>Pratiques d'équipe (code review, tests, CI/CD)</li><li>Défis techniques actuels du projet</li><li>Opportunités d'évolution et de montée en compétence</li></ul><span class='fc-rule'>Éviter congés/avantages/salaire à ce stade</span>",
     "difficulty": "easy"
   },
   {
     "id": 90,
     "category": "Ressources Humaines",
     "question": "Comment répondre à 'Parlez-moi d'un échec professionnel' sans se disqualifier ?",
-    "answer": "Le recruteur cherche : honnêteté, prise de responsabilité, capacité d'apprentissage. Structure STAR : décrire l'échec clairement sans minimiser, expliquer ta part de responsabilité (pas celle des autres), les leçons concrètes tirées, ce que tu ferais différemment. Éviter : un 'échec' où tu es en réalité le héros, blâmer les circonstances ou les collègues, choisir un échec trop anodin.",
+    "answer": "Le recruteur cherche : honnêteté, responsabilité, <strong>capacité d'apprentissage</strong>.<br><br>Structure STAR :<ul><li>Décrire l'échec clairement sans minimiser</li><li>Ta part de responsabilité (pas celle des autres)</li><li>Leçons concrètes + ce que tu ferais différemment</li></ul><span class='fc-rule'>Éviter un \"échec\" où tu es en réalité le héros</span>",
     "difficulty": "medium"
+  },
+  {
+    "id": 91,
+    "category": "Java",
+    "question": "Quelle est la différence entre == et equals() en Java ?",
+    "answer": "<ul><li><strong>==</strong> — compare les <em>références</em> (même objet en mémoire ?)</li><li><strong>equals()</strong> — compare le <em>contenu</em> logique</li></ul><code>new String(\"abc\") == new String(\"abc\")</code> → <strong>false</strong><br><code>\"abc\" == \"abc\"</code> → true (String pool)<br><span class='fc-rule'>Toujours utiliser equals() pour comparer des objets</span>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 92,
+    "category": "Java",
+    "question": "Qu'est-ce que le contrat equals() / hashCode() ? Pourquoi les redéfinir ensemble ?",
+    "answer": "Contrat : si <code>a.equals(b)</code> est true, alors <code>a.hashCode() == b.hashCode()</code><br><br>Sans ce contrat, des objets \"égaux\" vont dans des buckets <strong>différents</strong> dans une HashMap/HashSet.<br><span class='fc-rule'>Résultat : doublons invisibles, recherches échouées → toujours redéfinir les deux ensemble</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 93,
+    "category": "Java",
+    "question": "Qu'est-ce que le String Pool ? Pourquoi les String sont-ils immuables en Java ?",
+    "answer": "Zone du Heap qui <strong>réutilise</strong> les littéraux identiques : <code>\"abc\" == \"abc\"</code> → true.<br><br>Les String sont immuables pour :<ul><li>Sécuriser le pool (pas de modification de l'objet partagé)</li><li>hashCode mis en cache (clé HashMap fiable)</li><li>Thread-safety automatique</li></ul><span class='fc-rule'>Utiliser StringBuilder pour les concaténations en boucle</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 94,
+    "category": "Java",
+    "question": "Quelle est la différence entre classe abstraite et interface en Java 8+ ?",
+    "answer": "<ul><li><strong>Classe abstraite</strong> — état (champs), constructeur, méthodes concrètes, héritage simple</li><li><strong>Interface</strong> — pas d'état, default/static methods (Java 8), héritage multiple</li></ul><span class='fc-rule'>Interface → contrat comportemental. Classe abstraite → partager du code et de l'état.</span>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 95,
+    "category": "Java",
+    "question": "Quelle est la différence entre checked et unchecked exceptions ?",
+    "answer": "<ul><li><strong>Checked</strong> (extends Exception) — compilateur force le catch ou throws (IOException)</li><li><strong>Unchecked</strong> (extends RuntimeException) — erreurs de programmation (NPE, IAE)</li></ul><span class='fc-rule'>Checked → erreurs récupérables. Unchecked → bugs de code. Éviter les checked dans les APIs publiques (elles fuient dans les lambdas).</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 96,
+    "category": "Java",
+    "question": "Quelles sont les différences entre ArrayList, LinkedList et ArrayDeque ?",
+    "answer": "<ul><li><strong>ArrayList</strong> — accès indexé O(1), insertion milieu O(n) → cas général</li><li><strong>LinkedList</strong> — insertion tête/queue O(1), accès O(n), cache miss → rarement meilleure</li><li><strong>ArrayDeque</strong> — pile/file O(1) en tête ET queue → préférer à Stack et LinkedList</li></ul><span class='fc-rule'>ArrayList par défaut, ArrayDeque pour les files</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 97,
+    "category": "Java",
+    "question": "Quelle est la différence entre HashMap, TreeMap et LinkedHashMap ?",
+    "answer": "<ul><li><strong>HashMap</strong> — O(1), pas d'ordre → cas général</li><li><strong>TreeMap</strong> — O(log n), clés <em>triées</em> → ranges</li><li><strong>LinkedHashMap</strong> — O(1), ordre d'<em>insertion</em> préservé → cache LRU</li></ul><span class='fc-rule'>Tous non thread-safe → ConcurrentHashMap en multi-thread</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 98,
+    "category": "Java",
+    "question": "Qu'est-ce que la Stream API Java 8 ? Quelle est la différence entre opérations intermédiaires et terminales ?",
+    "answer": "Traitement fonctionnel de collections.<ul><li><strong>Intermédiaires</strong> (lazy) : filter, map, flatMap, sorted, distinct, limit</li><li><strong>Terminales</strong> (déclenchent l'exécution) : collect, forEach, count, reduce</li></ul><span class='fc-rule'>Les intermédiaires ne s'exécutent pas sans terminale → optimisation automatique (court-circuit)</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 99,
+    "category": "Java",
+    "question": "Qu'est-ce qu'Optional<T> et comment l'utiliser correctement ?",
+    "answer": "Conteneur pour une valeur <strong>potentiellement absente</strong> — remplace les retours null.<br><br>Utilisation correcte :<ul><li><code>map()</code> / <code>flatMap()</code> / <code>filter()</code></li><li><code>orElse()</code> / <code>orElseGet()</code></li></ul><span class='fc-rule'>Pièges : get() sans isPresent() = NPE. Ne pas mettre Optional en champ/paramètre.</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 100,
+    "category": "Java",
+    "question": "Qu'est-ce qu'une interface fonctionnelle ? Quelles sont les 4 principales du JDK ?",
+    "answer": "Interface avec <strong>une seule méthode abstraite</strong> (<code>@FunctionalInterface</code>), utilisable avec une lambda.<br><br>4 principales :<ul><li><strong>Supplier&lt;T&gt;</strong> — () → T</li><li><strong>Consumer&lt;T&gt;</strong> — T → void</li><li><strong>Function&lt;T,R&gt;</strong> — T → R</li><li><strong>Predicate&lt;T&gt;</strong> — T → boolean</li></ul>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 101,
+    "category": "Java",
+    "question": "Quelle est la différence entre Comparable et Comparator ?",
+    "answer": "<ul><li><strong>Comparable</strong> — ordre <em>naturel</em> via <code>compareTo()</code> dans la classe elle-même (String, Integer)</li><li><strong>Comparator</strong> — ordre <em>externe</em> défini séparément, plusieurs ordres possibles</li></ul>Java 8 : <code>Comparator.comparing(Person::getName).thenComparing(Person::getAge)</code>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 102,
+    "category": "Java",
+    "question": "Comment fonctionne la mémoire JVM ? Quelle est la différence entre Heap et Stack ?",
+    "answer": "<ul><li><strong>Stack</strong> (par thread) — frames d'appel, variables locales, LIFO → StackOverflowError</li><li><strong>Heap</strong> (partagé) — objets instanciés avec new, géré par le GC</li></ul>Fuites mémoire Java : objets référencés mais inutiles (caches sans expiration, listeners non désenregistrés)",
+    "difficulty": "hard"
+  },
+  {
+    "id": 103,
+    "category": "Java",
+    "question": "Qu'est-ce que synchronized et volatile ? Quelle est leur différence ?",
+    "answer": "<ul><li><strong>volatile</strong> — visibilité uniquement (lit depuis la mémoire principale, pas le cache CPU)</li><li><strong>synchronized</strong> — visibilité + exclusion mutuelle (1 seul thread à la fois)</li></ul><span class='fc-rule'>volatile → flag simple. synchronized / AtomicXxx → lire-modifier-écrire (compteur).</span>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 104,
+    "category": "Java",
+    "question": "Qu'est-ce que le type erasure en Java Generics et quelles en sont les conséquences ?",
+    "answer": "À la compilation, les types génériques sont <strong>effacés</strong> et remplacés par des casts.<br><br>À l'exécution : <code>List&lt;String&gt;</code> = <code>List&lt;Integer&gt;</code> = <code>List</code> raw.<br><span class='fc-rule'>Conséquences : impossible new T[], instanceof List&lt;String&gt; illégal, type non disponible par réflexion</span>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 105,
+    "category": "Java",
+    "question": "Qu'est-ce que final en Java ? Les 3 usages à connaître.",
+    "answer": "3 usages :<ul><li><strong>final variable</strong> — ne peut pas être réassignée (l'objet reste mutable !)</li><li><strong>final méthode</strong> — ne peut pas être surchargée</li><li><strong>final classe</strong> — ne peut pas être étendue (String, Integer)</li></ul><span class='fc-rule'>final ≠ immuable. Un final List peut recevoir add().</span>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 106,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Builder ? Quand et pourquoi l'utiliser ?",
+    "answer": "Construit un objet complexe <strong>étape par étape</strong>.<br><br><code>Person.builder().name(\"Alice\").age(30).build()</code><br><br>Utiliser quand :<ul><li>Beaucoup de paramètres, certains optionnels</li><li>Validation centralisée dans <code>build()</code></li></ul>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 107,
+    "category": "Architecture & Patterns",
+    "question": "Quelle est la différence entre Factory Method et Abstract Factory ?",
+    "answer": "<ul><li><strong>Factory Method</strong> — 1 sous-classe décide quel objet créer → <strong>1 produit</strong></li><li><strong>Abstract Factory</strong> — famille d'objets liés créés ensemble → <strong>famille de produits</strong></li></ul>Ex : <code>UIFactory.createButton()</code> + <code>UIFactory.createCheckbox()</code> garantissent la cohérence (Windows vs Mac)",
+    "difficulty": "medium"
+  },
+  {
+    "id": 108,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Decorator ? Quand l'utiliser plutôt que l'héritage ?",
+    "answer": "Ajoute dynamiquement des responsabilités en <strong>enveloppant</strong> un objet dans un autre du même type.<br><br><code>new BufferedInputStream(new FileInputStream(f))</code><br><br><span class='fc-rule'>Vs héritage (statique) : le Decorator est dynamique et évite l'explosion de sous-classes</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 109,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Adapter ? Quelle est la différence avec Bridge ?",
+    "answer": "<ul><li><strong>Adapter</strong> — fait collaborer deux interfaces incompatibles existantes (a posteriori)</li><li><strong>Bridge</strong> — sépare abstraction et implémentation dès la conception (préventif)</li></ul><span class='fc-rule'>Adapter = plomberie (faire fonctionner ce qui existe). Bridge = architecture (prévoir l'évolution).</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 110,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Command ? Quels problèmes résout-il ?",
+    "answer": "Encapsule une requête comme un <strong>objet</strong>.<br><br>Résout :<ul><li><strong>Undo/redo</strong> — stocker les commandes passées</li><li><strong>Macros</strong> — liste de commandes</li><li><strong>Queue de jobs</strong></li></ul>Ex : bouton \"Annuler\" dans un éditeur de texte.",
+    "difficulty": "medium"
+  },
+  {
+    "id": 111,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Proxy ? Quels sont ses 3 types principaux ?",
+    "answer": "Substitut qui contrôle l'accès à un objet. 3 types :<ul><li><strong>Virtual</strong> — lazy loading (charge à la première utilisation)</li><li><strong>Protection</strong> — contrôle des droits d'accès (Spring Security AOP)</li><li><strong>Remote</strong> — représente un objet distant (stub REST, RMI)</li></ul><span class='fc-rule'>Spring crée des proxies pour @Transactional, @Cacheable</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 112,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le CQRS (Command Query Responsibility Segregation) ?",
+    "answer": "Sépare <strong>lecture (Query)</strong> et <strong>écriture (Command)</strong> en deux modèles distincts.<ul><li><strong>Write</strong> — validation métier → modification d'état</li><li><strong>Read</strong> — modèle dénormalisé, optimisé pour la lecture/cache</li></ul><span class='fc-rule'>Avantage : chaque côté scale indépendamment. Inconvénient : cohérence éventuelle, complexité.</span>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 113,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que l'Event Sourcing ? Quelle est la différence avec le stockage d'état classique ?",
+    "answer": "L'Event Sourcing est un modèle architectural où l'état d'une application n'est pas stocké directement, mais est dérivé d'une séquence d'événements immuables enregistrés dans un Event Store.  Au lieu de maintenir un instantané de la donnée actuelle, le système conserve l'historique complet de toutes les modifications, permettant de rejouer les événements pour reconstruire l'état à n'importe quel moment. <br> Contrairement au stockage classique (CRUD) qui met à jour ou écrase les données, l'Event Sourcing offre une auditabilité native et une traçabilité totale, car chaque changement est horodaté et irréversible.",
+    "difficulty": "hard"
+  },
+  {
+    "id": 114,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que l'Architecture Hexagonale (Ports & Adapters) ?",
+    "answer": "Isole le <strong>cœur métier</strong> des détails techniques via :<ul><li><strong>Ports</strong> — interfaces définies par le domaine</li><li><strong>Adapters</strong> — implémentations concrètes (REST, JPA, Kafka)</li></ul><span class='fc-rule'>Le domaine ne connaît aucun framework → testable en pur Java sans Spring ni BDD</span>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 115,
+    "category": "Architecture & Patterns",
+    "question": "Quels sont les concepts clés du Domain-Driven Design (DDD) ?",
+    "answer": "<ul><li><strong>Entity</strong> — identité unique (User#42)</li><li><strong>Value Object</strong> — immuable, défini par sa valeur (Email, Money)</li><li><strong>Aggregate</strong> — groupe cohérent avec Aggregate Root</li><li><strong>Repository</strong> — abstraction d'accès aux Aggregates</li><li><strong>Bounded Context</strong> — frontière où un modèle a un sens précis</li></ul>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 116,
+    "category": "Architecture & Patterns",
+    "question": "Microservices vs Architecture Monolithique — avantages, inconvénients, et quand choisir ?",
+    "answer": "<ul><li><strong>Monolithe</strong> — simple, déboguable, transactions ACID → idéal en démarrage</li><li><strong>Microservices</strong> — scalabilité indépendante, déploiement par équipe → complexité opérationnelle</li></ul><span class='fc-rule'>Commencer en monolithe modulaire, extraire quand une vraie contrainte l'exige. Éviter les \"micro-monolithes\".</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 117,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce que le Design Pattern Template Method ? Comment diffère-t-il de Strategy ?",
+    "answer": "<ul><li><strong>Template Method</strong> — squelette fixe dans une classe abstraite, sous-classes implémentent les étapes → <em>héritage</em></li><li><strong>Strategy</strong> — algorithme entier interchangeable à runtime → <em>composition</em></li></ul><span class='fc-rule'>Template Method = décision à la compilation. Strategy = décision à runtime.</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 118,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce qu'une architecture événementielle (Event-Driven) ? Avantages et défis.",
+    "answer": "Les composants communiquent via des <strong>événements asynchrones</strong>.<br><br>Producteur → bus (Kafka, RabbitMQ) → consommateurs indépendants.<ul><li><strong>+</strong> Découplage, scalabilité, résilience</li><li><strong>-</strong> Cohérence éventuelle, débogage difficile, idempotence obligatoire</li></ul>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 119,
+    "category": "Angular",
+    "question": "Quel est l'ordre des lifecycle hooks Angular et lequel utiliser pour quoi ?",
+    "answer": "Ordre : ngOnChanges → ngOnInit → ngDoCheck → ngAfterContentInit → ngAfterContentChecked → ngAfterViewInit → ngAfterViewChecked → ngOnDestroy<br><br><span class='fc-rule'>ngOnInit = init · ngOnChanges = réagir aux Inputs · ngAfterViewInit = ViewChild · ngOnDestroy = cleanup. Constructeur = DI uniquement.</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 120,
+    "category": "Angular",
+    "question": "Quelle est la différence entre ngOnInit et le constructeur ? Que mettre dans l'un ou l'autre ?",
+    "answer": "<ul><li><strong>Constructeur</strong> — exécuté avant Angular → DI uniquement. Les Inputs sont <em>undefined</em>.</li><li><strong>ngOnInit</strong> — exécuté après Angular → Inputs disponibles → HTTP, initialisation</li></ul><span class='fc-rule'>Piège : accéder à un Input dans le constructeur → toujours undefined</span>",
+    "difficulty": "easy",
+    "version": "v16+"
+  },
+  {
+    "id": 121,
+    "category": "Angular",
+    "question": "Qu'est-ce que ViewChild et viewChild() ? Quelle est la différence entre static: true et static: false ?",
+    "answer": "Accède à un élément du template depuis TypeScript.<ul><li><strong>static: true</strong> — résolu dans ngOnInit (élément non conditionnel)</li><li><strong>static: false</strong> (défaut) — résolu dans ngAfterViewInit (élément dans @if/@for)</li></ul><span class='fc-rule'>v17+ : viewChild() retourne un Signal → plus réactif, compatible OnPush</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 122,
+    "category": "Angular",
+    "question": "Qu'est-ce que la projection de contenu (ng-content) ? Comment projeter sélectivement ?",
+    "answer": "Injecte du contenu HTML <strong>depuis le parent</strong> dans le template enfant.<br><br>Projection sélective : <code>&lt;ng-content select='[header]'&gt;</code><br><br><span class='fc-rule'>Multi-slot = plusieurs ng-content avec des sélecteurs différents. contentChild() accessible après ngAfterContentInit.</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 123,
+    "category": "Angular",
+    "question": "Quelle est la différence entre ng-template, ng-container et ng-content ?",
+    "answer": "<ul><li><strong>ng-template</strong> — bloc non rendu immédiatement, instancié dynamiquement (<em>moule</em>)</li><li><strong>ng-container</strong> — grouper sans ajouter de div dans le DOM (<em>fantôme</em>)</li><li><strong>ng-content</strong> — slot pour le contenu projeté par le parent (<em>trou</em>)</li></ul>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 124,
+    "category": "Angular",
+    "question": "Comment créer une directive personnalisée ? Quelle est la différence entre directive structurelle et attribut ?",
+    "answer": "<ul><li><strong>Attribut</strong> — modifie apparence/comportement d'un élément existant</li><li><strong>Structurelle</strong> — ajoute/retire des éléments du DOM (préfixe *)</li></ul><code>@Directive({ selector: '[myDir]', host: { '(click)': 'onClick()' } })</code><br><span class='fc-rule'>Ne plus utiliser @HostListener/@HostBinding → utiliser l'objet host</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 125,
+    "category": "Angular",
+    "question": "Comment créer un Pipe personnalisé ? Quand le rendre impure ?",
+    "answer": "<code>@Pipe({ name: 'truncate' })</code> + <code>transform(value, ...args)</code><br><br><ul><li><strong>Pure</strong> (défaut) — appelé si la référence change, mémoïsé</li><li><strong>Impure</strong> (<code>pure: false</code>) — appelé à chaque CD, très coûteux</li></ul><span class='fc-rule'>Préférer l'immutabilité + pipe pure</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 126,
+    "category": "Angular",
+    "question": "Comment fonctionnent les Reactive Forms ? Quelle est la différence entre FormGroup, FormControl et FormArray ?",
+    "answer": "<ul><li><strong>FormControl</strong> — 1 champ avec valeur + validateurs</li><li><strong>FormGroup</strong> — groupe de FormControls (objet)</li><li><strong>FormArray</strong> — tableau dynamique de FormControls/Groups</li></ul>Accès : <code>form.get('email')?.value</code><br><span class='fc-rule'>Angular 14+ : FormGroup typé</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 127,
+    "category": "Angular",
+    "question": "Comment créer un validateur personnalisé dans les Reactive Forms ?",
+    "answer": "<code>(control: AbstractControl) => ValidationErrors | null</code><br><br>Retourner null si valide, <code>{ passwordMismatch: true }</code> sinon.<ul><li><strong>Synchrone</strong> — ValidationErrors directement</li><li><strong>Asynchrone</strong> — Observable/Promise (ex: check username dispo)</li></ul><span class='fc-rule'>Async appelé uniquement si tous les validateurs synchrones passent</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 128,
+    "category": "Angular",
+    "question": "Qu'est-ce qu'un HttpInterceptor ? Comment en créer un et à quoi sert-il ?",
+    "answer": "Middleware qui intercepte toutes les requêtes/réponses HTTP.<br><br>Cas d'usage :<ul><li>Ajouter un token d'auth (Authorization: Bearer ...)</li><li>Logger les requêtes</li><li>Gérer les erreurs globalement (401 → redirect, retry 503)</li></ul><span class='fc-rule'>v15+ : withInterceptors([fn]) dans provideHttpClient()</span>",
+    "difficulty": "medium",
+    "version": "v15+"
+  },
+  {
+    "id": 129,
+    "category": "Angular",
+    "question": "Comment lire les paramètres d'URL avec ActivatedRoute ? Quelle différence entre params, queryParams et data ?",
+    "answer": "<ul><li><strong>params</strong> — /users/:id (paramètre de chemin)</li><li><strong>queryParams</strong> — ?page=2&amp;sort=name</li><li><strong>data</strong> — données statiques de la config de route + Resolver</li></ul><span class='fc-rule'>v16+ : toSignal(route.params) pour rester réactif en OnPush</span>",
+    "difficulty": "easy",
+    "version": "v16+"
+  },
+  {
+    "id": 130,
+    "category": "Angular",
+    "question": "Qu'est-ce qu'un Route Resolver ? Quand l'utiliser et quels sont ses inconvénients ?",
+    "answer": "Précharge des données <strong>avant</strong> la navigation. Le composant reçoit la donnée dès son init.<br><br><span class='fc-rule'>Inconvénient : bloque la navigation jusqu'à la fin du chargement (UX dégradée sur réseau lent). Alternative : naviguer immédiatement + @placeholder/@loading dans le composant.</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 131,
+    "category": "Angular",
+    "question": "Quelles sont les 4 façons de fournir une dépendance avec provide: ? Quand utiliser chacune ?",
+    "answer": "<ul><li><strong>useClass</strong> — instancie une classe alternative (mock en tests)</li><li><strong>useValue</strong> — injecte une valeur statique déjà créée</li><li><strong>useFactory</strong> — crée via une fonction (logique conditionnelle)</li><li><strong>useExisting</strong> — alias pour la même instance qu'un autre token</li></ul>",
+    "difficulty": "hard",
+    "version": "v16+"
+  },
+  {
+    "id": 132,
+    "category": "Angular",
+    "question": "Qu'est-ce que DestroyRef et takeUntilDestroyed ? Pourquoi remplacent-ils ngOnDestroy ?",
+    "answer": "<ul><li><strong>DestroyRef</strong> — token avec <code>onDestroy()</code>, utilisable dans des helpers inject()</li><li><strong>takeUntilDestroyed()</strong> — complete un Observable à la destruction du contexte</li></ul><span class='fc-rule'>Plus besoin de ngOnDestroy ni du pattern Subject destroy$ → code plus propre</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 133,
+    "category": "Angular",
+    "question": "Qu'est-ce que afterNextRender et afterRender ? En quoi diffèrent-ils de ngAfterViewInit ?",
+    "answer": "<ul><li><strong>afterNextRender</strong> — une seule fois après le prochain rendu (init libs tierces : graphiques, éditeurs)</li><li><strong>afterRender</strong> — après chaque rendu</li></ul><span class='fc-rule'>Fonctionnent en Zoneless et SSR (ignorés côté serveur). Compositionnels — utilisables dans inject() helpers.</span>",
+    "difficulty": "hard",
+    "version": "v17+"
+  },
+  {
+    "id": 134,
+    "category": "Angular",
+    "question": "Qu'est-ce que le two-way binding [()] en Angular ? Comment model() le modernise-t-il ?",
+    "answer": "Le two-way binding (liaison bidirectionnelle) dans Angular est un mécanisme qui synchronise automatiquement les données entre le composant (modèle TypeScript) et l'interface utilisateur (vue HTML) dans les deux sens (v17+) — Signal writable qui synchronise automatiquement le binding bidirectionnel.<br><br><span class='fc-rule'>Compatible OnPush nativement, moins de boilerplate que @Input + @Output</span>",
+    "difficulty": "medium",
+    "version": "v17+"
+  },
+  {
+    "id": 135,
+    "category": "Angular",
+    "question": "Qu'est-ce que NgZone et runOutsideAngular() ? Quand l'utiliser ?",
+    "answer": "<strong>NgZone</strong> détecte les changements async en monkey-patchant les APIs du navigateur.<br><br><code>runOutsideAngular()</code> — exécute du code sans déclencher la CD.<ul><li>Animations haute fréquence</li><li>Listeners scroll/mousemove qui ne modifient pas l'état Angular</li></ul><span class='fc-rule'>Puis zone.run() pour re-entrer dans la zone et déclencher une mise à jour</span>",
+    "difficulty": "hard",
+    "version": "v16+"
+  },
+  {
+    "id": 136,
+    "category": "Angular",
+    "question": "Quelle est la différence entre un Observable chaud (hot) et froid (cold) dans le contexte Angular ?",
+    "answer": "<ul><li><strong>Cold</strong> — chaque subscribe déclenche une nouvelle exécution (HttpClient.get() = nouvelle requête à chaque subscribe)</li><li><strong>Hot</strong> — flux partagé indépendant des subscribers (fromEvent, Subject)</li></ul><span class='fc-rule'>Piège : subscribe 2x à un HttpClient.get() = 2 requêtes réseau → shareReplay(1) pour partager</span>",
+    "difficulty": "hard",
+    "version": "v16+"
+  },
+  {
+    "id": 137,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce qu'un microservice ? Quels sont ses 4 principes fondamentaux ?",
+    "answer": "Architecture où l'application est découpée en <strong>services autonomes</strong>, chacun responsable d'un domaine métier.<br><br>4 principes :<ul><li><strong>Responsabilité unique</strong> — 1 service = 1 domaine (SRP appliqué à l'architecture)</li><li><strong>Déployable indépendamment</strong> — sans impacter les autres</li><li><strong>Database per service</strong> — aucune BDD partagée</li><li><strong>Communication via API</strong> — REST, gRPC ou messaging</li></ul><span class='fc-rule'>Spring Boot est le framework Java de référence pour implémenter des microservices</span>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 138,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que le Service Discovery ? Quelle est la différence entre client-side et server-side discovery ?",
+    "answer": "Mécanisme par lequel les services <strong>se trouvent dynamiquement</strong> sans hardcoder les adresses IP.<br><br><ul><li><strong>Client-side</strong> (Eureka + Ribbon/LoadBalancer) — le client interroge le registre et choisit l'instance</li><li><strong>Server-side</strong> (AWS ALB, Consul + Nginx) — un proxy interroge le registre à la place du client</li></ul><span class='fc-rule'>Spring Cloud Netflix Eureka = client-side. Annotation @EnableEurekaServer + @EnableDiscoveryClient</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 139,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce qu'un API Gateway ? Quelles sont ses responsabilités principales ?",
+    "answer": "Point d'entrée <strong>unique</strong> devant tous les microservices. Responsabilités :<ul><li><strong>Routage</strong> — redirige /orders/** vers order-service</li><li><strong>Auth/JWT</strong> — valide le token une seule fois</li><li><strong>Rate limiting</strong> — protège contre les abus</li><li><strong>Agrégation</strong> — combine plusieurs appels en une réponse</li></ul><span class='fc-rule'>Spring Cloud Gateway (réactif) remplace Zuul (déprécié). Config via RouteLocator ou application.yml.</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 140,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que le Circuit Breaker ? Comment Resilience4j l'implémente-t-il ?",
+    "answer": "Coupe le circuit si un service distant échoue trop souvent, évitant <strong>l'effet cascade</strong>.<br><br>3 états :<ul><li><strong>CLOSED</strong> — appels normaux</li><li><strong>OPEN</strong> — rejette immédiatement (erreur rapide)</li><li><strong>HALF-OPEN</strong> — laisse passer quelques appels tests</li></ul><code>@CircuitBreaker(name = \"orderService\", fallbackMethod = \"fallback\")</code><br><span class='fc-rule'>Resilience4j remplace Hystrix (déprécié). Configurable via application.yml : failureRateThreshold, waitDurationInOpenState</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 141,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que le pattern Saga ? Quelle est la différence entre Choreography et Orchestration ?",
+    "answer": "Gère les <strong>transactions distribuées</strong> sans transaction ACID cross-service.<br><br><ul><li><strong>Choreography</strong> — chaque service publie un événement et réagit aux événements des autres (Kafka). Décentralisé.</li><li><strong>Orchestration</strong> — un orchestrateur (Camunda, Conductor) dirige le flux. Centralisé.</li></ul>En cas d'échec → <strong>transactions compensatoires</strong> (annuler les étapes précédentes).<br><span class='fc-rule'>Choreography = moins de couplage. Orchestration = plus de visibilité sur le workflow.</span>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 142,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que la configuration centralisée ? Comment Spring Cloud Config fonctionne-t-il ?",
+    "answer": "Centralise la config de tous les services dans un dépôt unique.<br><br><strong>Config Server</strong> expose les configs via HTTP depuis Git.<br><strong>Config Client</strong> les récupère au démarrage.<br><br><code>spring.config.import=configserver:http://config-server:8888</code><br><ul><li>Refresh dynamique via <code>@RefreshScope</code> + actuator/refresh</li><li>Secrets chiffrés avec Spring Cloud Config Encrypt</li></ul><span class='fc-rule'>Alternative cloud-native : AWS Parameter Store, HashiCorp Vault</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 143,
+    "category": "Microservices Java",
+    "question": "REST vs Messaging asynchrone pour la communication inter-services — quand choisir quoi ?",
+    "answer": "<ul><li><strong>REST/gRPC</strong> — requête/réponse synchrone, résultat immédiat nécessaire. Ex : vérifier le stock avant commande.</li><li><strong>Messaging (Kafka, RabbitMQ)</strong> — async, découplage fort, tolérance aux pannes. Ex : envoyer un email après commande.</li></ul>Pattern <strong>Outbox</strong> : écrire l'événement en BDD dans la même transaction, puis le publier → garantie at-least-once.<br><span class='fc-rule'>Éviter le couplage temporel : préférer le messaging quand le résultat n'est pas bloquant</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 144,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que le Distributed Tracing ? Comment Spring Boot + Micrometer Tracing l'implémentent-ils ?",
+    "answer": "Suit une requête <strong>à travers plusieurs services</strong> via un identifiant unique : <strong>Trace ID</strong> et <strong>Span ID</strong>.<br><br>Stack :<ul><li><strong>Micrometer Tracing</strong> (remplace Spring Cloud Sleuth) — instrumentation</li><li><strong>Zipkin / Jaeger</strong> — collecte et visualisation</li></ul>Le Trace ID est propagé automatiquement en HTTP header (<code>traceparent</code>) et dans les messages Kafka.<br><span class='fc-rule'>Configurer le sampling : 1.0 en dev, 0.1 en prod pour limiter le volume</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 145,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que le pattern Strangler Fig ? Comment migrer un monolithe vers des microservices ?",
+    "answer": "Migration <strong>progressive</strong> : on extrait des fonctionnalités une par une, le monolithe rétrécit jusqu'à disparaître.<br><br>Étapes :<ol><li>Placer un <strong>API Gateway</strong> devant le monolithe</li><li>Extraire une fonctionnalité dans un microservice</li><li>Rediriger le trafic via le Gateway</li><li>Répéter jusqu'à extinction du monolithe</li></ol><span class='fc-rule'>Éviter le big bang (réécriture totale) : risque trop élevé. Le Strangler Fig = approche incrémentale et réversible.</span>",
+    "difficulty": "hard"
+  },
+  {
+    "id": 146,
+    "category": "Microservices Java",
+    "question": "Qu'est-ce que le pattern Sidecar et le Service Mesh ? Quel problème résolvent-ils ?",
+    "answer": "Un <strong>sidecar</strong> est un conteneur auxiliaire déployé aux côtés du service principal, gérant les concerns transverses sans modifier le code.<br><br><strong>Service Mesh</strong> (Istio, Linkerd) = réseau de sidecars qui gèrent :<ul><li>mTLS — chiffrement inter-services</li><li>Load balancing avancé</li><li>Circuit breaking</li><li>Observabilité (traces, métriques)</li></ul><span class='fc-rule'>Résout le problème : ne pas dupliquer la logique réseau dans chaque service Java.</span>",
+    "difficulty": "hard"
   }
 ]

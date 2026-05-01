@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { FlashcardsService } from '../../data-access/flashcards.service';
 import type { Flashcard, FlashcardDifficulty } from '../../models/flashcard.model';
+import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 
 interface CategoryOption {
   label: string;
@@ -14,7 +15,7 @@ interface CategoryOption {
 @Component({
   selector: 'app-flashcards-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, TagModule, ButtonModule, SelectModule],
+  imports: [FormsModule, TagModule, ButtonModule, SelectModule, SafeHtmlPipe],
   templateUrl: './flashcards-page.component.html',
 })
 export class FlashcardsPageComponent {
@@ -47,7 +48,9 @@ export class FlashcardsPageComponent {
 
   protected next(): void {
     const len = this.filteredCards().length;
-    this.currentIndex.update((i) => (i + 1) % len);
+    //rendre aleatoire le prochain index\
+    const randomIndex = Math.floor(Math.random() * len);
+    this.currentIndex.update((i) => randomIndex);
     this.isFlipped.set(false);
   }
 

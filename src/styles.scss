@@ -4,3 +4,25 @@
 
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
+
+.flashcard-answer {
+  ul, ol {
+    @apply my-1.5 ml-5 p-0;
+
+    li {
+      @apply mb-0.5;
+    }
+  }
+
+  code {
+    @apply font-mono text-[0.82em] bg-black/8 px-1.5 py-0.5 rounded;
+  }
+
+  strong {
+    @apply font-semibold;
+  }
+
+  .fc-rule {
+    @apply block mt-2 pl-2 border-l-2 border-current opacity-70 italic text-[0.85em];
+  }
+}

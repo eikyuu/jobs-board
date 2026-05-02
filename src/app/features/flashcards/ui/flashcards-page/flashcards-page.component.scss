@@ -1,0 +1,80 @@
+// ::ng-deep est nécessaire car le contenu est injecté via [innerHTML]
+:host ::ng-deep {
+  // --- Code inline ---
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.8em;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: #a78bfa;
+    padding: 0.15em 0.45em;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  pre.fc-code {
+    background: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid rgba(99, 102, 241, 0.5);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.78em;
+    line-height: 1.7;
+    margin: 0.75rem 0;
+    color: #b0b0d0;
+
+    .kw  { color: #c792ea; }                       // const, let, class, export, return
+    .fn  { color: #82aaff; }                       // noms de fonctions
+    .str { color: #a5d6a7; }                       // chaînes de caractères
+    .cm  { color: #546e7a; font-style: italic; }   // commentaires
+    .dec { color: #ffcb6b; }                       // décorateurs @Component, @Injectable
+    .type{ color: #4ec9b0; }                       // types TypeScript
+    .num { color: #ff8c42; }                       // nombres
+    .ng  { color: #dd0031; font-weight: 600; }     // @if, @for, @defer (Angular template)
+
+    code {
+      all: unset;
+      font-family: inherit;
+    }
+  }
+
+  .fc-tip {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    background: rgba(59, 130, 246, 0.07);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 5px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.85em;
+    margin-top: 0.6rem;
+    color: #93c5fd;
+    line-height: 1.5;
+
+    &::before {
+      content: '💡';
+      flex-shrink: 0;
+    }
+  }
+
+  .fc-warn {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    background: rgba(251, 146, 60, 0.07);
+    border: 1px solid rgba(251, 146, 60, 0.2);
+    border-radius: 5px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.85em;
+    margin-top: 0.6rem;
+    color: #fdba74;
+    line-height: 1.5;
+
+    &::before {
+      content: '⚠️';
+      flex-shrink: 0;
+    }
+  }
+}

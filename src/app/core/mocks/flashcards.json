@@ -3,77 +3,77 @@
     "id": 1,
     "category": "Angular",
     "question": "Qu'est-ce qu'un Signal en Angular et quel est son avantage principal ?",
-    "answer": "<strong>Signal</strong> = valeur réactive qui notifie automatiquement ses dépendants.<br><br><strong>Avantage :</strong> re-rendu <strong>granulaire</strong> — seuls les composants qui lisent ce signal sont mis à jour, pas tout l'arbre.",
+    "answer": "<strong>Signal</strong> = valeur réactive qui notifie automatiquement ses dépendants.<pre class='fc-code'><span class='kw'>const</span> count = <span class='fn'>signal</span>(<span class='num'>0</span>);   <span class='cm'>// writable</span><br>count.<span class='fn'>set</span>(<span class='num'>5</span>);           <span class='cm'>// set direct</span><br>count.<span class='fn'>update</span>(n => n + <span class='num'>1</span>); <span class='cm'>// set calculé</span><br><span class='fn'>console</span>.<span class='fn'>log</span>(<span class='fn'>count</span>());  <span class='cm'>// lecture = appel de fonction</span></pre><strong>Avantage :</strong> re-rendu <strong>granulaire</strong> — seuls les composants qui lisent ce signal sont mis à jour, pas tout l'arbre.",
     "difficulty": "easy"
   },
   {
     "id": 2,
     "category": "Angular",
     "question": "Quelle est la différence entre signal(), computed() et effect() ?",
-    "answer": "<ul><li><strong>signal()</strong> — état writable (lecture + écriture)</li><li><strong>computed()</strong> — valeur dérivée, lazy, mémoïsée (lecture seule)</li><li><strong>effect()</strong> — effet de bord déclenché à chaque changement</li></ul><span class='fc-rule'>Ne jamais écrire un signal dans un effect()</span>",
+    "answer": "<ul><li><strong>signal()</strong> — état writable (lecture + écriture)</li><li><strong>computed()</strong> — valeur dérivée, lazy, mémoïsée (lecture seule)</li><li><strong>effect()</strong> — effet de bord déclenché à chaque changement</li></ul><pre class='fc-code'><span class='kw'>const</span> price = <span class='fn'>signal</span>(<span class='num'>10</span>);<br><span class='kw'>const</span> qty   = <span class='fn'>signal</span>(<span class='num'>3</span>);<br><span class='kw'>const</span> total = <span class='fn'>computed</span>(() => <span class='fn'>price</span>() * <span class='fn'>qty</span>()); <span class='cm'>// lazy + mémoïsé</span><br><br><span class='fn'>effect</span>(() => {<br>  <span class='cm'>// exécuté à chaque fois que total() change</span><br>  localStorage.<span class='fn'>setItem</span>(<span class='str'>'cart'</span>, <span class='fn'>String</span>(<span class='fn'>total</span>()));<br>});</pre><span class='fc-rule'>Ne jamais écrire un signal dans un effect() sans untracked() — risque de boucle infinie</span>",
     "difficulty": "medium"
   },
   {
     "id": 3,
     "category": "Angular",
     "question": "Qu'est-ce que ChangeDetectionStrategy.OnPush et pourquoi l'utiliser ?",
-    "answer": "Le composant n'est vérifié que dans <strong>3 cas</strong> :<ul><li>Une référence d'<strong>@Input</strong> change</li><li>Un <strong>Signal</strong> ou <strong>async pipe</strong> émet</li><li>Un <strong>événement DOM</strong> se produit dans ce composant</li></ul><span class='fc-rule'>Moins de vérifications = meilleures performances</span>",
+    "answer": "Le composant n'est vérifié que dans 3 cas : référence @Input change, Signal/async pipe émet, événement DOM dans ce composant.<pre class='fc-code'><span class='dec'>@Component</span>({<br>  changeDetection: <span class='type'>ChangeDetectionStrategy</span>.OnPush,<br>  template: <span class='str'>`&lt;p&gt;{{ name() }}&lt;/p&gt;`</span><br>})<br><span class='kw'>export class</span> <span class='type'>CardComponent</span> {<br>  name = <span class='fn'>input</span>.<span class='fn'>required</span>&lt;<span class='type'>string</span>&gt;(); <span class='cm'>// Signal → CD optimisée</span><br>}</pre><span class='fc-rule'>Piège : muter un objet @Input sans changer sa référence → le composant ne se met pas à jour. Moins de vérifications = meilleures performances.</span>",
     "difficulty": "easy"
   },
   {
     "id": 4,
     "category": "Angular",
     "question": "Comment fonctionne le lazy loading des routes en Angular ?",
-    "answer": "<code>loadComponent()</code> ou <code>loadChildren()</code> chargent le code <strong>uniquement à la navigation</strong>.<br><br>Résultat : le bundle initial est plus petit, l'app démarre plus vite.",
+    "answer": "<code>loadComponent()</code> ou <code>loadChildren()</code> chargent le code <strong>uniquement à la navigation</strong>.<pre class='fc-code'><span class='cm'>// app.routes.ts</span><br><span class='kw'>export const</span> routes: <span class='type'>Routes</span> = [<br>  {<br>    path: <span class='str'>'profile'</span>,<br>    <span class='fn'>loadComponent</span>: () => <span class='kw'>import</span>(<span class='str'>'./profile.component'</span>)<br>      .<span class='fn'>then</span>(m => m.<span class='type'>ProfileComponent</span>)<br>  },<br>  {<br>    path: <span class='str'>'admin'</span>,<br>    <span class='fn'>loadChildren</span>: () => <span class='kw'>import</span>(<span class='str'>'./admin/admin.routes'</span>)<br>      .<span class='fn'>then</span>(m => m.<span class='type'>ADMIN_ROUTES</span>)<br>  }<br>];</pre>Résultat : le bundle initial est plus petit, l'app démarre plus vite.",
     "difficulty": "easy"
   },
   {
     "id": 5,
     "category": "Angular",
     "question": "Quelle est la différence entre le décorateur @Input() et la fonction input() ?",
-    "answer": "<ul><li><strong>input()</strong> — retourne un <strong>Signal</strong> (réactif, compatible OnPush nativement)</li><li><strong>@Input()</strong> — propriété classique, non réactive</li></ul><span class='fc-rule'>Préférer input() en Angular 17+</span>",
+    "answer": "<ul><li><strong>input()</strong> — retourne un <strong>Signal</strong> (réactif, compatible OnPush nativement)</li><li><strong>@Input()</strong> — propriété classique, non réactive</li></ul><pre class='fc-code'><span class='cm'>// Ancienne API</span><br><span class='dec'>@Input</span>() title: <span class='type'>string</span> = <span class='str'>''</span>;<br><br><span class='cm'>// Nouvelle API — Signal read-only</span><br>title = <span class='fn'>input</span>(<span class='str'>''</span>);                   <span class='cm'>// optionnel avec défaut</span><br>name  = <span class='fn'>input</span>.<span class='fn'>required</span>&lt;<span class='type'>string</span>&gt;(); <span class='cm'>// obligatoire, TypeScript la force</span><br><br><span class='cm'>// Composable avec computed()</span><br>upperName = <span class='fn'>computed</span>(() => <span class='fn'>this</span>.name().<span class='fn'>toUpperCase</span>());</pre><span class='fc-rule'>Préférer input() en Angular 17+ — évite les cycles de détection non nécessaires</span>",
     "difficulty": "medium"
   },
   {
     "id": 6,
     "category": "Angular",
     "question": "À quoi sert le flux de contrôle natif @if, @for, @switch introduit en Angular 17 ?",
-    "answer": "Remplace <code>*ngIf</code> / <code>*ngFor</code> / <code>*ngSwitch</code>.<ul><li>Syntaxe native — pas d'import CommonModule</li><li><code>@else if</code> intégré dans @if</li><li><code>@empty</code> dans @for pour la liste vide</li><li><code>track</code> obligatoire dans @for</li></ul>",
+    "answer": "Remplace <code>*ngIf</code> / <code>*ngFor</code> / <code>*ngSwitch</code> — syntaxe native, aucun import requis.<pre class='fc-code'><span class='ng'>@if</span> (user()) {<br>  &lt;<span class='fn'>app-profile</span> [user]=<span class='str'>\"user()\"</span> /&gt;<br>} <span class='ng'>@else</span> { &lt;<span class='fn'>p</span>&gt;Non connecté&lt;/<span class='fn'>p</span>&gt; }<br><br><span class='ng'>@for</span> (item <span class='kw'>of</span> items(); track item.id) {<br>  &lt;<span class='fn'>li</span>&gt;{{ item.name }}&lt;/<span class='fn'>li</span>&gt;<br>} <span class='ng'>@empty</span> { &lt;<span class='fn'>li</span>&gt;Aucun résultat&lt;/<span class='fn'>li</span>&gt; }<br><br><span class='ng'>@switch</span> (status()) {<br>  <span class='ng'>@case</span> (<span class='str'>'active'</span>) { ... }<br>  <span class='ng'>@default</span> { ... }<br>}</pre><ul><li><code>@else if</code> intégré dans @if</li><li><code>@empty</code> dans @for pour la liste vide</li><li><code>track</code> obligatoire dans @for (performances !)</li></ul>",
     "difficulty": "easy"
   },
   {
     "id": 7,
     "category": "TypeScript",
     "question": "Quelle est la différence entre interface et type en TypeScript ?",
-    "answer": "<ul><li><strong>interface</strong> — contrat d'objet, extensible (<code>extends</code>, declaration merging)</li><li><strong>type</strong> — unions, intersections, tuples</li></ul><span class='fc-rule'>Préférer interface pour décrire la forme d'un objet</span>",
+    "answer": "<ul><li><strong>interface</strong> — contrat d'objet, extensible (<code>extends</code>, declaration merging)</li><li><strong>type</strong> — unions, intersections, tuples, types primitifs</li></ul><pre class='fc-code'><span class='cm'>// interface : forme d'objet, extensible</span><br><span class='kw'>interface</span> <span class='type'>User</span> { id: <span class='type'>number</span>; name: <span class='type'>string</span>; }<br><span class='kw'>interface</span> <span class='type'>Admin</span> <span class='kw'>extends</span> <span class='type'>User</span> { role: <span class='type'>string</span>; }<br><br><span class='cm'>// type : unions, intersections, tuples</span><br><span class='kw'>type</span> <span class='type'>Status</span> = <span class='str'>'active'</span> | <span class='str'>'inactive'</span> | <span class='str'>'pending'</span>;<br><span class='kw'>type</span> <span class='type'>AdminUser</span> = <span class='type'>User</span> & { role: <span class='type'>string</span> }; <span class='cm'>// intersection</span><br><span class='kw'>type</span> <span class='type'>Pair</span> = [<span class='type'>string</span>, <span class='type'>number</span>];             <span class='cm'>// tuple</span></pre><span class='fc-rule'>Préférer interface pour décrire la forme d'un objet. Utiliser type pour les unions et compositions complexes.</span>",
     "difficulty": "easy"
   },
   {
     "id": 8,
     "category": "TypeScript",
     "question": "Quelle est la différence entre unknown et any ?",
-    "answer": "<ul><li><strong>any</strong> — désactive le typage (dangereux)</li><li><strong>unknown</strong> — force à valider le type avant de l'utiliser (type narrowing)</li></ul><span class='fc-rule'>Toujours préférer unknown à any</span>",
+    "answer": "<ul><li><strong>any</strong> — désactive le typage (dangereux, contourne toutes les vérifications)</li><li><strong>unknown</strong> — force à valider le type avant de l'utiliser (type narrowing)</li></ul><pre class='fc-code'><span class='kw'>function</span> <span class='fn'>processAny</span>(val: <span class='type'>any</span>) {<br>  val.<span class='fn'>toUpperCase</span>(); <span class='cm'>// compilateur OK, crash possible à runtime</span><br>}<br><br><span class='kw'>function</span> <span class='fn'>processUnknown</span>(val: <span class='type'>unknown</span>) {<br>  <span class='cm'>// val.toUpperCase(); → ERREUR de compilation</span><br>  <span class='kw'>if</span> (<span class='kw'>typeof</span> val === <span class='str'>'string'</span>) {<br>    val.<span class='fn'>toUpperCase</span>(); <span class='cm'>// OK après narrowing</span><br>  }<br>}</pre><span class='fc-rule'>Toujours préférer unknown à any — any = abandon du typage, unknown = typage prudent.</span>",
     "difficulty": "medium"
   },
   {
     "id": 9,
     "category": "TypeScript",
     "question": "Qu'est-ce que le type narrowing en TypeScript ?",
-    "answer": "Affiner le type d'une variable dans un bloc conditionnel.<br><br>Techniques :<ul><li><code>typeof x === 'string'</code></li><li><code>x instanceof Date</code></li><li><code>x !== null</code></li><li>Type guard : <code>function isUser(x): x is User</code></li></ul>",
+    "answer": "Affiner le type d'une variable dans un bloc conditionnel pour qu'il soit plus précis.<pre class='fc-code'><span class='kw'>function</span> <span class='fn'>process</span>(val: <span class='type'>string</span> | <span class='type'>number</span> | <span class='kw'>null</span>) {<br>  <span class='kw'>if</span> (val === <span class='kw'>null</span>) <span class='kw'>return</span>;              <span class='cm'>// null guard</span><br>  <span class='kw'>if</span> (<span class='kw'>typeof</span> val === <span class='str'>'string'</span>) {<br>    val.<span class='fn'>toUpperCase</span>();                  <span class='cm'>// string ici</span><br>  } <span class='kw'>else</span> {<br>    val.<span class='fn'>toFixed</span>(<span class='num'>2</span>);                     <span class='cm'>// number ici</span><br>  }<br>}<br><br><span class='cm'>// User-defined type guard</span><br><span class='kw'>function</span> <span class='fn'>isUser</span>(x: <span class='type'>unknown</span>): x <span class='kw'>is</span> <span class='type'>User</span> {<br>  <span class='kw'>return</span> <span class='kw'>typeof</span> x === <span class='str'>'object'</span> && x !== <span class='kw'>null</span> && <span class='str'>'id'</span> <span class='kw'>in</span> x;<br>}</pre>Techniques : <code>typeof</code>, <code>instanceof</code>, null check, <code>x is Type</code> (type guard)",
     "difficulty": "medium"
   },
   {
     "id": 10,
     "category": "TypeScript",
     "question": "Qu'est-ce qu'un type générique et dans quel cas l'utiliser ?",
-    "answer": "Code réutilisable qui <strong>préserve le type</strong>.<br><br><code>function identity&lt;T&gt;(value: T): T</code><br><br><span class='fc-rule'>Utiliser quand la même logique s'applique à plusieurs types : utils, services, structures de données</span>",
+    "answer": "Code réutilisable qui <strong>préserve le type</strong> — TypeScript infère T à l'appel.<pre class='fc-code'><span class='cm'>// Fonction générique</span><br><span class='kw'>function</span> <span class='fn'>first</span>&lt;<span class='type'>T</span>&gt;(arr: <span class='type'>T</span>[]): <span class='type'>T</span> | <span class='kw'>undefined</span> {<br>  <span class='kw'>return</span> arr[<span class='num'>0</span>];<br>}<br><span class='fn'>first</span>([<span class='num'>1</span>, <span class='num'>2</span>, <span class='num'>3</span>]);      <span class='cm'>// T inféré = number</span><br><span class='fn'>first</span>([<span class='str'>'a'</span>, <span class='str'>'b'</span>]);     <span class='cm'>// T inféré = string</span><br><br><span class='cm'>// Classe générique</span><br><span class='kw'>class</span> <span class='type'>ApiResponse</span>&lt;<span class='type'>T</span>&gt; {<br>  <span class='fn'>constructor</span>(<span class='kw'>public</span> data: <span class='type'>T</span>, <span class='kw'>public</span> status: <span class='type'>number</span>) {}<br>}</pre><span class='fc-rule'>Utiliser quand la même logique s'applique à plusieurs types : utils, services, structures de données.</span>",
     "difficulty": "medium"
   },
   {
     "id": 11,
     "category": "TypeScript",
     "question": "À quoi servent les types utilitaires Partial, Required, Readonly et Pick ?",
-    "answer": "<ul><li><strong>Partial&lt;T&gt;</strong> — tous les champs optionnels</li><li><strong>Required&lt;T&gt;</strong> — tous obligatoires</li><li><strong>Readonly&lt;T&gt;</strong> — non modifiables</li><li><strong>Pick&lt;T,K&gt;</strong> — garder seulement K</li><li><strong>Omit&lt;T,K&gt;</strong> — tout sauf K</li></ul>",
+    "answer": "<ul><li><strong>Partial&lt;T&gt;</strong> — tous les champs optionnels</li><li><strong>Required&lt;T&gt;</strong> — tous obligatoires</li><li><strong>Readonly&lt;T&gt;</strong> — non modifiables</li><li><strong>Pick&lt;T,K&gt;</strong> — garder seulement K</li><li><strong>Omit&lt;T,K&gt;</strong> — tout sauf K</li></ul><pre class='fc-code'><span class='kw'>interface</span> <span class='type'>User</span> { id: <span class='type'>number</span>; name: <span class='type'>string</span>; email: <span class='type'>string</span>; }<br><br><span class='kw'>type</span> <span class='type'>UserUpdate</span>  = <span class='type'>Partial</span>&lt;<span class='type'>User</span>&gt;;         <span class='cm'>// tous optionnels → PATCH</span><br><span class='kw'>type</span> <span class='type'>UserPreview</span> = <span class='type'>Pick</span>&lt;<span class='type'>User</span>, <span class='str'>'id'</span> | <span class='str'>'name'</span>&gt;; <span class='cm'>// id + name seulement</span><br><span class='kw'>type</span> <span class='type'>PublicUser</span>  = <span class='type'>Omit</span>&lt;<span class='type'>User</span>, <span class='str'>'email'</span>&gt;;  <span class='cm'>// tout sauf email</span><br><span class='kw'>type</span> <span class='type'>FrozenUser</span>  = <span class='type'>Readonly</span>&lt;<span class='type'>User</span>&gt;;       <span class='cm'>// immuable</span></pre>",
     "difficulty": "hard"
   },
   {
@@ -87,14 +87,14 @@
     "id": 13,
     "category": "JavaScript",
     "question": "Quelle est la différence entre Promise et Observable ?",
-    "answer": "<ul><li><strong>Promise</strong> — 1 valeur, eager, non annulable</li><li><strong>Observable</strong> — flux de valeurs, lazy, annulable (<code>unsubscribe()</code>), composable avec RxJS</li></ul><span class='fc-rule'>HttpClient retourne un Observable — lazy = pas de requête sans subscribe</span>",
+    "answer": "<ul><li><strong>Promise</strong> — 1 valeur, eager (démarre immédiatement), non annulable</li><li><strong>Observable</strong> — flux de valeurs, lazy, annulable (<code>unsubscribe()</code>), composable avec RxJS</li></ul><pre class='fc-code'><span class='cm'>// Promise : démarre immédiatement, une seule valeur</span><br><span class='kw'>const</span> p = <span class='fn'>fetch</span>(<span class='str'>'/api/user'</span>).<span class='fn'>then</span>(r => r.<span class='fn'>json</span>());<br><br><span class='cm'>// Observable : lazy, pas de requête avant subscribe()</span><br><span class='kw'>const</span> user$ = <span class='fn'>this</span>.http.<span class='fn'>get</span>(<span class='str'>'/api/user'</span>);<br>user$.<span class='fn'>pipe</span>(<br>  <span class='fn'>retry</span>(<span class='num'>3</span>),         <span class='cm'>// opérateurs RxJS</span><br>  <span class='fn'>catchError</span>(err => ...)<br>).<span class='fn'>subscribe</span>(user => ...);</pre><span class='fc-rule'>HttpClient retourne un Observable — lazy = pas de requête sans subscribe. Deux subscribe = deux requêtes !</span>",
     "difficulty": "medium"
   },
   {
     "id": 14,
     "category": "JavaScript",
     "question": "Quelle est la différence entre debounce et throttle ?",
-    "answer": "<ul><li><strong>debounce</strong> — attend X ms de <em>calme</em> puis exécute → recherche en temps réel</li><li><strong>throttle</strong> — exécute max 1 fois par X ms → scroll, resize</li></ul><span class='fc-rule'>Mnémo : debounce = \"attends que ça s'arrête\", throttle = \"pas plus souvent que\"</span>",
+    "answer": "<ul><li><strong>debounce</strong> — attend X ms de <em>calme</em> puis exécute → recherche en temps réel</li><li><strong>throttle</strong> — exécute max 1 fois par X ms → scroll, resize</li></ul><pre class='fc-code'><span class='cm'>// debounce : attend la fin de la frappe (300ms de calme)</span><br><span class='kw'>const</span> search$ = <span class='fn'>fromEvent</span>(input, <span class='str'>'input'</span>).<span class='fn'>pipe</span>(<br>  <span class='fn'>debounceTime</span>(<span class='num'>300</span>),    <span class='cm'>// attend 300ms sans frappe</span><br>  <span class='fn'>switchMap</span>(q => api.<span class='fn'>search</span>(q))<br>);<br><br><span class='cm'>// throttle : max 1 appel par 200ms</span><br><span class='kw'>const</span> scroll$ = <span class='fn'>fromEvent</span>(window, <span class='str'>'scroll'</span>).<span class='fn'>pipe</span>(<br>  <span class='fn'>throttleTime</span>(<span class='num'>200</span>)<br>);</pre><span class='fc-rule'>Mnémo : debounce = \"attends que ça s'arrête\", throttle = \"pas plus souvent que\"</span>",
     "difficulty": "medium"
   },
   {
@@ -116,7 +116,7 @@
     "id": 17,
     "category": "Signals & Réactivité",
     "question": "Qu'est-ce qu'un Signal ? Quelle est la différence avec un BehaviorSubject ?",
-    "answer": "<ul><li><strong>Signal</strong> — natif Angular, synchrone, pas de subscribe(), lecture directe : <code>count()</code></li><li><strong>BehaviorSubject</strong> — flux async avec opérateurs RxJS</li></ul>Convertir : <code>toSignal()</code> / <code>toObservable()</code>",
+    "answer": "<ul><li><strong>Signal</strong> — natif Angular, synchrone, pas de subscribe(), lecture directe : <code>count()</code></li><li><strong>BehaviorSubject</strong> — flux async avec opérateurs RxJS</li></ul><pre class='fc-code'><span class='kw'>const</span> count = <span class='fn'>signal</span>(<span class='num'>0</span>);<br>count.<span class='fn'>set</span>(<span class='num'>5</span>);<br>count.<span class='fn'>update</span>(n => n + <span class='num'>1</span>);<br><span class='fn'>console</span>.<span class='fn'>log</span>(<span class='fn'>count</span>()); <span class='cm'>// 6</span><br><br><span class='cm'>// computed = signal dérivé (read-only)</span><br><span class='kw'>const</span> double = <span class='fn'>computed</span>(() => <span class='fn'>count</span>() * <span class='num'>2</span>);</pre>Convertir : <code>toSignal()</code> / <code>toObservable()</code>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -124,7 +124,7 @@
     "id": 18,
     "category": "Signals & Réactivité",
     "question": "Explique computed(), effect() et leurs cas d'usage respectifs.",
-    "answer": "<ul><li><strong>computed()</strong> — valeur dérivée read-only, lazy, mémoïsée → calculs d'état</li><li><strong>effect()</strong> — effet de bord (logs, localStorage) à chaque changement</li></ul><span class='fc-rule'>Ne pas écrire de signal dans un effect()</span>",
+    "answer": "<ul><li><strong>computed()</strong> — valeur dérivée read-only, lazy, mémoïsée → calculs d'état</li><li><strong>effect()</strong> — effet de bord (logs, localStorage) à chaque changement</li></ul><pre class='fc-code'><span class='cm'>// computed : calcul dérivé</span><br><span class='kw'>const</span> total = <span class='fn'>computed</span>(() =><br>  items().<span class='fn'>reduce</span>((acc, i) => acc + i.price, <span class='num'>0</span>)<br>);<br><br><span class='cm'>// effect : logging, localStorage</span><br><span class='fn'>effect</span>(() => {<br>  localStorage.<span class='fn'>setItem</span>(<span class='str'>'user'</span>, <span class='type'>JSON</span>.<span class='fn'>stringify</span>(<span class='fn'>user</span>()));<br>});</pre><span class='fc-rule'>Ne jamais écrire un signal dans un effect() sans untracked() — risque de boucle infinie</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -132,7 +132,7 @@
     "id": 19,
     "category": "Signals & Réactivité",
     "question": "Qu'est-ce que linkedSignal() ? Quand l'utiliser ?",
-    "answer": "Signal <strong>writable</strong> qui se <strong>réinitialise</strong> quand sa source change.<br><br>Entre <code>signal()</code> (writable) et <code>computed()</code> (read-only).<br><br><span class='fc-rule'>Cas d'usage : état local lié à une prop parent (ex: page courante qui reset si le filtre change)</span>",
+    "answer": "Signal <strong>writable</strong> qui se <strong>réinitialise</strong> quand sa source change. Entre <code>signal()</code> (writable) et <code>computed()</code> (read-only).<pre class='fc-code'><span class='kw'>const</span> items = <span class='fn'>input</span>&lt;<span class='type'>string[]</span>&gt;();<br><span class='kw'>const</span> selected = <span class='fn'>linkedSignal</span>(() =><br>  <span class='fn'>items</span>()[<span class='num'>0</span>] ?? <span class='kw'>null</span><br>);<br><span class='cm'>// L'utilisateur peut changer selected...</span><br>selected.<span class='fn'>set</span>(<span class='str'>'autre'</span>);<br><span class='cm'>// ...mais si items() change, selected se réinitialise</span></pre><span class='fc-rule'>Cas d'usage : état local lié à une prop parent (ex: onglet sélectionné qui reset si les données parent changent)</span>",
     "difficulty": "hard",
     "version": "v19"
   },
@@ -140,7 +140,7 @@
     "id": 20,
     "category": "Signals & Réactivité",
     "question": "Qu'est-ce que resource() ? Comment gérer les données async avec les Signals ?",
-    "answer": "Intègre l'<strong>async</strong> dans les Signals. Expose :<ul><li><strong>isLoading</strong> — signal booléen</li><li><strong>value</strong> — résultat</li><li><strong>error</strong> — erreur éventuelle</li></ul>Se re-déclenche et <strong>annule</strong> la requête précédente quand ses dépendances changent.",
+    "answer": "Intègre l'<strong>async</strong> dans les Signals. Expose : <code>isLoading</code>, <code>value</code>, <code>error</code> comme signals.<pre class='fc-code'><span class='kw'>const</span> userId = <span class='fn'>signal</span>(<span class='num'>1</span>);<br><br><span class='kw'>const</span> userResource = <span class='fn'>resource</span>({<br>  <span class='fn'>request</span>: () => ({ id: <span class='fn'>userId</span>() }),<br>  <span class='kw'>async</span> <span class='fn'>loader</span>({ request }) {<br>    <span class='kw'>const</span> res = <span class='kw'>await</span> <span class='fn'>fetch</span>(<span class='str'>`/api/users/${request.id}`</span>);<br>    <span class='kw'>return</span> res.<span class='fn'>json</span>();<br>  }<br>});<br><span class='cm'>// userResource.isLoading() / .value() / .error()</span></pre>Quand <code>userId</code> change → annule la requête précédente et relance automatiquement.",
     "difficulty": "hard",
     "version": "v19"
   },
@@ -148,7 +148,7 @@
     "id": 21,
     "category": "Signals & Réactivité",
     "question": "Comment fonctionne le Change Detection avec les Signals ? Qu'est-ce que le mode Zoneless ?",
-    "answer": "<ul><li><strong>Signals</strong> → seuls les composants qui lisent un signal modifié sont re-rendus</li><li><strong>Zoneless</strong> (v18+) → supprime Zone.js : CD uniquement via Signals ou <code>markForCheck()</code></li></ul><span class='fc-rule'>Zoneless = plus léger et plus rapide, mais nécessite des Signals partout</span>",
+    "answer": "<ul><li><strong>Signals</strong> → seuls les composants qui lisent un signal modifié sont re-rendus</li><li><strong>Zoneless</strong> (v18+) → supprime Zone.js : CD uniquement via Signals ou <code>markForCheck()</code></li></ul><pre class='fc-code'><span class='cm'>// app.config.ts — activer le mode Zoneless</span><br><span class='kw'>export const</span> appConfig: <span class='type'>ApplicationConfig</span> = {<br>  providers: [<br>    <span class='fn'>provideExperimentalZonelessChangeDetection</span>()<br>  ]<br>};</pre><span class='fc-rule'>Zoneless encore expérimental. En production : préférer OnPush + Signals.</span>",
     "difficulty": "hard",
     "version": "v18"
   },
@@ -156,7 +156,7 @@
     "id": 22,
     "category": "Composants",
     "question": "Nouvelle API input(), output(), model() — quelle différence avec @Input/@Output ?",
-    "answer": "<ul><li><strong>input&lt;T&gt;()</strong> — Signal read-only, composable avec <code>computed()</code></li><li><strong>output()</strong> — remplace <code>@Output EventEmitter</code></li><li><strong>model&lt;T&gt;()</strong> — binding bidirectionnel (remplace @Input + @Output)</li></ul><span class='fc-rule'>Stabilisé en Angular v19</span>",
+    "answer": "<pre class='fc-code'><span class='cm'>// Ancienne façon</span><br><span class='dec'>@Input</span>() title: <span class='type'>string</span> = <span class='str'>''</span>;<br><span class='dec'>@Output</span>() clicked = <span class='kw'>new</span> <span class='type'>EventEmitter</span>&lt;<span class='type'>void</span>&gt;();<br><br><span class='cm'>// Nouvelle API (v17.1+, stable v19)</span><br>title = <span class='fn'>input</span>&lt;<span class='type'>string</span>&gt;(<span class='str'>''</span>);       <span class='cm'>// Signal readonly</span><br>titleRequired = <span class='fn'>input</span>.<span class='fn'>required</span>&lt;<span class='type'>string</span>&gt;();<br>clicked = <span class='fn'>output</span>&lt;<span class='type'>void</span>&gt;();<br>value = <span class='fn'>model</span>(<span class='str'>''</span>);             <span class='cm'>// [(value)]=\"x\"</span></pre><ul><li><strong>input&lt;T&gt;()</strong> — Signal read-only, composable avec <code>computed()</code></li><li><strong>output()</strong> — remplace <code>@Output EventEmitter</code></li><li><strong>model&lt;T&gt;()</strong> — binding bidirectionnel (remplace @Input + @Output)</li></ul><span class='fc-rule'>Stabilisé en Angular v19</span>",
     "difficulty": "medium",
     "version": "v17"
   },
@@ -164,7 +164,7 @@
     "id": 23,
     "category": "Composants",
     "question": "Qu'est-ce que @defer ? Comment optimiser le chargement avec les Deferrable Views ?",
-    "answer": "Charge <strong>lazily</strong> un bloc de template. Triggers :<ul><li><code>on viewport</code> — quand visible à l'écran</li><li><code>on idle</code> — en arrière-plan</li><li><code>on interaction</code> — au clic/focus</li></ul>Blocs : <code>@placeholder</code> · <code>@loading</code> · <code>@error</code><br><span class='fc-rule'>Améliore le LCP et le TTI</span>",
+    "answer": "Charge <strong>lazily</strong> un bloc de template. Triggers : <code>on viewport</code>, <code>on idle</code>, <code>on interaction</code>.<pre class='fc-code'><span class='ng'>@defer</span> (<span class='kw'>on</span> viewport) {<br>  &lt;<span class='fn'>app-heavy-chart</span> /&gt;<br>} <span class='ng'>@placeholder</span> {<br>  &lt;<span class='fn'>div</span>&gt;Chargement...&lt;/<span class='fn'>div</span>&gt;<br>} <span class='ng'>@loading</span> (minimum 300ms) {<br>  &lt;<span class='fn'>app-spinner</span> /&gt;<br>} <span class='ng'>@error</span> {<br>  &lt;<span class='fn'>p</span>&gt;Erreur de chargement&lt;/<span class='fn'>p</span>&gt;<br>}<br><span class='cm'>&lt;!-- Prefetch : @defer (on viewport; prefetch on idle) --&gt;</span></pre><span class='fc-rule'>Améliore le LCP et le TTI. Angular bundle le code en chunk séparé automatiquement.</span>",
     "difficulty": "medium",
     "version": "v17"
   },
@@ -172,7 +172,7 @@
     "id": 24,
     "category": "Composants",
     "question": "Nouvelle syntaxe de template @if, @for, @switch — quels avantages sur *ngIf/*ngFor ?",
-    "answer": "Syntaxe <strong>native</strong>, sans import CommonModule :<ul><li><code>@else if</code> intégré dans @if</li><li><code>@empty</code> dans @for pour la liste vide</li><li><code>track</code> obligatoire dans @for</li><li><code>@let</code> pour les variables locales</li></ul>",
+    "answer": "Syntaxe <strong>native</strong>, sans import CommonModule :<pre class='fc-code'><span class='cm'>&lt;!-- Avant --&gt;</span><br>&lt;<span class='fn'>div</span> *<span class='dec'>ngIf</span>=<span class='str'>\"user; else noUser\"</span>&gt;...&lt;/<span class='fn'>div</span>&gt;<br><br><span class='cm'>&lt;!-- Maintenant --&gt;</span><br><span class='ng'>@if</span> (user) {<br>  &lt;<span class='fn'>app-profile</span> [user]=<span class='str'>\"user\"</span> /&gt;<br>} <span class='ng'>@else if</span> (loading()) {<br>  &lt;<span class='fn'>app-spinner</span> /&gt;<br>} <span class='ng'>@else</span> {<br>  &lt;<span class='fn'>p</span>&gt;Non connecté&lt;/<span class='fn'>p</span>&gt;<br>}<br><br><span class='cm'>&lt;!-- @for : track obligatoire + @empty --&gt;</span><br><span class='ng'>@for</span> (item <span class='kw'>of</span> items(); track item.id) {<br>  &lt;<span class='fn'>li</span>&gt;{{ item.name }}&lt;/<span class='fn'>li</span>&gt;<br>} <span class='ng'>@empty</span> {<br>  &lt;<span class='fn'>li</span>&gt;Aucun élément&lt;/<span class='fn'>li</span>&gt;<br>}</pre><ul><li><code>@empty</code> intégré dans @for</li><li><code>track</code> obligatoire dans @for (performances)</li><li><code>@let</code> pour les variables locales</li></ul>",
     "difficulty": "easy",
     "version": "v17"
   },
@@ -180,7 +180,7 @@
     "id": 25,
     "category": "Composants",
     "question": "Qu'est-ce qu'un standalone component ? Pourquoi remplacer les NgModules ?",
-    "answer": "Composant qui déclare ses <strong>imports directement</strong>, sans NgModule. Défaut depuis v17.<ul><li>Meilleur tree-shaking</li><li>Lazy loading avec <code>loadComponent()</code></li><li>Moins de boilerplate</li></ul>",
+    "answer": "Composant qui déclare ses <strong>imports directement</strong>, sans NgModule. Défaut depuis v17.<pre class='fc-code'><span class='dec'>@Component</span>({<br>  selector: <span class='str'>'app-user-card'</span>,<br>  <span class='cm'>// standalone: true est le défaut en v17+</span><br>  imports: [RouterLink, AsyncPipe],<br>  template: <span class='str'>`...`</span><br>})<br><span class='kw'>export class</span> <span class='type'>UserCardComponent</span> {}</pre><ul><li>Meilleur tree-shaking</li><li>Lazy loading avec <code>loadComponent()</code></li><li>Moins de boilerplate</li></ul>",
     "difficulty": "easy",
     "version": "v16+"
   },
@@ -188,7 +188,7 @@
     "id": 26,
     "category": "DI & Services",
     "question": "Quelle est la hiérarchie des injectors Angular ?",
-    "answer": "<ul><li><strong>EnvironmentInjector</strong> — Root (<code>providedIn:'root'</code>) + Route (<code>Route.providers[]</code>)</li><li><strong>ElementInjector</strong> — composant, résolution remontante</li></ul>Modificateurs : <code>@Self</code> · <code>@SkipSelf</code> · <code>@Host</code> · <code>@Optional</code>",
+    "answer": "<ul><li><strong>EnvironmentInjector</strong> — Root (<code>providedIn:'root'</code>) + Route (<code>Route.providers[]</code>)</li><li><strong>ElementInjector</strong> — composant, résolution remontante</li></ul><pre class='fc-code'><span class='cm'>// Service singleton global</span><br><span class='dec'>@Injectable</span>({ providedIn: <span class='str'>'root'</span> })<br><span class='kw'>class</span> <span class='type'>GlobalService</span> {}<br><br><span class='cm'>// Service scopé à une route (lazy-loaded)</span><br><span class='kw'>const</span> routes = [{<br>  path: <span class='str'>'admin'</span>,<br>  loadComponent: () => ...,<br>  providers: [<span class='type'>AdminService</span>]  <span class='cm'>// nouvelle instance par route</span><br>}];</pre>Modificateurs : <code>@Self</code> · <code>@SkipSelf</code> · <code>@Host</code> · <code>@Optional</code>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -196,7 +196,7 @@
     "id": 27,
     "category": "DI & Services",
     "question": "inject() vs constructeur : pourquoi et quand utiliser inject() ?",
-    "answer": "<ul><li><strong>inject()</strong> — fonctionnel, composable dans des fonctions helper réutilisables</li><li><strong>constructeur</strong> — injection classique, toujours valide</li></ul><span class='fc-rule'>Préférer inject() pour créer des \"composables\" Angular réutilisables entre composants</span>",
+    "answer": "<pre class='fc-code'><span class='cm'>// Injection par constructeur (classique)</span><br><span class='kw'>constructor</span>(<span class='kw'>private</span> userService: <span class='type'>UserService</span>) {}<br><br><span class='cm'>// inject() — recommandé depuis v14+</span><br><span class='kw'>private</span> userService = <span class='fn'>inject</span>(<span class='type'>UserService</span>);<br><br><span class='cm'>// Avantage : composable dans des fonctions helper</span><br><span class='kw'>function</span> <span class='fn'>useCurrentUser</span>() {<br>  <span class='kw'>const</span> service = <span class='fn'>inject</span>(<span class='type'>UserService</span>);<br>  <span class='kw'>return</span> <span class='fn'>signal</span>(service.<span class='fn'>getCurrentUser</span>());<br>}</pre><ul><li><strong>inject()</strong> — fonctionnel, composable dans des fonctions helper réutilisables</li><li><strong>constructeur</strong> — injection classique, toujours valide</li></ul><span class='fc-rule'>Préférer inject() pour créer des \"composables\" Angular réutilisables entre composants</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -204,7 +204,7 @@
     "id": 28,
     "category": "DI & Services",
     "question": "Qu'est-ce qu'un InjectionToken ? Quand l'utiliser ?",
-    "answer": "Injecte des <strong>valeurs non-classe</strong> (primitives, config, feature flags).<br><br><code>const API_URL = new InjectionToken&lt;string&gt;('API_URL');</code><br><br>Override : <code>{ provide: API_URL, useValue: 'https://...' }</code>",
+    "answer": "Injecte des <strong>valeurs non-classe</strong> (primitives, config, feature flags).<pre class='fc-code'><span class='cm'>// Définition</span><br><span class='kw'>export const</span> <span class='type'>API_URL</span> = <span class='kw'>new</span> <span class='type'>InjectionToken</span>&lt;<span class='type'>string</span>&gt;(<br>  <span class='str'>'ApiUrl'</span>,<br>  { providedIn: <span class='str'>'root'</span>, factory: () => <span class='str'>'https://api.dev'</span> }<br>);<br><br><span class='cm'>// Override en prod (app.config.ts)</span><br>providers: [{ provide: <span class='type'>API_URL</span>, useValue: <span class='str'>'https://api.prod'</span> }]<br><br><span class='cm'>// Injection</span><br><span class='kw'>private</span> apiUrl = <span class='fn'>inject</span>(<span class='type'>API_URL</span>);</pre>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -212,7 +212,7 @@
     "id": 29,
     "category": "Routing",
     "question": "Guards fonctionnels vs Guards classe — quelle différence ?",
-    "answer": "<ul><li><strong>Guards classe</strong> — dépréciés depuis v15</li><li><strong>Guards fonctionnels</strong> — fonctions pures (<code>CanActivateFn</code>) avec <code>inject()</code></li></ul><span class='fc-rule'>Plus simples, composables et testables sans classe</span>",
+    "answer": "<pre class='fc-code'><span class='cm'>// Ancienne façon (dépréciée depuis v15)</span><br><span class='dec'>@Injectable</span>()<br><span class='kw'>class</span> <span class='type'>AuthGuard</span> <span class='kw'>implements</span> <span class='type'>CanActivate</span> {<br>  <span class='fn'>canActivate</span>(): <span class='type'>boolean</span> { ... }<br>}<br><br><span class='cm'>// Nouvelle façon — fonction pure</span><br><span class='kw'>export const</span> <span class='fn'>authGuard</span>: <span class='type'>CanActivateFn</span> = (route, state) => {<br>  <span class='kw'>const</span> auth = <span class='fn'>inject</span>(<span class='type'>AuthService</span>);<br>  <span class='kw'>const</span> router = <span class='fn'>inject</span>(<span class='type'>Router</span>);<br>  <span class='kw'>return</span> auth.<span class='fn'>isLoggedIn</span>()<br>    ? <span class='kw'>true</span><br>    : router.<span class='fn'>createUrlTree</span>([<span class='str'>'/login'</span>]);<br>};<br><br><span class='cm'>// Route</span><br>{ path: <span class='str'>'admin'</span>, canActivate: [<span class='fn'>authGuard</span>], ... }</pre><ul><li><strong>Guards classe</strong> — dépréciés depuis v15</li><li><strong>Guards fonctionnels</strong> — fonctions pures (<code>CanActivateFn</code>) avec <code>inject()</code></li></ul><span class='fc-rule'>Plus simples, composables et testables sans classe</span>",
     "difficulty": "easy",
     "version": "v16+"
   },
@@ -220,7 +220,7 @@
     "id": 30,
     "category": "Routing",
     "question": "Lazy loading : loadComponent vs loadChildren — quand utiliser quoi ?",
-    "answer": "<ul><li><strong>loadComponent</strong> — un seul composant standalone</li><li><strong>loadChildren</strong> — feature entière avec sous-routes et providers scopés</li></ul>Les deux génèrent un <strong>chunk JS séparé</strong> chargé à la navigation.",
+    "answer": "<pre class='fc-code'><span class='cm'>// loadComponent : lazy load UN composant standalone</span><br>{<br>  path: <span class='str'>'profile'</span>,<br>  <span class='fn'>loadComponent</span>: () =><br>    <span class='kw'>import</span>(<span class='str'>'./profile/profile.component'</span>)<br>      .<span class='fn'>then</span>(m => m.<span class='type'>ProfileComponent</span>)<br>}<br><br><span class='cm'>// loadChildren : lazy load un sous-arbre de routes</span><br>{<br>  path: <span class='str'>'admin'</span>,<br>  <span class='fn'>loadChildren</span>: () =><br>    <span class='kw'>import</span>(<span class='str'>'./admin/admin.routes'</span>)<br>      .<span class='fn'>then</span>(m => m.<span class='type'>ADMIN_ROUTES</span>)<br>}</pre><ul><li><strong>loadComponent</strong> — un seul composant standalone</li><li><strong>loadChildren</strong> — feature entière avec sous-routes et providers scopés</li></ul>Les deux génèrent un <strong>chunk JS séparé</strong> chargé à la navigation.",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -228,7 +228,7 @@
     "id": 31,
     "category": "Routing",
     "question": "Qu'est-ce que l'hydratation et comment Angular SSR la gère-t-il ?",
-    "answer": "<ol><li><strong>SSR</strong> génère le HTML côté serveur (bon SEO)</li><li><strong>Hydratation</strong> = Angular reprend le contrôle sans reconstruire le DOM (v16+)</li></ol><span class='fc-rule'>Évite le CLS (saut visuel) et améliore le SEO sans sacrifier l'interactivité</span>",
+    "answer": "<ol><li><strong>SSR</strong> génère le HTML côté serveur (bon SEO, LCP rapide)</li><li><strong>Hydratation non-destructive</strong> = Angular reprend le contrôle sans reconstruire le DOM (v16+)</li><li><strong>Hydratation incrémentale</strong> (v19) = hydratation différée avec @defer</li></ol><pre class='fc-code'><span class='cm'>// app.config.ts</span><br>providers: [<br>  <span class='fn'>provideClientHydration</span>(<br>    <span class='fn'>withIncrementalHydration</span>()  <span class='cm'>// v19</span><br>  )<br>]</pre><span class='fc-rule'>Non-destructive hydration évite le CLS (flash visuel). Avantage SEO et UX.</span>",
     "difficulty": "hard",
     "version": "v17"
   },
@@ -236,7 +236,7 @@
     "id": 32,
     "category": "Performance",
     "question": "OnPush Change Detection : comment ça marche et quand l'utiliser ?",
-    "answer": "Vérifie uniquement si :<ul><li>Référence <strong>@Input</strong> change</li><li><strong>Signal</strong> ou <strong>async pipe</strong> émet</li><li>Événement DOM dans ce composant</li><li><code>markForCheck()</code> explicite</li></ul><span class='fc-rule'>Piège : muter un objet Input sans changer sa référence → pas de mise à jour !</span>",
+    "answer": "Vérifie uniquement si :<ul><li>Référence <strong>@Input</strong> change</li><li><strong>Signal</strong> ou <strong>async pipe</strong> émet</li><li>Événement DOM dans ce composant</li><li><code>markForCheck()</code> explicite</li></ul><pre class='fc-code'><span class='dec'>@Component</span>({<br>  changeDetection: <span class='type'>ChangeDetectionStrategy</span>.OnPush,<br>  <span class='cm'>// Indispensable avec OnPush :</span><br>  <span class='cm'>// - Passer de nouvelles références (immutabilité)</span><br>  <span class='cm'>// - Utiliser async pipe ou Signals</span><br>})</pre><span class='fc-rule'>Piège : muter un objet Input sans changer sa référence → pas de mise à jour ! Solution : structuredClone() ou spread.</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -260,7 +260,7 @@
     "id": 35,
     "category": "Pièges & Classiques",
     "question": "Quelle est la différence entre un pipe pure et un pipe impure ?",
-    "answer": "<ul><li><strong>Pure</strong> (défaut) — appelé uniquement si la référence change, mémoïsé</li><li><strong>Impure</strong> (<code>pure: false</code>) — appelé à chaque cycle de CD, très coûteux</li></ul><span class='fc-rule'>Préférer l'immutabilité + pipe pure</span>",
+    "answer": "<ul><li><strong>Pure</strong> (défaut) — appelé uniquement si la référence change, mémoïsé</li><li><strong>Impure</strong> (<code>pure: false</code>) — appelé à chaque cycle de CD, très coûteux</li></ul><pre class='fc-code'><span class='cm'>// Pipe pure (défaut) — mémoïsé, optimal</span><br><span class='dec'>@Pipe</span>({ name: <span class='str'>'truncate'</span> })<br><span class='kw'>export class</span> <span class='type'>TruncatePipe</span> <span class='kw'>implements</span> <span class='type'>PipeTransform</span> {<br>  <span class='fn'>transform</span>(value: <span class='type'>string</span>, limit = <span class='num'>50</span>): <span class='type'>string</span> {<br>    <span class='kw'>return</span> value.<span class='fn'>length</span> &gt; limit ? value.<span class='fn'>slice</span>(<span class='num'>0</span>, limit) + <span class='str'>'…'</span> : value;<br>  }<br>}<br><br><span class='cm'>// Pipe impure — appelée à CHAQUE détection de changement</span><br><span class='dec'>@Pipe</span>({ name: <span class='str'>'filter'</span>, pure: <span class='kw'>false</span> })</pre><span class='fc-rule'>Préférer l'immutabilité + pipe pure. Les pipes impures dégradent fortement les performances.</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -284,7 +284,7 @@
     "id": 38,
     "category": "Pièges & Classiques",
     "question": "Qu'est-ce qu'un memory leak en Angular et comment l'éviter ?",
-    "answer": "Observable manuellement souscrit mais <strong>jamais unsubscribed</strong> après destruction.<br><br>Solutions :<ul><li><strong>AsyncPipe</strong> — subscribe/unsubscribe automatique</li><li><strong>takeUntilDestroyed()</strong> — v16+</li><li><strong>toSignal()</strong> — se nettoie automatiquement</li></ul>",
+    "answer": "Observable non unsubscribed. Solution : async pipe, takeUntilDestroyed(), ou toSignal()</strong> après destruction du composant.<pre class='fc-code'><span class='cm'>// ❌ Fuite mémoire — subscription jamais annulée</span><br><span class='fn'>ngOnInit</span>() {<br>  <span class='fn'>this</span>.service.<span class='fn'>data</span>$.<span class='fn'>subscribe</span>(d => <span class='fn'>this</span>.data = d);<br>}<br><br><span class='cm'>// ✅ Solution 1 : takeUntilDestroyed() (v16+)</span><br>data$ = <span class='fn'>this</span>.service.<span class='fn'>data</span>$.<span class='fn'>pipe</span>(<br>  <span class='fn'>takeUntilDestroyed</span>()  <span class='cm'>// se complète à la destruction</span><br>);<br><br><span class='cm'>// ✅ Solution 2 : toSignal() — pas de subscribe du tout</span><br>data = <span class='fn'>toSignal</span>(<span class='fn'>this</span>.service.<span class='fn'>data</span>$);<br><br><span class='cm'>// ✅ Solution 3 : async pipe dans le template</span><br><span class='cm'>// &lt;div *ngFor=&quot;let d of data$ | async&quot;&gt;</span></pre>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -370,21 +370,21 @@
     "id": 50,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que le Design Pattern Singleton ? Quand Angular crée-t-il un singleton automatiquement ?",
-    "answer": "Une seule <strong>instance</strong> pour toute l'app.<br><br>Angular : <code>providedIn: 'root'</code> = singleton automatique.<br><br><span class='fc-rule'>Attention : <code>providers: []</code> dans un composant = 1 instance par composant</span>",
+    "answer": "Une seule <strong>instance</strong> pour toute l'app.<pre class='fc-code'><span class='cm'>// ✅ Singleton global (une instance partagée)</span><br><span class='dec'>@Injectable</span>({ providedIn: <span class='str'>'root'</span> })<br><span class='kw'>export class</span> <span class='type'>AuthService</span> {}<br><br><span class='cm'>// ⚠️ Instance par composant (pas un singleton !)</span><br><span class='dec'>@Component</span>({<br>  providers: [<span class='type'>AuthService</span>]  <span class='cm'>// nouvelle instance à chaque composant</span><br>})</pre>Angular : <code>providedIn: 'root'</code> = singleton automatique. <code>providers: []</code> dans un composant = 1 instance <em>par composant</em>.",
     "difficulty": "easy"
   },
   {
     "id": 51,
     "category": "Java & Spring Boot",
     "question": "Qu'est-ce que l'IoC (Inversion of Control) et comment Spring la met-il en œuvre ?",
-    "answer": "L'<strong>IoC</strong> inverse le contrôle : ce n'est plus le code qui crée ses dépendances, c'est le <strong>conteneur Spring</strong>.<br><br>Spring crée un <code>ApplicationContext</code> qui gère les beans et résout les dépendances via constructeur ou <code>@Autowired</code>.",
+    "answer": "L'<strong>IoC</strong> inverse le contrôle : ce n'est plus le code qui crée ses dépendances, c'est le <strong>conteneur Spring</strong>.<pre class='fc-code'><span class='cm'>// Sans IoC — couplage fort, non testable</span><br><span class='kw'>class</span> <span class='type'>OrderService</span> {<br>  <span class='kw'>private</span> repo = <span class='kw'>new</span> <span class='type'>OrderRepository</span>(); <span class='cm'>// crée lui-même sa dépendance</span><br>}<br><br><span class='cm'>// Avec IoC — Spring injecte via constructeur</span><br><span class='dec'>@Service</span><br><span class='kw'>public class</span> <span class='type'>OrderService</span> {<br>  <span class='kw'>private final</span> <span class='type'>OrderRepository</span> repo;<br>  <span class='kw'>public</span> <span class='fn'>OrderService</span>(<span class='type'>OrderRepository</span> repo) {<br>    <span class='fn'>this</span>.repo = repo; <span class='cm'>// injecté par Spring</span><br>  }<br>}</pre>Spring crée un <code>ApplicationContext</code> qui gère les beans et résout les dépendances automatiquement.",
     "difficulty": "easy"
   },
   {
     "id": 52,
     "category": "Java & Spring Boot",
     "question": "Quelle est la différence entre @Component, @Service, @Repository et @Controller ?",
-    "answer": "Tous sont des alias de <strong>@Component</strong>. La différence est sémantique + fonctionnelle :<ul><li><strong>@Repository</strong> — traduit les exceptions JPA en DataAccessException</li><li><strong>@Controller/@RestController</strong> — gestion des requêtes HTTP</li><li><strong>@Service</strong> — couche métier, aucun comportement supplémentaire</li></ul>",
+    "answer": "Tous sont des alias de <strong>@Component</strong>. La différence est sémantique + fonctionnelle :<pre class='fc-code'><span class='dec'>@Repository</span>   <span class='cm'>// + traduit exceptions JPA → DataAccessException</span><br><span class='kw'>public class</span> <span class='type'>UserRepository</span> {}<br><br><span class='dec'>@Service</span>       <span class='cm'>// couche métier, aucun comportement supplémentaire</span><br><span class='kw'>public class</span> <span class='type'>UserService</span> {}<br><br><span class='dec'>@RestController</span> <span class='cm'>// = @Controller + @ResponseBody → JSON direct</span><br><span class='kw'>public class</span> <span class='type'>UserController</span> {<br>  <span class='dec'>@GetMapping</span>(<span class='str'>'/users/{id}'</span>)<br>  <span class='kw'>public</span> <span class='type'>User</span> <span class='fn'>getUser</span>(<span class='dec'>@PathVariable</span> <span class='type'>Long</span> id) { ... }<br>}</pre>",
     "difficulty": "easy"
   },
   {
@@ -398,7 +398,7 @@
     "id": 54,
     "category": "Java & Spring Boot",
     "question": "À quoi sert @Transactional ? Quels sont les pièges courants ?",
-    "answer": "Démarre une transaction avant la méthode, commit ou rollback à la fin.<br><br>Pièges courants :<ul><li><strong>Appel interne</strong> — proxy contourné, pas de transaction</li><li><strong>Checked exceptions</strong> — pas de rollback par défaut (ajouter <code>rollbackFor</code>)</li><li><strong>Méthode private</strong> — ignorée</li></ul>",
+    "answer": "Démarre une transaction avant la méthode, commit ou rollback à la fin.<pre class='fc-code'><span class='dec'>@Transactional</span>  <span class='cm'>// rollback sur RuntimeException par défaut</span><br><span class='kw'>public void</span> <span class='fn'>transfer</span>(<span class='type'>Long</span> from, <span class='type'>Long</span> to, <span class='type'>BigDecimal</span> amount) {<br>  accountRepo.<span class='fn'>debit</span>(from, amount);<br>  accountRepo.<span class='fn'>credit</span>(to, amount);<br>}<br><br><span class='cm'>// ⚠️ Piège 1 : checked exception sans rollbackFor</span><br><span class='dec'>@Transactional</span>(rollbackFor = <span class='type'>Exception</span>.<span class='kw'>class</span>) <span class='cm'>// nécessaire !</span><br><br><span class='cm'>// ⚠️ Piège 2 : appel interne = proxy contourné</span><br><span class='kw'>public void</span> <span class='fn'>outer</span>() { <span class='fn'>inner</span>(); } <span class='cm'>// @Transactional sur inner() ignoré !</span></pre>Pièges : appel interne contourne le proxy, méthode <code>private</code> ignorée, checked exceptions pas rollbackées par défaut.",
     "difficulty": "medium"
   },
   {
@@ -419,14 +419,14 @@
     "id": 57,
     "category": "Java & Spring Boot",
     "question": "Quels types de Repository Spring Data JPA existent et que proposent-ils ?",
-    "answer": "Hiérarchie :<ul><li><code>CrudRepository</code> — save / findById / delete</li><li><code>PagingAndSortingRepository</code> — + pagination/tri</li><li><code>JpaRepository</code> — + flush/batch</li></ul>Les <code>findByXxx</code> sont <strong>auto-générées</strong> par le nom de la méthode.",
+    "answer": "Hiérarchie :<ul><li><code>CrudRepository</code> — save / findById / delete</li><li><code>PagingAndSortingRepository</code> — + pagination/tri</li><li><code>JpaRepository</code> — + flush/batch/deleteInBatch</li></ul><pre class='fc-code'><span class='kw'>public interface</span> <span class='type'>UserRepository</span> <span class='kw'>extends</span> <span class='type'>JpaRepository</span>&lt;<span class='type'>User</span>, <span class='type'>Long</span>&gt; {<br><br>  <span class='cm'>// Auto-générée depuis le nom de la méthode</span><br>  <span class='type'>List</span>&lt;<span class='type'>User</span>&gt; <span class='fn'>findByEmailAndStatus</span>(<span class='type'>String</span> email, <span class='type'>Status</span> status);<br><br>  <span class='cm'>// Query JPQL explicite</span><br>  <span class='dec'>@Query</span>(<span class='str'>&quot;SELECT u FROM User u JOIN FETCH u.roles WHERE u.id = :id&quot;</span>)<br>  <span class='type'>Optional</span>&lt;<span class='type'>User</span>&gt; <span class='fn'>findWithRoles</span>(<span class='dec'>@Param</span>(<span class='str'>&quot;id&quot;</span>) <span class='type'>Long</span> id);<br>}</pre>",
     "difficulty": "medium"
   },
   {
     "id": 58,
     "category": "Java & Spring Boot",
     "question": "Comment gérer les exceptions globalement dans Spring Boot ?",
-    "answer": "<code>@RestControllerAdvice</code> + <code>@ExceptionHandler</code> centralisent la gestion des erreurs.<br><br>On mappe chaque exception à un statut HTTP + un corps d'erreur structuré.<br><br><span class='fc-rule'>Étendre ResponseEntityExceptionHandler pour les exceptions Spring standard</span>",
+    "answer": "<code>@RestControllerAdvice</code> + <code>@ExceptionHandler</code> centralisent la gestion des erreurs.<pre class='fc-code'><span class='dec'>@RestControllerAdvice</span><br><span class='kw'>public class</span> <span class='type'>GlobalExceptionHandler</span> {<br><br>  <span class='dec'>@ExceptionHandler</span>(<span class='type'>EntityNotFoundException</span>.<span class='kw'>class</span>)<br>  <span class='dec'>@ResponseStatus</span>(<span class='type'>HttpStatus</span>.NOT_FOUND)<br>  <span class='kw'>public</span> <span class='type'>ErrorDto</span> <span class='fn'>handleNotFound</span>(<span class='type'>EntityNotFoundException</span> ex) {<br>    <span class='kw'>return new</span> <span class='type'>ErrorDto</span>(<span class='num'>404</span>, ex.<span class='fn'>getMessage</span>());<br>  }<br><br>  <span class='dec'>@ExceptionHandler</span>(<span class='type'>Exception</span>.<span class='kw'>class</span>)<br>  <span class='dec'>@ResponseStatus</span>(<span class='type'>HttpStatus</span>.INTERNAL_SERVER_ERROR)<br>  <span class='kw'>public</span> <span class='type'>ErrorDto</span> <span class='fn'>handleGeneric</span>(<span class='type'>Exception</span> ex) { ... }<br>}</pre><span class='fc-rule'>Étendre ResponseEntityExceptionHandler pour gérer les exceptions Spring standard (validation, méthode non supportée...).</span>",
     "difficulty": "medium"
   },
   {
@@ -440,7 +440,7 @@
     "id": 60,
     "category": "Java & Spring Boot",
     "question": "Qu'est-ce que le problème N+1 en JPA/Hibernate et comment le résoudre ?",
-    "answer": "Pour charger N entités, JPA exécute <strong>N requêtes supplémentaires</strong> pour chaque association LAZY.<br><br>Solutions :<ul><li><code>JOIN FETCH</code> dans une @Query JPQL</li><li><code>@EntityGraph</code> pour charger ponctuellement</li></ul><span class='fc-rule'>Éviter FetchType.EAGER global (charge tout en permanence)</span>",
+    "answer": "Pour charger N entités, JPA exécute <strong>N requêtes supplémentaires</strong> pour chaque association LAZY.<pre class='fc-code'><span class='cm'>// ❌ N+1 : 1 requête users + N requêtes roles</span><br><span class='type'>List</span>&lt;<span class='type'>User</span>&gt; users = userRepo.<span class='fn'>findAll</span>();<br>users.<span class='fn'>forEach</span>(u -> u.<span class='fn'>getRoles</span>().<span class='fn'>size</span>()); <span class='cm'>// déclenche N requêtes</span><br><br><span class='cm'>// ✅ Solution 1 : JOIN FETCH (1 seule requête)</span><br><span class='dec'>@Query</span>(<span class='str'>&quot;SELECT u FROM User u JOIN FETCH u.roles&quot;</span>)<br><span class='type'>List</span>&lt;<span class='type'>User</span>&gt; <span class='fn'>findAllWithRoles</span>();<br><br><span class='cm'>// ✅ Solution 2 : @EntityGraph (ponctuel)</span><br><span class='dec'>@EntityGraph</span>(attributePaths = {<span class='str'>&quot;roles&quot;</span>})<br><span class='type'>List</span>&lt;<span class='type'>User</span>&gt; <span class='fn'>findAll</span>();</pre><span class='fc-rule'>Éviter FetchType.EAGER global — il charge tout en permanence même quand inutile.</span>",
     "difficulty": "hard"
   },
   {
@@ -706,21 +706,21 @@
     "id": 98,
     "category": "Java",
     "question": "Qu'est-ce que la Stream API Java 8 ? Quelle est la différence entre opérations intermédiaires et terminales ?",
-    "answer": "Traitement fonctionnel de collections.<ul><li><strong>Intermédiaires</strong> (lazy) : filter, map, flatMap, sorted, distinct, limit</li><li><strong>Terminales</strong> (déclenchent l'exécution) : collect, forEach, count, reduce</li></ul><span class='fc-rule'>Les intermédiaires ne s'exécutent pas sans terminale → optimisation automatique (court-circuit)</span>",
+    "answer": "Traitement fonctionnel de collections.<ul><li><strong>Intermédiaires</strong> (lazy) : filter, map, flatMap, sorted, distinct, limit</li><li><strong>Terminales</strong> (déclenchent l'exécution) : collect, forEach, count, reduce</li></ul><pre class='fc-code'><span class='type'>List</span>&lt;<span class='type'>String</span>&gt; names = users.<span class='fn'>stream</span>()<br>  .<span class='fn'>filter</span>(u -> u.<span class='fn'>isActive</span>())           <span class='cm'>// intermédiaire</span><br>  .<span class='fn'>map</span>(<span class='type'>User</span>::<span class='fn'>getName</span>)              <span class='cm'>// intermédiaire</span><br>  .<span class='fn'>sorted</span>()                          <span class='cm'>// intermédiaire</span><br>  .<span class='fn'>collect</span>(<span class='type'>Collectors</span>.<span class='fn'>toList</span>());  <span class='cm'>// terminale → déclenche tout</span><br><br><span class='cm'>// groupBy</span><br><span class='type'>Map</span>&lt;<span class='type'>String</span>, <span class='type'>List</span>&lt;<span class='type'>User</span>&gt;&gt; byRole = users.<span class='fn'>stream</span>()<br>  .<span class='fn'>collect</span>(<span class='type'>Collectors</span>.<span class='fn'>groupingBy</span>(<span class='type'>User</span>::<span class='fn'>getRole</span>));</pre><span class='fc-rule'>Les intermédiaires ne s'exécutent pas sans terminale → optimisation automatique (court-circuit avec limit/findFirst).</span>",
     "difficulty": "medium"
   },
   {
     "id": 99,
     "category": "Java",
     "question": "Qu'est-ce qu'Optional<T> et comment l'utiliser correctement ?",
-    "answer": "Conteneur pour une valeur <strong>potentiellement absente</strong> — remplace les retours null.<br><br>Utilisation correcte :<ul><li><code>map()</code> / <code>flatMap()</code> / <code>filter()</code></li><li><code>orElse()</code> / <code>orElseGet()</code></li></ul><span class='fc-rule'>Pièges : get() sans isPresent() = NPE. Ne pas mettre Optional en champ/paramètre.</span>",
+    "answer": "Conteneur pour une valeur <strong>potentiellement absente</strong> — remplace les retours <code>null</code>.<pre class='fc-code'><span class='type'>Optional</span>&lt;<span class='type'>User</span>&gt; maybeUser = userRepo.<span class='fn'>findById</span>(id);<br><br><span class='cm'>// ✅ Chaîner sans null check</span><br><span class='type'>String</span> name = maybeUser<br>  .<span class='fn'>map</span>(<span class='type'>User</span>::<span class='fn'>getName</span>)<br>  .<span class='fn'>orElse</span>(<span class='str'>&quot;Anonyme&quot;</span>);<br><br><span class='cm'>// ✅ Lancer une exception si absent</span><br><span class='type'>User</span> user = maybeUser<br>  .<span class='fn'>orElseThrow</span>(() -> <span class='kw'>new</span> <span class='type'>EntityNotFoundException</span>(id));<br><br><span class='cm'>// ❌ Piège : get() sans vérification = NPE</span><br>maybeUser.<span class='fn'>get</span>(); <span class='cm'>// NoSuchElementException si vide !</span></pre><span class='fc-rule'>Ne jamais mettre Optional en champ de classe ou paramètre de méthode — réservé aux retours de méthode.</span>",
     "difficulty": "medium"
   },
   {
     "id": 100,
     "category": "Java",
     "question": "Qu'est-ce qu'une interface fonctionnelle ? Quelles sont les 4 principales du JDK ?",
-    "answer": "Interface avec <strong>une seule méthode abstraite</strong> (<code>@FunctionalInterface</code>), utilisable avec une lambda.<br><br>4 principales :<ul><li><strong>Supplier&lt;T&gt;</strong> — () → T</li><li><strong>Consumer&lt;T&gt;</strong> — T → void</li><li><strong>Function&lt;T,R&gt;</strong> — T → R</li><li><strong>Predicate&lt;T&gt;</strong> — T → boolean</li></ul>",
+    "answer": "Interface avec <strong>une seule méthode abstraite</strong> (<code>@FunctionalInterface</code>), utilisable avec une lambda.<pre class='fc-code'><span class='type'>Supplier</span>&lt;<span class='type'>String</span>&gt;   s = () -> <span class='str'>&quot;hello&quot;</span>;         <span class='cm'>// () → T</span><br><span class='type'>Consumer</span>&lt;<span class='type'>String</span>&gt;   c = str -> <span class='fn'>System</span>.out.<span class='fn'>println</span>(str); <span class='cm'>// T → void</span><br><span class='type'>Function</span>&lt;<span class='type'>String</span>, <span class='type'>Integer</span>&gt; f = <span class='type'>String</span>::<span class='fn'>length</span>; <span class='cm'>// T → R</span><br><span class='type'>Predicate</span>&lt;<span class='type'>String</span>&gt; p = str -> str.<span class='fn'>isEmpty</span>();  <span class='cm'>// T → boolean</span><br><br><span class='cm'>// Chaîner : Function.andThen()</span><br><span class='type'>Function</span>&lt;<span class='type'>String</span>, <span class='type'>String</span>&gt; upper = <span class='type'>String</span>::<span class='fn'>toUpperCase</span>;<br><span class='type'>Function</span>&lt;<span class='type'>String</span>, <span class='type'>String</span>&gt; trim  = <span class='type'>String</span>::<span class='fn'>trim</span>;<br><span class='type'>Function</span>&lt;<span class='type'>String</span>, <span class='type'>String</span>&gt; both  = trim.<span class='fn'>andThen</span>(upper);</pre>",
     "difficulty": "medium"
   },
   {
@@ -853,7 +853,7 @@
     "id": 119,
     "category": "Angular",
     "question": "Quel est l'ordre des lifecycle hooks Angular et lequel utiliser pour quoi ?",
-    "answer": "Ordre : ngOnChanges → ngOnInit → ngDoCheck → ngAfterContentInit → ngAfterContentChecked → ngAfterViewInit → ngAfterViewChecked → ngOnDestroy<br><br><span class='fc-rule'>ngOnInit = init · ngOnChanges = réagir aux Inputs · ngAfterViewInit = ViewChild · ngOnDestroy = cleanup. Constructeur = DI uniquement.</span>",
+    "answer": "Ordre des hooks :<pre class='fc-code'>ngOnChanges       <span class='cm'>// @Input change (avant ngOnInit)</span><br>ngOnInit          <span class='cm'>// init — Inputs disponibles</span><br>ngDoCheck         <span class='cm'>// chaque CD (rare)</span><br>ngAfterContentInit    <span class='cm'>// ng-content projeté</span><br>ngAfterContentChecked<br>ngAfterViewInit   <span class='cm'>// ViewChild disponible</span><br>ngAfterViewChecked<br>ngOnDestroy       <span class='cm'>// cleanup (unsubscribe, timers)</span></pre><span class='fc-rule'>Constructeur = DI uniquement. ngOnInit = init. ngAfterViewInit = ViewChild. ngOnDestroy = cleanup.</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -869,7 +869,7 @@
     "id": 121,
     "category": "Angular",
     "question": "Qu'est-ce que ViewChild et viewChild() ? Quelle est la différence entre static: true et static: false ?",
-    "answer": "Accède à un élément du template depuis TypeScript.<ul><li><strong>static: true</strong> — résolu dans ngOnInit (élément non conditionnel)</li><li><strong>static: false</strong> (défaut) — résolu dans ngAfterViewInit (élément dans @if/@for)</li></ul><span class='fc-rule'>v17+ : viewChild() retourne un Signal → plus réactif, compatible OnPush</span>",
+    "answer": "Accède à un élément du template depuis TypeScript.<pre class='fc-code'><span class='cm'>// Ancienne API — décorateur</span><br><span class='dec'>@ViewChild</span>(<span class='str'>'myInput'</span>) inputRef!: <span class='type'>ElementRef</span>;<br><br><span class='cm'>// Nouvelle API v17+ — Signal read-only</span><br>inputRef = <span class='fn'>viewChild</span>&lt;<span class='type'>ElementRef</span>&gt;(<span class='str'>'myInput'</span>);<br><br><span class='cm'>// Utilisation dans ngAfterViewInit (ou effect())</span><br><span class='fn'>ngAfterViewInit</span>() {<br>  <span class='fn'>this</span>.inputRef()?.nativeElement.<span class='fn'>focus</span>(); <span class='cm'>// Signal → appel ()</span><br>}</pre><ul><li><strong>static: true</strong> — résolu dans ngOnInit (élément toujours présent)</li><li><strong>static: false</strong> — résolu dans ngAfterViewInit (élément dans @if/@for)</li></ul><span class='fc-rule'>viewChild() retourne un Signal → compatible OnPush nativement.</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -909,7 +909,7 @@
     "id": 126,
     "category": "Angular",
     "question": "Comment fonctionnent les Reactive Forms ? Quelle est la différence entre FormGroup, FormControl et FormArray ?",
-    "answer": "<ul><li><strong>FormControl</strong> — 1 champ avec valeur + validateurs</li><li><strong>FormGroup</strong> — groupe de FormControls (objet)</li><li><strong>FormArray</strong> — tableau dynamique de FormControls/Groups</li></ul>Accès : <code>form.get('email')?.value</code><br><span class='fc-rule'>Angular 14+ : FormGroup typé</span>",
+    "answer": "<ul><li><strong>FormControl</strong> — 1 champ avec valeur + validateurs</li><li><strong>FormGroup</strong> — groupe de FormControls (objet)</li><li><strong>FormArray</strong> — tableau dynamique de FormControls/Groups</li></ul><pre class='fc-code'><span class='kw'>const</span> form = <span class='kw'>new</span> <span class='type'>FormGroup</span>({<br>  email: <span class='kw'>new</span> <span class='type'>FormControl</span>(<span class='str'>''</span>, [<span class='type'>Validators</span>.<span class='fn'>required</span>, <span class='type'>Validators</span>.<span class='fn'>email</span>]),<br>  password: <span class='kw'>new</span> <span class='type'>FormControl</span>(<span class='str'>''</span>, <span class='type'>Validators</span>.<span class='fn'>minLength</span>(<span class='num'>8</span>))<br>});<br><br><span class='cm'>// Accès typé (Angular 14+)</span><br>form.<span class='fn'>get</span>(<span class='str'>'email'</span>)?.value;<br>form.controls.email.errors; <span class='cm'>// { required: true } | null</span><br><br><span class='cm'>// Soumission</span><br><span class='kw'>if</span> (form.<span class='fn'>valid</span>) { <span class='fn'>submit</span>(form.<span class='fn'>getRawValue</span>()); }</pre>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -925,7 +925,7 @@
     "id": 128,
     "category": "Angular",
     "question": "Qu'est-ce qu'un HttpInterceptor ? Comment en créer un et à quoi sert-il ?",
-    "answer": "Middleware qui intercepte toutes les requêtes/réponses HTTP.<br><br>Cas d'usage :<ul><li>Ajouter un token d'auth (Authorization: Bearer ...)</li><li>Logger les requêtes</li><li>Gérer les erreurs globalement (401 → redirect, retry 503)</li></ul><span class='fc-rule'>v15+ : withInterceptors([fn]) dans provideHttpClient()</span>",
+    "answer": "Middleware qui intercepte toutes les requêtes/réponses HTTP.<pre class='fc-code'><span class='cm'>// Interceptor fonctionnel (v15+)</span><br><span class='kw'>export const</span> <span class='fn'>authInterceptor</span>: <span class='type'>HttpInterceptorFn</span> = (req, next) => {<br>  <span class='kw'>const</span> token = <span class='fn'>inject</span>(<span class='type'>AuthService</span>).<span class='fn'>getToken</span>();<br>  <span class='kw'>const</span> authReq = req.<span class='fn'>clone</span>({<br>    headers: req.headers.<span class='fn'>set</span>(<span class='str'>'Authorization'</span>, <span class='str'>`Bearer ${token}`</span>)<br>  });<br>  <span class='kw'>return</span> <span class='fn'>next</span>(authReq);<br>};<br><br><span class='cm'>// Enregistrement dans app.config.ts</span><br><span class='fn'>provideHttpClient</span>(<span class='fn'>withInterceptors</span>([<span class='fn'>authInterceptor</span>]))</pre>Cas d'usage : token d'auth, logging, gestion globale des erreurs (401→redirect, retry sur 503).",
     "difficulty": "medium",
     "version": "v15+"
   },
@@ -933,7 +933,7 @@
     "id": 129,
     "category": "Angular",
     "question": "Comment lire les paramètres d'URL avec ActivatedRoute ? Quelle différence entre params, queryParams et data ?",
-    "answer": "<ul><li><strong>params</strong> — /users/:id (paramètre de chemin)</li><li><strong>queryParams</strong> — ?page=2&amp;sort=name</li><li><strong>data</strong> — données statiques de la config de route + Resolver</li></ul><span class='fc-rule'>v16+ : toSignal(route.params) pour rester réactif en OnPush</span>",
+    "answer": "<ul><li><strong>params</strong> — /users/:id (paramètre de chemin)</li><li><strong>queryParams</strong> — ?page=2&amp;sort=name</li><li><strong>data</strong> — données statiques de la config de route + Resolver</li></ul><pre class='fc-code'><span class='kw'>export class</span> <span class='type'>UserComponent</span> {<br>  <span class='kw'>private</span> route = <span class='fn'>inject</span>(<span class='type'>ActivatedRoute</span>);<br><br>  <span class='cm'>// Signal réactif (v16+)</span><br>  userId = <span class='fn'>toSignal</span>(<span class='fn'>this</span>.route.params.<span class='fn'>pipe</span>(<span class='fn'>map</span>(p => p[<span class='str'>'id'</span>])));<br>  page   = <span class='fn'>toSignal</span>(<span class='fn'>this</span>.route.queryParams.<span class='fn'>pipe</span>(<span class='fn'>map</span>(q => q[<span class='str'>'page'</span>] ?? <span class='num'>1</span>)));<br>}</pre><span class='fc-rule'>v16+ : toSignal(route.params) pour rester réactif en OnPush sans subscribe manuel.</span>",
     "difficulty": "easy",
     "version": "v16+"
   },
@@ -949,7 +949,7 @@
     "id": 131,
     "category": "Angular",
     "question": "Quelles sont les 4 façons de fournir une dépendance avec provide: ? Quand utiliser chacune ?",
-    "answer": "<ul><li><strong>useClass</strong> — instancie une classe alternative (mock en tests)</li><li><strong>useValue</strong> — injecte une valeur statique déjà créée</li><li><strong>useFactory</strong> — crée via une fonction (logique conditionnelle)</li><li><strong>useExisting</strong> — alias pour la même instance qu'un autre token</li></ul>",
+    "answer": "<pre class='fc-code'><span class='cm'>// useClass : classe alternative (mock en tests)</span><br>{ provide: <span class='type'>EmailService</span>, useClass: <span class='type'>FakeEmailService</span> }<br><br><span class='cm'>// useValue : valeur statique</span><br>{ provide: <span class='type'>API_URL</span>, useValue: <span class='str'>'https://api.prod'</span> }<br><br><span class='cm'>// useFactory : logique conditionnelle</span><br>{ provide: <span class='type'>Logger</span>,<br>  useFactory: (env: <span class='type'>Env</span>) => env.prod ? <span class='kw'>new</span> <span class='type'>ProdLogger</span>() : <span class='kw'>new</span> <span class='type'>DevLogger</span>(),<br>  deps: [<span class='type'>Env</span>] }<br><br><span class='cm'>// useExisting : alias (même instance)</span><br>{ provide: <span class='type'>NewService</span>, useExisting: <span class='type'>OldService</span> }</pre>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -957,7 +957,7 @@
     "id": 132,
     "category": "Angular",
     "question": "Qu'est-ce que DestroyRef et takeUntilDestroyed ? Pourquoi remplacent-ils ngOnDestroy ?",
-    "answer": "<ul><li><strong>DestroyRef</strong> — token avec <code>onDestroy()</code>, utilisable dans des helpers inject()</li><li><strong>takeUntilDestroyed()</strong> — complete un Observable à la destruction du contexte</li></ul><span class='fc-rule'>Plus besoin de ngOnDestroy ni du pattern Subject destroy$ → code plus propre</span>",
+    "answer": "<ul><li><strong>DestroyRef</strong> — token avec <code>onDestroy()</code>, utilisable dans des helpers inject()</li><li><strong>takeUntilDestroyed()</strong> — complete un Observable à la destruction du contexte</li></ul><pre class='fc-code'><span class='cm'>// ❌ Ancien pattern — boilerplate</span><br><span class='kw'>private</span> destroy$ = <span class='kw'>new</span> <span class='type'>Subject</span>&lt;<span class='kw'>void</span>&gt;();<br>data$.<span class='fn'>pipe</span>(<span class='fn'>takeUntil</span>(<span class='fn'>this</span>.destroy$)).<span class='fn'>subscribe</span>(...);<br><span class='fn'>ngOnDestroy</span>() { <span class='fn'>this</span>.destroy$.<span class='fn'>next</span>(); <span class='fn'>this</span>.destroy$.<span class='fn'>complete</span>(); }<br><br><span class='cm'>// ✅ Nouveau — plus de ngOnDestroy</span><br>data$.<span class='fn'>pipe</span>(<span class='fn'>takeUntilDestroyed</span>()).<span class='fn'>subscribe</span>(...);<br><br><span class='cm'>// ✅ DestroyRef dans un helper inject()</span><br><span class='kw'>function</span> <span class='fn'>useOnDestroy</span>(cb: () => <span class='kw'>void</span>) {<br>  <span class='fn'>inject</span>(<span class='type'>DestroyRef</span>).<span class='fn'>onDestroy</span>(cb);<br>}</pre>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -965,7 +965,7 @@
     "id": 133,
     "category": "Angular",
     "question": "Qu'est-ce que afterNextRender et afterRender ? En quoi diffèrent-ils de ngAfterViewInit ?",
-    "answer": "<ul><li><strong>afterNextRender</strong> — une seule fois après le prochain rendu (init libs tierces : graphiques, éditeurs)</li><li><strong>afterRender</strong> — après chaque rendu</li></ul><span class='fc-rule'>Fonctionnent en Zoneless et SSR (ignorés côté serveur). Compositionnels — utilisables dans inject() helpers.</span>",
+    "answer": "<ul><li><strong>afterNextRender</strong> — une seule fois après le prochain rendu (init libs tierces)</li><li><strong>afterRender</strong> — après chaque rendu (mesures DOM répétées)</li></ul><pre class='fc-code'><span class='kw'>export class</span> <span class='type'>ChartComponent</span> {<br>  <span class='kw'>private</span> chartEl = <span class='fn'>viewChild</span>&lt;<span class='type'>ElementRef</span>&gt;(<span class='str'>'chartCanvas'</span>);<br><br>  <span class='fn'>constructor</span>() {<br>    <span class='cm'>// Remplace ngAfterViewInit — fonctionne en Zoneless + SSR</span><br>    <span class='fn'>afterNextRender</span>(() => {<br>      <span class='cm'>// DOM disponible ici — init Chart.js, D3, Monaco...</span><br>      <span class='kw'>new</span> <span class='type'>Chart</span>(<span class='fn'>this</span>.chartEl()!.nativeElement, <span class='fn'>this</span>.config);<br>    });<br>  }<br>}</pre><span class='fc-rule'>Ignorés côté serveur (SSR). Compositionnels — utilisables dans des helpers inject() partagés.</span>",
     "difficulty": "hard",
     "version": "v17+"
   },
@@ -973,7 +973,7 @@
     "id": 134,
     "category": "Angular",
     "question": "Qu'est-ce que le two-way binding [()] en Angular ? Comment model() le modernise-t-il ?",
-    "answer": "Le two-way binding (liaison bidirectionnelle) dans Angular est un mécanisme qui synchronise automatiquement les données entre le composant (modèle TypeScript) et l'interface utilisateur (vue HTML) dans les deux sens (v17+) — Signal writable qui synchronise automatiquement le binding bidirectionnel.<br><br><span class='fc-rule'>Compatible OnPush nativement, moins de boilerplate que @Input + @Output</span>",
+    "answer": "Le <strong>two-way binding</strong> synchronise la donnée dans les deux sens : composant ↔ template.<pre class='fc-code'><span class='cm'>// Ancienne façon : @Input + @Output</span><br><span class='dec'>@Input</span>() value = <span class='str'>''</span>;<br><span class='dec'>@Output</span>() valueChange = <span class='kw'>new</span> <span class='type'>EventEmitter</span>&lt;<span class='type'>string</span>&gt;();<br><span class='cm'>// Parent : &lt;app-input [(value)]=&quot;name&quot; /&gt;</span><br><br><span class='cm'>// Nouvelle façon (v17+) : model()</span><br>value = <span class='fn'>model</span>(<span class='str'>''</span>); <span class='cm'>// Signal writable deux sens</span><br><span class='cm'>// Parent : &lt;app-input [(value)]=&quot;name&quot; /&gt; — identique !</span><br><br><span class='cm'>// Dans le template enfant</span><br><span class='cm'>// &lt;input [value]=&quot;value()&quot; (input)=&quot;value.set($event.target.value)&quot; /&gt;</span></pre><span class='fc-rule'>model() = Signal writable synchronisé avec le parent. Compatible OnPush nativement, moins de boilerplate.</span>",
     "difficulty": "medium",
     "version": "v17+"
   },
@@ -981,7 +981,7 @@
     "id": 135,
     "category": "Angular",
     "question": "Qu'est-ce que NgZone et runOutsideAngular() ? Quand l'utiliser ?",
-    "answer": "<strong>NgZone</strong> détecte les changements async en monkey-patchant les APIs du navigateur.<br><br><code>runOutsideAngular()</code> — exécute du code sans déclencher la CD.<ul><li>Animations haute fréquence</li><li>Listeners scroll/mousemove qui ne modifient pas l'état Angular</li></ul><span class='fc-rule'>Puis zone.run() pour re-entrer dans la zone et déclencher une mise à jour</span>",
+    "answer": "<strong>NgZone</strong> détecte les changements async en monkey-patchant les APIs du navigateur.<pre class='fc-code'><span class='kw'>export class</span> <span class='type'>MapComponent</span> {<br>  <span class='kw'>private</span> zone = <span class='fn'>inject</span>(<span class='type'>NgZone</span>);<br><br>  <span class='fn'>ngAfterViewInit</span>() {<br>    <span class='cm'>// Exécuté hors Angular → pas de CD à chaque frame</span><br>    <span class='fn'>this</span>.zone.<span class='fn'>runOutsideAngular</span>(() => {<br>      <span class='fn'>requestAnimationFrame</span>(() => <span class='fn'>this</span>.<span class='fn'>renderMap</span>());<br>    });<br>  }<br><br>  <span class='fn'>onMarkerClick</span>(data: <span class='type'>MarkerData</span>) {<br>    <span class='cm'>// Re-entre dans la zone pour mettre à jour l'UI</span><br>    <span class='fn'>this</span>.zone.<span class='fn'>run</span>(() => <span class='fn'>this</span>.selected.<span class='fn'>set</span>(data));<br>  }<br>}</pre><span class='fc-rule'>Cas d'usage : animations haute fréquence, canvas, listeners scroll/mousemove sans état Angular.</span>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -989,7 +989,7 @@
     "id": 136,
     "category": "Angular",
     "question": "Quelle est la différence entre un Observable chaud (hot) et froid (cold) dans le contexte Angular ?",
-    "answer": "<ul><li><strong>Cold</strong> — chaque subscribe déclenche une nouvelle exécution (HttpClient.get() = nouvelle requête à chaque subscribe)</li><li><strong>Hot</strong> — flux partagé indépendant des subscribers (fromEvent, Subject)</li></ul><span class='fc-rule'>Piège : subscribe 2x à un HttpClient.get() = 2 requêtes réseau → shareReplay(1) pour partager</span>",
+    "answer": "<ul><li><strong>Cold</strong> — chaque subscribe déclenche une nouvelle exécution (HttpClient.get() = nouvelle requête à chaque subscribe)</li><li><strong>Hot</strong> — flux partagé indépendant des subscribers (fromEvent, Subject)</li></ul><pre class='fc-code'><span class='cm'>// Cold : 2 subscribes = 2 requêtes HTTP !</span><br><span class='kw'>const</span> user$ = <span class='fn'>this</span>.http.<span class='fn'>get</span>(<span class='str'>'/api/user'</span>);<br>user$.<span class='fn'>subscribe</span>(u => <span class='fn'>this</span>.name = u.name);<br>user$.<span class='fn'>subscribe</span>(u => <span class='fn'>this</span>.email = u.email); <span class='cm'>// 2ème requête !</span><br><br><span class='cm'>// ✅ shareReplay(1) : partage et rejoue le dernier</span><br><span class='kw'>const</span> user$ = <span class='fn'>this</span>.http.<span class='fn'>get</span>(<span class='str'>'/api/user'</span>).<span class='fn'>pipe</span>(<span class='fn'>shareReplay</span>(<span class='num'>1</span>));<br><br><span class='cm'>// Hot (partagé par nature)</span><br><span class='kw'>const</span> clicks$ = <span class='fn'>fromEvent</span>(document, <span class='str'>'click'</span>); <span class='cm'>// 1 flux pour N subscribers</span></pre><span class='fc-rule'>Piège : subscribe 2x à HttpClient.get() = 2 requêtes. Solution : shareReplay(1) ou toSignal().</span>",
     "difficulty": "hard",
     "version": "v16+"
   },

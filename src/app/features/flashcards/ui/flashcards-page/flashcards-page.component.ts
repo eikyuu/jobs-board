@@ -17,6 +17,7 @@ interface CategoryOption {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, TagModule, ButtonModule, SelectModule, SafeHtmlPipe],
   templateUrl: './flashcards-page.component.html',
+  styleUrl: './flashcards-page.component.scss',
 })
 export class FlashcardsPageComponent {
   private readonly service = inject(FlashcardsService);
@@ -50,7 +51,7 @@ export class FlashcardsPageComponent {
     const len = this.filteredCards().length;
     //rendre aleatoire le prochain index\
     const randomIndex = Math.floor(Math.random() * len);
-    this.currentIndex.update((i) => randomIndex);
+    this.currentIndex.update(() => randomIndex);
     this.isFlipped.set(false);
   }
 

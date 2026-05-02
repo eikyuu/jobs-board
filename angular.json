@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "vincentduguet board": {
+    "vincentduguetboard": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -72,10 +72,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "vincentduguet board:build:production"
+              "buildTarget": "vincentduguetboard:build:production"
             },
             "development": {
-              "buildTarget": "vincentduguet board:build:development"
+              "buildTarget": "vincentduguetboard:build:development"
             }
           },
           "defaultConfiguration": "development"

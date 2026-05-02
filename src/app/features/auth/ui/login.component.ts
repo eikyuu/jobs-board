@@ -10,7 +10,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { CardModule } from 'primeng/card';
 import { AuthService } from '../../../core/auth/auth.service';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { Button } from "primeng/button";
 
 /**

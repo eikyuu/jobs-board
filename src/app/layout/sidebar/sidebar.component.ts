@@ -7,7 +7,7 @@ import { AuthService } from '../../core/core.providers';
 interface NavItem {
   label: string;
   path: string;
-  icon: string; // SVG path data
+  icon: string;
   ariaLabel: string;
 }
 
@@ -99,11 +99,10 @@ export class SidebarComponent {
 
   readonly user = this.authService.user;
 
-  visible = model(false);
+  readonly visible = model(false);
 
   protected readonly navItems = NAV_ITEMS;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected isActive(_path: string): boolean {
     // routerLinkActive handles this; used only for aria-current
     return false;

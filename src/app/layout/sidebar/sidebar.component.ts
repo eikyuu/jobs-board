@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, model } from '@angular/core';
+import { Component, ChangeDetectionStrategy, model, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
+import { AuthService } from '../../core/core.providers';
 
 interface NavItem {
   label: string;
@@ -78,6 +79,14 @@ const NAV_ITEMS: NavItem[] = [
             </li>
           }
         </ul>
+
+          @if (user()) {
+          <div class="block md:hidden flex items-center gap-3 justify-end mt-6 px-3">
+            <span class="text-sm font-medium text-neutral-500" aria-hidden="true">{{ user()?.name }}</span>
+            <p-button label="Log out" (click)="logout()" aria-label="Log out" severity="secondary" />
+          </div>
+        }
+
       </nav>
     </p-drawer>
   </div>
@@ -85,6 +94,10 @@ const NAV_ITEMS: NavItem[] = [
   `,
 })
 export class SidebarComponent {
+
+  private readonly authService = inject(AuthService);
+
+  readonly user = this.authService.user;
 
   visible = model(false);
 
@@ -94,5 +107,9 @@ export class SidebarComponent {
   protected isActive(_path: string): boolean {
     // routerLinkActive handles this; used only for aria-current
     return false;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

@@ -24,7 +24,7 @@ const STATUS_SEVERITY: Record<ActivityRow['status'], TagSeverity> = {
 @Component({
   selector: 'app-dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DecimalPipe, DatePipe, CardModule, TagModule, ButtonModule, ButtonComponent],
+  imports: [DecimalPipe, DatePipe, CardModule, TagModule, ButtonModule],
   styleUrl: './dashboard.component.scss',
   template: `
     <div class="dashboard">

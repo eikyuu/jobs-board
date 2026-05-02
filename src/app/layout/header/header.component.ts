@@ -11,13 +11,12 @@ import { Button } from "primeng/button";
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonComponent, Button],
-  styleUrl: './header.component.scss',
+  imports: [RouterLink, Button],
   template: `
-    <header class="header" role="banner">
-      <div class="header__start">
+    <header class="flex items-center justify-between h-16 px-6 bg-white  border-b border-neutral-200 shadow-sm sticky top-0 z-50" role="banner">
+      <div class="flex items-center gap-4">
         <button
-          class="header__menu-toggle"
+          class="flex items-center justify-center w-9 h-9 p-0 bg-transparent border-0 rounded-md text-neutral-500 cursor-pointer transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
           type="button"
           [attr.aria-label]="'Toggle navigation menu'"
           (click)="menuToggled.emit()"
@@ -29,15 +28,15 @@ import { Button } from "primeng/button";
           </svg>
         </button>
 
-        <a routerLink="/" class="header__logo" aria-label="templateproject home">
-          <span class="header__logo-text">templateproject</span>
+        <a routerLink="/" class="flex items-center gap-2 no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 focus-visible:rounded-sm" aria-label="templateproject home">
+          <span class="text-xl font-bold text-primary-600 tracking-tight">templateproject</span>
         </a>
       </div>
 
-      <nav class="header__end" aria-label="User actions">
+      <nav class="flex items-center gap-4 hidden md:block" aria-label="User actions">
         @if (user()) {
-          <div class="header__user">
-            <span class="header__user-name" aria-hidden="true">{{ user()?.name }}</span>
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-medium text-neutral-500" aria-hidden="true">{{ user()?.name }}</span>
             <p-button label="Log out" (click)="logout()" aria-label="Log out" severity="secondary" />
           </div>
         }

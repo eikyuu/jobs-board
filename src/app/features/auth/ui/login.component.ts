@@ -21,7 +21,7 @@ import { Button } from "primeng/button";
 @Component({
   selector: 'app-login',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, CardModule, ButtonComponent, Button],
+  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, CardModule, Button],
   styleUrl: './login.component.scss',
   template: `
     <div class="login-page" role="main">

@@ -28,8 +28,8 @@ import { Button } from "primeng/button";
           </svg>
         </button>
 
-        <a routerLink="/" class="flex items-center gap-2 no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 focus-visible:rounded-sm" aria-label="templateproject home">
-          <span class="text-xl font-bold text-primary-600 tracking-tight">templateproject</span>
+        <a routerLink="/" class="flex items-center gap-2 no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 focus-visible:rounded-sm" aria-label="vincentduguet board home">
+          <span class="text-xl font-bold text-primary-600 tracking-tight">vincentduguet board</span>
         </a>
       </div>
 

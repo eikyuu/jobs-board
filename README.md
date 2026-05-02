@@ -1,4 +1,4 @@
-# templateproject v2
+# vincentduguet board v2
 
 Production-ready Angular 21 application with a scalable feature-based architecture.
 
@@ -156,6 +156,6 @@ Dark mode is supported via the `.dark-mode` class on the `<html>` element, which
 | Variable | Dev | Prod |
 |---|---|---|
 | `production` | `false` | `true` |
-| `apiUrl` | `http://localhost:3000/api` | `https://api.templateproject.app/api` |
+| `apiUrl` | `http://localhost:3000/api` | `https://api.vincentduguet board.app/api` |
 
 In development, `DashboardService` and `AuthService` return mock data when `environment.production === false`, so the app works without a backend.

@@ -5,7 +5,7 @@ export const AUTH_ROUTES: Routes = [
     path: 'login',
     loadComponent: () =>
       import('./ui/login.component').then((m) => m.LoginComponent),
-    title: 'Sign In — templateproject',
+    title: 'Sign In — vincentduguet board',
   },
   {
     path: '',

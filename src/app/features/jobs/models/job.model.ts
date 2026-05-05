@@ -6,6 +6,8 @@ export type ContractType = 'CDI' | 'CDD' | 'Freelance' | 'Stage' | 'Alternance';
 
 export type InterviewType = 'phone' | 'technical' | 'finalInterview' | 'hr';
 
+export type ApplicationTypes = 'spontaneous' | 'standard';
+
 export interface Salary {
   min: number;
   max: number;
@@ -43,6 +45,7 @@ export interface Job {
   notes?: string;
   contacts: Contact[];
   interviews: Interview[];
+  applicationType: ApplicationTypes;
 }
 
 

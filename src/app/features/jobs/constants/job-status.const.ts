@@ -1,4 +1,4 @@
-import { ContractType, InterviewType, JobStatus, RemoteType } from "../models/job.model";
+import { ApplicationTypes, ContractType, InterviewType, JobStatus, RemoteType } from "../models/job.model";
 
 
 export type TagSeverity = 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast';
@@ -9,6 +9,16 @@ export const STATUS_LABEL: Record<JobStatus, string> = {
   interview: 'Entretien',
   offer: 'Offre',
   rejected: 'Refus',
+};
+
+export const APPLICATION_TYPE_LABEL: Record<ApplicationTypes, string> = {
+  spontaneous: 'Spontanée',
+  standard: 'Standard',
+};
+
+export const APPLICATION_TYPE_SEVERITY: Record<ApplicationTypes, TagSeverity> = {
+  spontaneous: 'secondary',
+  standard: 'info',
 };
 
 export const STATUS_SEVERITY: Record<JobStatus, TagSeverity> = {

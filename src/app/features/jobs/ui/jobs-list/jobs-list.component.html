@@ -69,6 +69,9 @@
           <th pSortableColumn="status" scope="col">
             Statut <p-sortIcon field="status" />
           </th>
+          <th pSortableColumn="applicationType" scope="col">
+            Type <p-sortIcon field="applicationType" />
+          </th>
           <th pSortableColumn="appliedAt" scope="col">
             Candidaté le <p-sortIcon field="appliedAt" />
           </th>
@@ -100,6 +103,12 @@
             <p-tag
               [value]="statusLabel(job.status)"
               [severity]="statusSeverity(job.status)"
+            />
+          </td>
+          <td>
+            <p-tag
+              [value]="applicationTypeLabel(job.applicationType)"
+              [severity]="applicationTypeSeverity(job.applicationType)"
             />
           </td>
           <td>

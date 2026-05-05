@@ -9,7 +9,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { JobsState } from '../../data-access/jobs.state';
 import { Job, JobStatus } from '../../models/job.model';
-import { STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
+import { APPLICATION_TYPE_LABEL, APPLICATION_TYPE_SEVERITY, STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
 import { MessageService } from 'primeng/api'
 import { environment } from '../../../../../environments/environment';
 import { Badge } from "primeng/badge";
@@ -48,6 +48,14 @@ export class JobsListComponent implements OnInit {
 
   protected statusSeverity(status: JobStatus): TagSeverity {
     return STATUS_SEVERITY[status];
+  }
+
+  protected applicationTypeLabel(applicationType: Job['applicationType']): string {
+    return APPLICATION_TYPE_LABEL[applicationType] || applicationType;
+  }
+
+  protected applicationTypeSeverity(applicationType: Job['applicationType']): TagSeverity {
+    return APPLICATION_TYPE_SEVERITY[applicationType] || 'secondary';
   }
 
   protected remoteLabel(remote: Job['remote']): string {

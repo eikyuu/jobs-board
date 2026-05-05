@@ -65,6 +65,7 @@ export function jobToFormModel(job: Job): JobFormModel {
 
 export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
   return {
+    applicationType: 'standard',
     title: value.title,
     company: value.company,
     location: value.location,

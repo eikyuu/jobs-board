@@ -1,0 +1,122 @@
+<main class="p-6 max-w-4xl mx-auto" aria-labelledby="page-title">
+  <h1 id="page-title" class="text-2xl font-bold text-slate-800 mb-6">Entretiens</h1>
+
+  <!-- Erreur -->
+  @if (error()) {
+    <div role="alert" class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Calendrier -->
+  <section aria-label="Calendrier des entretiens" class="calendar-card mb-8">
+
+    <!-- Navigation mois -->
+    <div class="flex items-center justify-between mb-4">
+      <p-button
+        icon="pi pi-chevron-left"
+        severity="secondary"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="prevMonth()"
+        aria-label="Mois précédent"
+      />
+
+      <h2 class="text-lg font-semibold text-slate-700 capitalize">{{ monthLabel() }}</h2>
+
+      <p-button
+        icon="pi pi-chevron-right"
+        severity="secondary"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="nextMonth()"
+        aria-label="Mois suivant"
+      />
+    </div>
+
+    <!-- Grille calendrier -->
+    @if (loading()) {
+      <div class="calendar-skeleton" aria-busy="true" aria-label="Chargement du calendrier">
+        <div class="grid grid-cols-7 gap-1">
+          @for (_ of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]; track $index) {
+            <div class="h-10 rounded bg-slate-100 animate-pulse"></div>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="grid grid-cols-7 gap-1" role="grid" aria-label="Grille du mois">
+        <!-- En-têtes jours -->
+        @for (day of dayNames; track day) {
+          <div class="text-center text-xs font-medium text-slate-400 py-1" role="columnheader">
+            {{ day }}
+          </div>
+        }
+
+        <!-- Jours -->
+        @for (day of calendarDays(); track day.date.toISOString()) {
+          <div
+            role="gridcell"
+            [attr.aria-label]="day.date.toLocaleDateString('fr-FR') + (day.hasInterviews ? ', ' + day.interviewCount + ' entretien(s)' : '')"
+            class="calendar-day"
+            [class.other-month]="!day.isCurrentMonth"
+            [class.today]="isToday(day.date)"
+            [class.has-interviews]="day.hasInterviews"
+          >
+            <span class="day-number">{{ day.date.getDate() }}</span>
+            @if (day.hasInterviews) {
+              <span class="interview-dot" aria-hidden="true"></span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- Liste des entretiens du mois -->
+  <section aria-labelledby="list-title">
+    <h2 id="list-title" class="text-base font-semibold text-slate-600 mb-3 capitalize">
+      Entretiens — {{ monthLabel() }}
+    </h2>
+
+    @if (loading()) {
+      <ul class="flex flex-col gap-3" aria-busy="true">
+        @for (_ of [1,2,3]; track $index) {
+          <li class="h-16 rounded-xl bg-slate-100 animate-pulse"></li>
+        }
+      </ul>
+    } @else if (monthInterviews().length === 0) {
+      <p class="text-sm text-slate-400 py-6 text-center">
+        Aucun entretien ce mois-ci.
+      </p>
+    } @else {
+      <ul class="flex flex-col gap-3" role="list">
+        @for (interview of monthInterviews(); track interview.id) {
+          <li
+            class="interview-item"
+            [class.past]="isPast(interview.scheduledAt)"
+            [routerLink]="['/jobs', interview.job.id, 'edit']"
+          >
+            <!-- Date & heure -->
+            <div class="interview-date" aria-hidden="true">
+              <span class="day">{{ formatDate(interview.scheduledAt) | titlecase }}</span>
+              <span class="time">{{ formatTime(interview.scheduledAt) }}</span>
+            </div>
+
+            <!-- Détails -->
+            <div class="interview-details">
+              <p class="company">{{ interview.job.company }}</p>
+              <p class="title">{{ interview.job.title }}</p>
+            </div>
+
+            <!-- Type -->
+            <p-tag
+              [value]="typeLabel(interview.type)"
+              [severity]="typeSeverity(interview.type)"
+              [attr.aria-label]="'Type : ' + typeLabel(interview.type)"
+            />
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</main>

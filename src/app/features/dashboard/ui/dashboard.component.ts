@@ -5,8 +5,6 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { DashboardState } from '../data-access/dashboard.state';
 import { ActivityRow, StatCard } from '../data-access/dashboard.service';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-
 type TagSeverity = 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast';
 
 /** Severity mapping from domain status to PrimeNG tag severity */

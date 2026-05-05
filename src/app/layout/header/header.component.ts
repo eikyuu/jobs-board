@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
-import { ButtonComponent } from '../../shared/components/button/button.component';
 import { Button } from "primeng/button";
 
 /**

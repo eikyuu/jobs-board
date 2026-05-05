@@ -1,0 +1,114 @@
+.calendar-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0.35rem 0.25rem;
+  border-radius: 0.5rem;
+  min-height: 2.5rem;
+  cursor: default;
+  transition: background 0.15s;
+
+  .day-number {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1;
+  }
+
+  .interview-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #6366f1;
+  }
+
+  &.other-month {
+    .day-number {
+      color: #cbd5e1;
+    }
+  }
+
+  &.today {
+    background-color: #eef2ff;
+
+    .day-number {
+      color: #4338ca;
+      font-weight: 700;
+    }
+  }
+
+  &.has-interviews {
+    background-color: #f5f3ff;
+
+    &.today {
+      background-color: #e0e7ff;
+    }
+  }
+}
+
+.interview-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.875rem;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: #a5b4fc;
+  }
+
+  &.past {
+    opacity: 0.5;
+  }
+
+  .interview-date {
+    display: flex;
+    flex-direction: column;
+    min-width: 8rem;
+
+    .day {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #4338ca;
+    }
+
+    .time {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+  }
+
+  .interview-details {
+    flex: 1;
+    min-width: 0;
+
+    .company {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #1e293b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .title {
+      font-size: 0.8125rem;
+      color: #64748b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

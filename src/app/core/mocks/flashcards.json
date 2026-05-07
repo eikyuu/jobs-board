@@ -80,7 +80,7 @@
     "id": 12,
     "category": "JavaScript",
     "question": "Qu'est-ce qu'une closure en JavaScript ?",
-    "answer": "Fonction qui <strong>mémorise son environnement lexical</strong> après la fin de la fonction parente.<br><br><code>function counter() { let n = 0; return () => ++n; }</code><br><br>Base des modules et de l'encapsulation en JS.",
+    "answer": "Fonction qui <strong>mémorise son environnement lexical</strong> après la fin de la fonction parente.<pre class='fc-code'><span class='kw'>function</span> <span class='fn'>counter</span>() {<br>  <span class='kw'>let</span> n = <span class='num'>0</span>;<br>  <span class='kw'>return</span> () => ++n; <span class='cm'>// accède à n longtemps après counter()</span><br>}<br><span class='kw'>const</span> inc = <span class='fn'>counter</span>();<br><span class='fn'>inc</span>(); <span class='cm'>// 1</span><br><span class='fn'>inc</span>(); <span class='cm'>// 2 — n survit !</span></pre><span class='fc-rule'>Base des modules et de l'encapsulation en JS.</span>",
     "difficulty": "medium"
   },
   {
@@ -129,22 +129,6 @@
     "version": "v16+"
   },
   {
-    "id": 19,
-    "category": "Signals & Réactivité",
-    "question": "Qu'est-ce que linkedSignal() ? Quand l'utiliser ?",
-    "answer": "Signal <strong>writable</strong> qui se <strong>réinitialise</strong> quand sa source change. Entre <code>signal()</code> (writable) et <code>computed()</code> (read-only).<pre class='fc-code'><span class='kw'>const</span> items = <span class='fn'>input</span>&lt;<span class='type'>string[]</span>&gt;();<br><span class='kw'>const</span> selected = <span class='fn'>linkedSignal</span>(() =><br>  <span class='fn'>items</span>()[<span class='num'>0</span>] ?? <span class='kw'>null</span><br>);<br><span class='cm'>// L'utilisateur peut changer selected...</span><br>selected.<span class='fn'>set</span>(<span class='str'>'autre'</span>);<br><span class='cm'>// ...mais si items() change, selected se réinitialise</span></pre><span class='fc-rule'>Cas d'usage : état local lié à une prop parent (ex: onglet sélectionné qui reset si les données parent changent)</span>",
-    "difficulty": "hard",
-    "version": "v19"
-  },
-  {
-    "id": 20,
-    "category": "Signals & Réactivité",
-    "question": "Qu'est-ce que resource() ? Comment gérer les données async avec les Signals ?",
-    "answer": "Intègre l'<strong>async</strong> dans les Signals. Expose : <code>isLoading</code>, <code>value</code>, <code>error</code> comme signals.<pre class='fc-code'><span class='kw'>const</span> userId = <span class='fn'>signal</span>(<span class='num'>1</span>);<br><br><span class='kw'>const</span> userResource = <span class='fn'>resource</span>({<br>  <span class='fn'>request</span>: () => ({ id: <span class='fn'>userId</span>() }),<br>  <span class='kw'>async</span> <span class='fn'>loader</span>({ request }) {<br>    <span class='kw'>const</span> res = <span class='kw'>await</span> <span class='fn'>fetch</span>(<span class='str'>`/api/users/${request.id}`</span>);<br>    <span class='kw'>return</span> res.<span class='fn'>json</span>();<br>  }<br>});<br><span class='cm'>// userResource.isLoading() / .value() / .error()</span></pre>Quand <code>userId</code> change → annule la requête précédente et relance automatiquement.",
-    "difficulty": "hard",
-    "version": "v19"
-  },
-  {
     "id": 21,
     "category": "Signals & Réactivité",
     "question": "Comment fonctionne le Change Detection avec les Signals ? Qu'est-ce que le mode Zoneless ?",
@@ -157,14 +141,6 @@
     "category": "Composants",
     "question": "Nouvelle API input(), output(), model() — quelle différence avec @Input/@Output ?",
     "answer": "<pre class='fc-code'><span class='cm'>// Ancienne façon</span><br><span class='dec'>@Input</span>() title: <span class='type'>string</span> = <span class='str'>''</span>;<br><span class='dec'>@Output</span>() clicked = <span class='kw'>new</span> <span class='type'>EventEmitter</span>&lt;<span class='type'>void</span>&gt;();<br><br><span class='cm'>// Nouvelle API (v17.1+, stable v19)</span><br>title = <span class='fn'>input</span>&lt;<span class='type'>string</span>&gt;(<span class='str'>''</span>);       <span class='cm'>// Signal readonly</span><br>titleRequired = <span class='fn'>input</span>.<span class='fn'>required</span>&lt;<span class='type'>string</span>&gt;();<br>clicked = <span class='fn'>output</span>&lt;<span class='type'>void</span>&gt;();<br>value = <span class='fn'>model</span>(<span class='str'>''</span>);             <span class='cm'>// [(value)]=\"x\"</span></pre><ul><li><strong>input&lt;T&gt;()</strong> — Signal read-only, composable avec <code>computed()</code></li><li><strong>output()</strong> — remplace <code>@Output EventEmitter</code></li><li><strong>model&lt;T&gt;()</strong> — binding bidirectionnel (remplace @Input + @Output)</li></ul><span class='fc-rule'>Stabilisé en Angular v19</span>",
-    "difficulty": "medium",
-    "version": "v17"
-  },
-  {
-    "id": 23,
-    "category": "Composants",
-    "question": "Qu'est-ce que @defer ? Comment optimiser le chargement avec les Deferrable Views ?",
-    "answer": "Charge <strong>lazily</strong> un bloc de template. Triggers : <code>on viewport</code>, <code>on idle</code>, <code>on interaction</code>.<pre class='fc-code'><span class='ng'>@defer</span> (<span class='kw'>on</span> viewport) {<br>  &lt;<span class='fn'>app-heavy-chart</span> /&gt;<br>} <span class='ng'>@placeholder</span> {<br>  &lt;<span class='fn'>div</span>&gt;Chargement...&lt;/<span class='fn'>div</span>&gt;<br>} <span class='ng'>@loading</span> (minimum 300ms) {<br>  &lt;<span class='fn'>app-spinner</span> /&gt;<br>} <span class='ng'>@error</span> {<br>  &lt;<span class='fn'>p</span>&gt;Erreur de chargement&lt;/<span class='fn'>p</span>&gt;<br>}<br><span class='cm'>&lt;!-- Prefetch : @defer (on viewport; prefetch on idle) --&gt;</span></pre><span class='fc-rule'>Améliore le LCP et le TTI. Angular bundle le code en chunk séparé automatiquement.</span>",
     "difficulty": "medium",
     "version": "v17"
   },
@@ -197,14 +173,6 @@
     "category": "DI & Services",
     "question": "inject() vs constructeur : pourquoi et quand utiliser inject() ?",
     "answer": "<pre class='fc-code'><span class='cm'>// Injection par constructeur (classique)</span><br><span class='kw'>constructor</span>(<span class='kw'>private</span> userService: <span class='type'>UserService</span>) {}<br><br><span class='cm'>// inject() — recommandé depuis v14+</span><br><span class='kw'>private</span> userService = <span class='fn'>inject</span>(<span class='type'>UserService</span>);<br><br><span class='cm'>// Avantage : composable dans des fonctions helper</span><br><span class='kw'>function</span> <span class='fn'>useCurrentUser</span>() {<br>  <span class='kw'>const</span> service = <span class='fn'>inject</span>(<span class='type'>UserService</span>);<br>  <span class='kw'>return</span> <span class='fn'>signal</span>(service.<span class='fn'>getCurrentUser</span>());<br>}</pre><ul><li><strong>inject()</strong> — fonctionnel, composable dans des fonctions helper réutilisables</li><li><strong>constructeur</strong> — injection classique, toujours valide</li></ul><span class='fc-rule'>Préférer inject() pour créer des \"composables\" Angular réutilisables entre composants</span>",
-    "difficulty": "medium",
-    "version": "v16+"
-  },
-  {
-    "id": 28,
-    "category": "DI & Services",
-    "question": "Qu'est-ce qu'un InjectionToken ? Quand l'utiliser ?",
-    "answer": "Injecte des <strong>valeurs non-classe</strong> (primitives, config, feature flags).<pre class='fc-code'><span class='cm'>// Définition</span><br><span class='kw'>export const</span> <span class='type'>API_URL</span> = <span class='kw'>new</span> <span class='type'>InjectionToken</span>&lt;<span class='type'>string</span>&gt;(<br>  <span class='str'>'ApiUrl'</span>,<br>  { providedIn: <span class='str'>'root'</span>, factory: () => <span class='str'>'https://api.dev'</span> }<br>);<br><br><span class='cm'>// Override en prod (app.config.ts)</span><br>providers: [{ provide: <span class='type'>API_URL</span>, useValue: <span class='str'>'https://api.prod'</span> }]<br><br><span class='cm'>// Injection</span><br><span class='kw'>private</span> apiUrl = <span class='fn'>inject</span>(<span class='type'>API_URL</span>);</pre>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -245,7 +213,7 @@
     "category": "Performance",
     "question": "Quelles sont les principales optimisations de performance Angular ?",
     "answer": "<ul><li><strong>Bundle</strong> — lazy loading + @defer</li><li><strong>Runtime</strong> — OnPush + Signals, <code>track</code> dans @for, <code>takeUntilDestroyed()</code></li><li><strong>Images</strong> — NgOptimizedImage</li></ul>",
-    "difficulty": "hard",
+    "difficulty": "medium",
     "version": "v16+"
   },
   {
@@ -268,23 +236,15 @@
     "id": 36,
     "category": "Pièges & Classiques",
     "question": "Pourquoi track est-il obligatoire dans @for ? Que se passe-t-il sans ?",
-    "answer": "<code>track</code> identifie chaque élément pour <strong>réutiliser les nœuds DOM</strong>.<br><br>Sans <code>track</code> : tout est <strong>recréé</strong> à chaque re-render.<br><span class='fc-rule'>Conséquences : performances dégradées + état des composants enfants perdu</span>",
+    "answer": "<code>track</code> identifie chaque élément pour <strong>réutiliser les nœuds DOM</strong>.<pre class='fc-code'><span class='cm'>// ✅ Réutilise les nœuds si item.id est stable</span><br><span class='ng'>@for</span> (item <span class='kw'>of</span> items(); track item.id) { ... }<br><br><span class='cm'>// ⚠️ $index : réutilise par position — risqué si liste réordonnée</span><br><span class='ng'>@for</span> (item <span class='kw'>of</span> items(); track $index) { ... }</pre><span class='fc-rule'>Sans track stable : tout est recréé → performances dégradées + état des enfants perdu</span>",
     "difficulty": "easy",
     "version": "v17"
   },
   {
     "id": 37,
     "category": "Pièges & Classiques",
-    "question": "Quand utiliser RxJS vs Signals ?",
-    "answer": "<ul><li><strong>Signals</strong> — état UI synchrone, réactivité template</li><li><strong>RxJS</strong> — flux async complexes (debounce, combineLatest, switchMap, retry)</li></ul>Ponts : <code>toSignal()</code> et <code>toObservable()</code>",
-    "difficulty": "medium",
-    "version": "v16+"
-  },
-  {
-    "id": 38,
-    "category": "Pièges & Classiques",
-    "question": "Qu'est-ce qu'un memory leak en Angular et comment l'éviter ?",
-    "answer": "Observable non unsubscribed. Solution : async pipe, takeUntilDestroyed(), ou toSignal()</strong> après destruction du composant.<pre class='fc-code'><span class='cm'>// ❌ Fuite mémoire — subscription jamais annulée</span><br><span class='fn'>ngOnInit</span>() {<br>  <span class='fn'>this</span>.service.<span class='fn'>data</span>$.<span class='fn'>subscribe</span>(d => <span class='fn'>this</span>.data = d);<br>}<br><br><span class='cm'>// ✅ Solution 1 : takeUntilDestroyed() (v16+)</span><br>data$ = <span class='fn'>this</span>.service.<span class='fn'>data</span>$.<span class='fn'>pipe</span>(<br>  <span class='fn'>takeUntilDestroyed</span>()  <span class='cm'>// se complète à la destruction</span><br>);<br><br><span class='cm'>// ✅ Solution 2 : toSignal() — pas de subscribe du tout</span><br>data = <span class='fn'>toSignal</span>(<span class='fn'>this</span>.service.<span class='fn'>data</span>$);<br><br><span class='cm'>// ✅ Solution 3 : async pipe dans le template</span><br><span class='cm'>// &lt;div *ngFor=&quot;let d of data$ | async&quot;&gt;</span></pre>",
+    "question": "Quelle est la différence entre RxJS et les Signals en Angular ? Quand utiliser l'un ou l'autre ?",
+    "answer": "<ul><li><strong>Signals</strong> — état <em>synchrone</em>, lecture directe <code>count()</code>, natif Angular, idéal pour l'état UI</li><li><strong>RxJS</strong> — flux <em>async</em> avec opérateurs puissants (<code>debounce</code>, <code>switchMap</code>, <code>combineLatest</code>), idéal pour les événements et les appels HTTP complexes</li></ul><pre class='fc-code'><span class='cm'>// ✅ Signal : état UI simple et synchrone</span><br><span class='kw'>const</span> count = <span class='fn'>signal</span>(<span class='num'>0</span>);<br><span class='kw'>const</span> double = <span class='fn'>computed</span>(() => <span class='fn'>count</span>() * <span class='num'>2</span>); <span class='cm'>// dérivé auto</span><br><br><span class='cm'>// ✅ RxJS : flux async avec opérateurs</span><br><span class='kw'>const</span> results$ = <span class='fn'>fromEvent</span>(input, <span class='str'>'input'</span>).<span class='fn'>pipe</span>(<br>  <span class='fn'>debounceTime</span>(<span class='num'>300</span>),        <span class='cm'>// impossible en Signal pur</span><br>  <span class='fn'>switchMap</span>(q => http.<span class='fn'>get</span>(<span class='str'>`/search?q=${q}`</span>)),<br>  <span class='fn'>retry</span>(<span class='num'>3</span>)<br>);<br><br><span class='cm'>// ✅ Les deux ensemble — pont toSignal()</span><br>results = <span class='fn'>toSignal</span>(results$, { initialValue: [] });</pre><ul><li>Signals seuls → état local, formulaires, flags UI</li><li>RxJS seul → WebSocket, polling, combinaison de sources multiples</li><li>RxJS + <code>toSignal()</code> → le meilleur des deux mondes</li></ul><span class='fc-rule'>Mémo : Signal = état (ce que c'est). RxJS = flux (ce qui arrive). Ils sont complémentaires, pas concurrents.</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -292,7 +252,7 @@
     "id": 39,
     "category": "Pièges & Classiques",
     "question": "Quelle est la différence entre viewProviders et providers dans un composant ?",
-    "answer": "<ul><li><strong>providers</strong> — accessible aussi au contenu projeté (<code>ng-content</code>)</li><li><strong>viewProviders</strong> — uniquement dans le template propre du composant</li></ul><span class='fc-rule'>Différence visible uniquement quand on utilise ng-content</span>",
+    "answer": "<ul><li><strong>providers</strong> — accessible aussi au contenu projeté (<code>ng-content</code>)</li><li><strong>viewProviders</strong> — uniquement dans le template propre du composant</li></ul><pre class='fc-code'><span class='dec'>@Component</span>({<br>  providers:     [<span class='type'>MyService</span>],  <span class='cm'>// visible AUSSI dans ng-content</span><br>  viewProviders: [<span class='type'>MyService</span>]   <span class='cm'>// invisible depuis ng-content</span><br>})</pre><span class='fc-rule'>Différence visible uniquement quand on utilise ng-content</span>",
     "difficulty": "hard",
     "version": "v16+"
   },
@@ -811,7 +771,7 @@
     "id": 113,
     "category": "Architecture & Patterns",
     "question": "Qu'est-ce que l'Event Sourcing ? Quelle est la différence avec le stockage d'état classique ?",
-    "answer": "L'Event Sourcing est un modèle architectural où l'état d'une application n'est pas stocké directement, mais est dérivé d'une séquence d'événements immuables enregistrés dans un Event Store.  Au lieu de maintenir un instantané de la donnée actuelle, le système conserve l'historique complet de toutes les modifications, permettant de rejouer les événements pour reconstruire l'état à n'importe quel moment. <br> Contrairement au stockage classique (CRUD) qui met à jour ou écrase les données, l'Event Sourcing offre une auditabilité native et une traçabilité totale, car chaque changement est horodaté et irréversible.",
+    "answer": "<ul><li><strong>CRUD classique</strong> — snapshot courant → données <em>écrasées</em> à chaque update</li><li><strong>Event Sourcing</strong> — log append-only d'événements <em>immuables</em> horodatés</li></ul>Pour connaître l'état actuel : <strong>rejouer tous les événements</strong> depuis le début.<br><br><code>UserRegistered → EmailChanged → UserDeactivated</code><br><span class='fc-rule'>+ Audit natif, debug temporel (remonter dans le passé), CQRS-compatible. − Complexité + Event Store à gérer.</span>",
     "difficulty": "hard"
   },
   {
@@ -940,8 +900,8 @@
   {
     "id": 130,
     "category": "Angular",
-    "question": "Qu'est-ce qu'un Route Resolver ? Quand l'utiliser et quels sont ses inconvénients ?",
-    "answer": "Précharge des données <strong>avant</strong> la navigation. Le composant reçoit la donnée dès son init.<br><br><span class='fc-rule'>Inconvénient : bloque la navigation jusqu'à la fin du chargement (UX dégradée sur réseau lent). Alternative : naviguer immédiatement + @placeholder/@loading dans le composant.</span>",
+    "question": "Qu'est-ce qu'un Route Resolver ? Comment en créer un et accéder aux données ?",
+    "answer": "Précharge des données <strong>avant</strong> la navigation — le composant reçoit la donnée dès son init, sans état de chargement à gérer.<pre class='fc-code'><span class='cm'>// 1. Créer le resolver (fonction pure)</span><br><span class='kw'>export const</span> userResolver: <span class='type'>ResolveFn</span>&lt;<span class='type'>User</span>&gt; = (route) => {<br>  <span class='kw'>const</span> id = route.paramMap.<span class='fn'>get</span>(<span class='str'>'id'</span>)!;<br>  <span class='kw'>return</span> <span class='fn'>inject</span>(<span class='type'>UserService</span>).<span class='fn'>getUser</span>(id);<br>};<br><br><span class='cm'>// 2. Déclarer sur la route</span><br>{ path: <span class='str'>'user/:id'</span>, component: <span class='type'>UserProfile</span>, resolve: { user: userResolver } }<br><br><span class='cm'>// 3a. Accéder via input() — moderne (withComponentInputBinding)</span><br>user = <span class='fn'>input</span>.<span class='fn'>required</span>&lt;<span class='type'>User</span>&gt;(); <span class='cm'>// injecté automatiquement</span><br><br><span class='cm'>// 3b. Accéder via ActivatedRoute — classique</span><br><span class='kw'>private</span> route = <span class='fn'>inject</span>(<span class='type'>ActivatedRoute</span>);<br>user = <span class='fn'>toSignal</span>(<span class='kw'>this</span>.route.data.<span class='fn'>pipe</span>(<span class='fn'>map</span>(d => d[<span class='str'>'user'</span>])));<br><br><span class='cm'>// 4. Activer withComponentInputBinding dans app.config.ts</span><br><span class='fn'>provideRouter</span>(routes, <span class='fn'>withComponentInputBinding</span>())</pre><span class='fc-rule'>Inconvénient : bloque la navigation jusqu'à la fin du chargement. Sur réseau lent → préférer @defer + @placeholder dans le composant.</span>",
     "difficulty": "medium",
     "version": "v16+"
   },
@@ -1201,6 +1161,50 @@
     "category": "Angular",
     "question": "Comment tester un composant Angular avec TestBed ? Quelles sont les étapes clés ?",
     "answer": "<strong>TestBed</strong> crée un mini-module Angular en mémoire pour tester les composants isolément.<pre class='fc-code'><span class='fn'>describe</span>(<span class='str'>'CounterComponent'</span>, () => {<br>  <span class='kw'>let</span> fixture: <span class='type'>ComponentFixture</span>&lt;<span class='type'>CounterComponent</span>&gt;;<br>  <span class='kw'>let</span> component: <span class='type'>CounterComponent</span>;<br><br>  <span class='fn'>beforeEach</span>(<span class='kw'>async</span> () => {<br>    <span class='kw'>await</span> <span class='type'>TestBed</span>.<span class='fn'>configureTestingModule</span>({<br>      imports: [<span class='type'>CounterComponent</span>] <span class='cm'>// standalone → dans imports</span><br>    }).<span class='fn'>compileComponents</span>();<br>    fixture   = <span class='type'>TestBed</span>.<span class='fn'>createComponent</span>(<span class='type'>CounterComponent</span>);<br>    component = fixture.componentInstance;<br>    fixture.<span class='fn'>detectChanges</span>(); <span class='cm'>// déclenche ngOnInit</span><br>  });<br><br>  <span class='fn'>it</span>(<span class='str'>'devrait incrémenter'</span>, () => {<br>    component.<span class='fn'>increment</span>();<br>    fixture.<span class='fn'>detectChanges</span>();              <span class='cm'>// sync le DOM</span><br>    <span class='kw'>const</span> el = fixture.nativeElement.<span class='fn'>querySelector</span>(<span class='str'>'p'</span>);<br>    <span class='fn'>expect</span>(el.textContent).<span class='fn'>toContain</span>(<span class='str'>'1'</span>);<br>  });<br>});</pre><span class='fc-rule'>Toujours appeler fixture.detectChanges() après chaque changement d'état pour synchroniser le DOM avant d'asserter.</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 167,
+    "category": "Signals & Réactivité",
+    "question": "Qu'est-ce que httpResource() ? Quand le préférer à resource() ?",
+    "answer": "Wrapper de <code>resource()</code> dédié à <strong>HttpClient</strong> — passe par les intercepteurs Angular.<pre class='fc-code'><span class='kw'>import</span> { httpResource } <span class='kw'>from</span> <span class='str'>'@angular/common/http'</span>;<br><br><span class='kw'>export class</span> <span class='type'>UserComponent</span> {<br>  userId = <span class='fn'>input</span>.<span class='fn'>required</span>&lt;<span class='type'>number</span>&gt;();<br><br>  <span class='cm'>// Re-fetch automatique quand userId() change</span><br>  userResource = <span class='fn'>httpResource</span>&lt;<span class='type'>User</span>&gt;(<br>    () => <span class='str'>`/api/users/${this.userId()}`</span><br>  );<br><br>  <span class='cm'>// Avec options (méthode, body, headers)</span><br>  saveResource = <span class='fn'>httpResource</span>({<br>    url: <span class='str'>'/api/users'</span>,<br>    method: <span class='str'>'POST'</span>,<br>    body: () => <span class='fn'>this</span>.<span class='fn'>form</span>().<span class='fn'>value</span>()<br>  });<br><br>  user    = <span class='kw'>this</span>.userResource.value;     <span class='cm'>// Signal&lt;User | undefined&gt;</span><br>  loading = <span class='kw'>this</span>.userResource.isLoading;  <span class='cm'>// Signal&lt;boolean&gt;</span><br>  error   = <span class='kw'>this</span>.userResource.error;      <span class='cm'>// Signal&lt;unknown&gt;</span><br>}</pre><ul><li><strong>resource()</strong> — fetch natif, <em>pas</em> d'intercepteurs</li><li><strong>httpResource()</strong> — HttpClient → token d'auth, logging, gestion d'erreurs centralisée</li></ul><span class='fc-rule'>Préférer httpResource() dès qu'un intercepteur est en place (auth, retry, cache). Import depuis @angular/common/http, pas @angular/core.</span>",
+    "difficulty": "medium",
+    "version": "v19.2+"
+  },
+  {
+    "id": 168,
+    "category": "Signals & Réactivité",
+    "question": "Comment convertir entre Observable et Signal ? À quoi servent toSignal() et toObservable() ?",
+    "answer": "<ul><li><strong>toSignal(obs$)</strong> — souscrit à un Observable et expose sa valeur comme Signal (cleanup auto)</li><li><strong>toObservable(signal)</strong> — convertit un Signal en Observable pour les opérateurs RxJS</li></ul><pre class='fc-code'><span class='cm'>// toSignal : HttpClient → Signal (pas de subscribe manuel)</span><br><span class='kw'>export class</span> <span class='type'>UserComponent</span> {<br>  <span class='kw'>private</span> http = <span class='fn'>inject</span>(<span class='type'>HttpClient</span>);<br><br>  users = <span class='fn'>toSignal</span>(<br>    <span class='kw'>this</span>.http.<span class='fn'>get</span>&lt;<span class='type'>User[]</span>&gt;(<span class='str'>'/api/users'</span>),<br>    { initialValue: [] }  <span class='cm'>// évite undefined au 1er rendu</span><br>  );<br>}<br><br><span class='cm'>// toObservable : Signal → Observable pour switchMap, debounce...</span><br><span class='kw'>const</span> query = <span class='fn'>signal</span>(<span class='str'>''</span>);<br><span class='kw'>const</span> results$ = <span class='fn'>toObservable</span>(query).<span class='fn'>pipe</span>(<br>  <span class='fn'>debounceTime</span>(<span class='num'>300</span>),<br>  <span class='fn'>switchMap</span>(q => http.<span class='fn'>get</span>(<span class='str'>`/search?q=${q}`</span>))<br>);</pre><span class='fc-rule'>toSignal() doit être appelé dans un contexte d'injection (constructeur, champ de classe). Hors contexte → passer { injector } en option.</span>",
+    "difficulty": "medium",
+    "version": "v16+"
+  },
+  {
+    "id": 169,
+    "category": "Angular",
+    "question": "Quelle est la différence entre Subject, BehaviorSubject et ReplaySubject ?",
+    "answer": "<ul><li><strong>Subject</strong> — hot, pas de valeur initiale, les nouveaux abonnés ne reçoivent que les futures émissions</li><li><strong>BehaviorSubject(val)</strong> — rejoue la <em>dernière</em> valeur aux nouveaux abonnés, toujours une valeur courante</li><li><strong>ReplaySubject(n)</strong> — rejoue les <em>n dernières</em> valeurs aux nouveaux abonnés</li></ul><pre class='fc-code'><span class='cm'>// BehaviorSubject — le plus utilisé en Angular (état partagé)</span><br><span class='kw'>private</span> user$ = <span class='kw'>new</span> <span class='type'>BehaviorSubject</span>&lt;<span class='type'>User</span> | <span class='kw'>null</span>&gt;(<span class='kw'>null</span>);<br><span class='kw'>readonly</span> user = <span class='kw'>this</span>.user$.<span class='fn'>asObservable</span>(); <span class='cm'>// exposer en lecture seule</span><br><br><span class='fn'>login</span>(user: <span class='type'>User</span>) { <span class='kw'>this</span>.user$.<span class='fn'>next</span>(user); } <span class='cm'>// émettre</span><br><br><span class='cm'>// Subject — événements ponctuels (clic, action)</span><br><span class='kw'>private</span> destroy$ = <span class='kw'>new</span> <span class='type'>Subject</span>&lt;<span class='kw'>void</span>&gt;();<br>data$.<span class='fn'>pipe</span>(<span class='fn'>takeUntil</span>(<span class='kw'>this</span>.destroy$)).<span class='fn'>subscribe</span>(...);<br><br><span class='cm'>// ReplaySubject — rejouer N valeurs (ex: logs, cache)</span><br><span class='kw'>const</span> log$ = <span class='kw'>new</span> <span class='type'>ReplaySubject</span>&lt;<span class='type'>string</span>&gt;(<span class='num'>5</span>); <span class='cm'>// garde les 5 derniers</span></pre><span class='fc-rule'>Mémo : Subject=événement, BehaviorSubject=état, ReplaySubject=historique. Toujours exposer avec asObservable() pour empêcher les next() externes.</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 170,
+    "category": "Angular",
+    "question": "Quelle est la différence entre forkJoin, combineLatest et merge ?",
+    "answer": "<ul><li><strong>forkJoin</strong> — attend que <em>tous</em> les sources se complètent, émet <em>une seule fois</em> les dernières valeurs → <code>Promise.all</code> des Observables</li><li><strong>combineLatest</strong> — émet à chaque nouvelle valeur d'une source, combinée aux dernières des autres → réactif en continu</li><li><strong>merge</strong> — émet toutes les valeurs de toutes les sources dès qu'elles arrivent, sans les combiner</li></ul><pre class='fc-code'><span class='cm'>// forkJoin : 2 requêtes HTTP en parallèle, résultat quand les deux finissent</span><br><span class='fn'>forkJoin</span>({<br>  user:   http.<span class='fn'>get</span>&lt;<span class='type'>User</span>&gt;(<span class='str'>'/api/user'</span>),<br>  config: http.<span class='fn'>get</span>&lt;<span class='type'>Config</span>&gt;(<span class='str'>'/api/config'</span>)<br>}).<span class='fn'>subscribe</span>(({ user, config }) => ...);<br><br><span class='cm'>// combineLatest : filtre + pagination réactifs ensemble</span><br><span class='fn'>combineLatest</span>([filter$, page$]).<span class='fn'>pipe</span>(<br>  <span class='fn'>switchMap</span>(([filter, page]) => http.<span class='fn'>get</span>(<span class='str'>`/api/items?f=${filter}&p=${page}`</span>))<br>);<br><br><span class='cm'>// merge : plusieurs sources d'événements en un seul flux</span><br><span class='fn'>merge</span>(click$, keydown$).<span class='fn'>subscribe</span>(event => ...);</pre><span class='fc-rule'>forkJoin → requêtes HTTP parallèles (comme Promise.all). combineLatest → état dérivé de plusieurs sources. merge → agréger des événements.</span>",
+    "difficulty": "medium"
+  },
+  {
+    "id": 171,
+    "category": "Angular",
+    "question": "À quoi servent map, filter, tap et take dans RxJS ?",
+    "answer": "<ul><li><strong>map</strong> — transforme chaque valeur (comme Array.map)</li><li><strong>filter</strong> — ne laisse passer que les valeurs qui passent le prédicat</li><li><strong>tap</strong> — effet de bord <em>sans</em> modifier la valeur (logs, debug)</li><li><strong>take(n)</strong> — se complète après n émissions</li><li><strong>first()</strong> — alias de take(1), complète après la 1re valeur</li></ul><pre class='fc-code'>http.<span class='fn'>get</span>&lt;<span class='type'>User[]</span>&gt;(<span class='str'>'/api/users'</span>).<span class='fn'>pipe</span>(<br>  <span class='fn'>tap</span>(users => console.<span class='fn'>log</span>(<span class='str'>'reçu:'</span>, users)),      <span class='cm'>// debug sans altérer</span><br>  <span class='fn'>map</span>(users => users.<span class='fn'>filter</span>(u => u.active)),        <span class='cm'>// transformer</span><br>  <span class='fn'>map</span>(users => users.<span class='fn'>sort</span>((a, b) => a.name.<span class='fn'>localeCompare</span>(b.name)))<br>).<span class='fn'>subscribe</span>(sorted => <span class='kw'>this</span>.users.<span class='fn'>set</span>(sorted));<br><br><span class='cm'>// take : compléter automatiquement après N valeurs</span><br>interval(<span class='num'>1000</span>).<span class='fn'>pipe</span>(<span class='fn'>take</span>(<span class='num'>3</span>)).<span class='fn'>subscribe</span>(); <span class='cm'>// émet 0, 1, 2 puis stop</span></pre><span class='fc-rule'>tap = lunettes (on observe sans toucher). Ne jamais utiliser tap pour transformer — c'est le rôle de map.</span>",
+    "difficulty": "easy"
+  },
+  {
+    "id": 172,
+    "category": "Architecture & Patterns",
+    "question": "Qu'est-ce qu'un contrat d'interface en informatique ?",
+    "answer": "Ensemble de <strong>règles et protocoles</strong> qu'un fournisseur s'engage à respecter pour permettre à un consommateur de communiquer avec lui — sans connaître les détails internes.<br><br>Il spécifie :<ul><li><strong>Quoi</strong> — méthodes, endpoints, formats de données (JSON, XML)</li><li><strong>Comment</strong> — authentification, protocoles (REST, gRPC), contraintes</li><li><strong>Garanties</strong> — le fournisseur ne casse pas le contrat sans versioning</li></ul><pre class='fc-code'><span class='cm'>// Niveau API (ex: OpenAPI / TypeScript)</span><br><span class='kw'>interface</span> <span class='type'>UserAPI</span> {<br>  <span class='fn'>getUser</span>(id: <span class='type'>string</span>): <span class='type'>Promise</span>&lt;<span class='type'>User</span>&gt;;     <span class='cm'>// GET /users/:id</span><br>  <span class='fn'>createUser</span>(dto: <span class='type'>CreateUserDto</span>): <span class='type'>Promise</span>&lt;<span class='type'>User</span>&gt;; <span class='cm'>// POST /users</span><br>}<br><br><span class='cm'>// Niveau code (OOP) — consommateur dépend du contrat, pas du concret</span><br><span class='kw'>class</span> <span class='type'>OrderService</span> {<br>  <span class='fn'>constructor</span>(<span class='kw'>private</span> repo: <span class='type'>OrderRepository</span>) {} <span class='cm'>// interchangeable</span><br>}<br><span class='cm'>// prod → SqlOrderRepository  |  test → InMemoryOrderRepository</span></pre><ul><li><strong>Fournisseur</strong> — s'engage à respecter le contrat (breaking change = nouvelle version)</li><li><strong>Consommateur</strong> — dépend uniquement du contrat, pas de l'implémentation</li></ul><span class='fc-rule'>Mémo : prise électrique = contrat stable. L'appareil branché peut changer sans refaire l'installation. Anglais : <em>Interface Specification</em> ou <em>API Contract</em>.</span>",
     "difficulty": "medium"
   }
 ]

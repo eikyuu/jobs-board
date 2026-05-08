@@ -24,7 +24,7 @@
 
     <button
       type="button"
-      class="h-80 text-center w-full cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary-500)]"
+      class="h-100 text-center w-full cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary-500)]"
       (click)="flip()"
       [attr.aria-pressed]="isFlipped()"
       [attr.aria-label]="
@@ -38,7 +38,7 @@
         [style.transform]="isFlipped() ? 'rotateY(180deg)' : ''"
       >
         <div
-          class="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 shadow-md backface-hidden border-[var(--color-surface-border)] bg-[var(--color-surface-card)]"
+          class="flex flex-col absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 shadow-md backface-hidden border-[var(--color-surface-border)] bg-[var(--color-surface-card)]"
           [attr.aria-hidden]="isFlipped() || null"
         >
           <div class="flex flex-wrap justify-center gap-2">
@@ -48,9 +48,12 @@
               [severity]="difficultyToSeverity(currentCard().difficulty)"
             />
           </div>
-          <p class="m-0 text-center text-lg font-semibold leading-relaxed text-[var(--color-text-primary)]">
+
+          <p class="m-0 flex-1 flex items-center justify-center text-center text-lg font-semibold leading-relaxed text-[var(--color-text-primary)]">
             {{ currentCard().question }}
           </p>
+
+          
           <span class="mt-auto text-xs text-[var(--color-text-secondary)]">Cliquer pour révéler la réponse</span>
         </div>
 

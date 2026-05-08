@@ -6,6 +6,7 @@ import { SelectModule } from 'primeng/select';
 import { FlashcardsService } from '../../data-access/flashcards.service';
 import type { Flashcard, FlashcardDifficulty } from '../../models/flashcard.model';
 import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface CategoryOption {
   label: string;
@@ -26,17 +27,19 @@ export class FlashcardsPageComponent {
   protected readonly currentIndex = signal(0);
   protected readonly isFlipped = signal(false);
 
-  private readonly allCards: Flashcard[] = this.service.getAll();
+  // private readonly allCards: Flashcard[] = [];
+
+  private allCards = toSignal(this.service.getAll(), { initialValue: [] as Flashcard[] });
 
   protected readonly filteredCards = computed(() => {
     const category = this.selectedCategory();
-    return category ? this.allCards.filter((c) => c.category === category) : this.allCards;
+    return category ? this.allCards().filter((c) => c.category === category) : this.allCards();
   });
 
   protected readonly currentCard = computed(() => this.filteredCards()[this.currentIndex()]);
 
   protected readonly categoryOptions = computed<CategoryOption[]>(() => {
-    const categories = [...new Set(this.allCards.map((c) => c.category))];
+    const categories = [...new Set(this.allCards().map((c) => c.category))];
     return [
       { label: 'Toutes les catégories', value: null },
       ...categories.map((c) => ({ label: c, value: c })),
@@ -69,18 +72,18 @@ export class FlashcardsPageComponent {
 
   protected difficultyLabel(difficulty: FlashcardDifficulty): string {
     const labels: Record<FlashcardDifficulty, string> = {
-      easy: 'Facile',
-      medium: 'Moyen',
-      hard: 'Difficile',
+      EASY: 'Facile',
+      MEDIUM: 'Moyen',
+      HARD: 'Difficile',
     };
     return labels[difficulty];
   }
 
   protected difficultyToSeverity(difficulty: FlashcardDifficulty): 'success' | 'warn' | 'danger' {
     const map: Record<FlashcardDifficulty, 'success' | 'warn' | 'danger'> = {
-      easy: 'success',
-      medium: 'warn',
-      hard: 'danger',
+      EASY: 'success',
+      MEDIUM: 'warn',
+      HARD: 'danger',
     };
     return map[difficulty];
   }

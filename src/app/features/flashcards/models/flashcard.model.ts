@@ -1,4 +1,4 @@
-export type FlashcardDifficulty = 'easy' | 'medium' | 'hard';
+export type FlashcardDifficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
 export interface Flashcard {
   id: number;
@@ -6,4 +6,9 @@ export interface Flashcard {
   question: string;
   answer: string;
   difficulty: FlashcardDifficulty;
+  leitnerBox: number;
+  nextReviewAt: string; // ISO date string
+  totalReviews: number;
+  correctReviews: number;
+  createdAt: string; // ISO date string
 }

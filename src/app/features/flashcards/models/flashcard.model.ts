@@ -12,3 +12,7 @@ export interface Flashcard {
   correctReviews: number;
   createdAt: string; // ISO date string
 }
+
+export interface ReviewResult {
+  correct: boolean;
+}

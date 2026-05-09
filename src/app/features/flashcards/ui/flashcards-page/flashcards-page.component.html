@@ -5,7 +5,28 @@
     <p class="m-0 mt-2 text-[var(--color-text-secondary)]">Entraîne-toi pour tes entretiens techniques</p>
   </header>
 
-  <div class="flex w-full items-center justify-center gap-3">
+  <!-- Contrôles : mode + filtre catégorie -->
+  <div class="flex w-full flex-wrap items-center justify-center gap-3">
+
+    <!-- Toggle Leitner / Libre -->
+    <button
+      type="button"
+      class="flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors"
+      [class]="mode() === 'leitner'
+        ? 'border-[var(--color-primary-500)] bg-[var(--color-primary-500)] text-white'
+        : 'border-[var(--color-surface-border)] bg-[var(--color-surface-card)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary-400)]'"
+      (click)="toggleMode()"
+      [attr.aria-pressed]="mode() === 'leitner'"
+      aria-label="Basculer entre le mode Leitner et le mode libre"
+    >
+      <i class="pi pi-calendar text-xs"></i>
+      @if (mode() === 'leitner') {
+        Mode Leitner — {{ dueCards().length }} à réviser
+      } @else {
+        Mode libre — {{ allCards().length }} cartes
+      }
+    </button>
+
     <p-select
       inputId="category-filter"
       [options]="categoryOptions()"
@@ -17,14 +38,44 @@
     />
   </div>
 
+  <!-- Message félicitations : toutes les cartes Leitner révisées -->
+  @if (allReviewed()) {
+    <div
+      class="flex w-full flex-col items-center gap-3 rounded-xl border border-green-200 bg-green-50 p-8 text-center dark:border-green-800 dark:bg-green-950"
+      role="status"
+    >
+      <span class="text-4xl" aria-hidden="true">🎉</span>
+      <p class="m-0 text-lg font-semibold text-green-700 dark:text-green-300">
+        Toutes les cartes du jour sont révisées !
+      </p>
+      <p class="m-0 text-sm text-green-600 dark:text-green-400">
+        Reviens demain pour continuer ta progression.
+      </p>
+      <button
+        type="button"
+        class="mt-2 rounded-lg border border-green-300 bg-white px-4 py-1.5 text-sm font-medium text-green-700 transition-colors hover:bg-green-50 dark:border-green-700 dark:bg-green-900 dark:text-green-300"
+        (click)="toggleMode()"
+      >
+        Voir toutes les cartes
+      </button>
+    </div>
+  }
+
   @if (currentCard()) {
+    <!-- Compteur de progression -->
     <p class="text-sm text-[var(--color-text-secondary)]" aria-live="polite" aria-atomic="true">
       Carte <strong>{{ currentIndex() + 1 }}</strong> sur <strong>{{ filteredCards().length }}</strong>
+      @if (mode() === 'leitner') {
+        <span class="ml-2 rounded-full bg-[var(--color-primary-100)] px-2 py-0.5 text-xs font-medium text-[var(--color-primary-700)]">
+          Boîte {{ currentCard().leitnerBox }}/5
+        </span>
+      }
     </p>
 
+    <!-- Carte flip -->
     <button
       type="button"
-      class="h-100 text-center w-full cursor-pointer border-0 bg-transparent p-0 [perspective:1200px] focus-visible:rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary-500)]"
+      class="h-100 w-full cursor-pointer border-0 bg-transparent p-0 text-center [perspective:1200px] focus-visible:rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary-500)]"
       (click)="flip()"
       [attr.aria-pressed]="isFlipped()"
       [attr.aria-label]="
@@ -37,8 +88,9 @@
         class="relative h-full w-full [transform-style:preserve-3d] transition-transform duration-[550ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
         [style.transform]="isFlipped() ? 'rotateY(180deg)' : ''"
       >
+        <!-- Face avant : question -->
         <div
-          class="flex flex-col absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 shadow-md backface-hidden border-[var(--color-surface-border)] bg-[var(--color-surface-card)]"
+          class="backface-hidden absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 shadow-md border-[var(--color-surface-border)] bg-[var(--color-surface-card)]"
           [attr.aria-hidden]="isFlipped() || null"
         >
           <div class="flex flex-wrap justify-center gap-2">
@@ -49,45 +101,80 @@
             />
           </div>
 
-          <p class="m-0 flex-1 flex items-center justify-center text-center text-lg font-semibold leading-relaxed text-[var(--color-text-primary)]">
+          <p class="m-0 flex flex-1 items-center justify-center text-center text-lg font-semibold leading-relaxed text-[var(--color-text-primary)]">
             {{ currentCard().question }}
           </p>
 
-          
           <span class="mt-auto text-xs text-[var(--color-text-secondary)]">Cliquer pour révéler la réponse</span>
         </div>
 
+        <!-- Face arrière : réponse -->
         <div
-          class="absolute inset-0 flex flex-col overflow-y-auto rounded-xl border p-6 shadow-md backface-hidden [transform:rotateY(180deg)] border-[var(--color-surface-border)] bg-[var(--color-primary-50)]"
+          class="backface-hidden absolute inset-0 flex flex-col overflow-y-auto rounded-xl border p-6 shadow-md [transform:rotateY(180deg)] border-[var(--color-surface-border)] bg-[var(--color-primary-50)]"
           [attr.aria-hidden]="!isFlipped() || null"
         >
           <div
-            class="flashcard-answer text-sm leading-relaxed text-[var(--color-primary-700)]"
+            class="flashcard-answer flex-1 text-sm leading-relaxed text-[var(--color-primary-700)]"
             [innerHTML]="currentCard().answer | safeHtml"
           ></div>
         </div>
       </div>
     </button>
 
-    <div class="flex gap-4">
-      <p-button
-        label="Précédent"
-        icon="pi pi-chevron-left"
-        severity="secondary"
-        (onClick)="prev()"
-        [disabled]="filteredCards().length <= 1"
-        aria-label="Carte précédente"
-      />
-      <p-button
-        label="Suivant"
-        icon="pi pi-chevron-right"
-        iconPos="right"
-        (onClick)="next()"
-        [disabled]="filteredCards().length <= 1"
-        aria-label="Carte suivante"
-      />
-    </div>
-  } @else {
+    <!-- Boutons de validation Leitner (visibles uniquement côté réponse) -->
+    @if (isFlipped()) {
+      <div
+        class="flex w-full gap-3"
+        role="group"
+        aria-label="Évaluation de la réponse"
+      >
+        <button
+          type="button"
+          class="flex flex-1 items-center justify-center gap-2 rounded-xl border-2 border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-700 dark:bg-red-950 dark:text-red-300 dark:hover:bg-red-900"
+          (click)="submitReview(false)"
+          [disabled]="isSubmitting()"
+          aria-label="Je ne savais pas — la carte redescend en boîte 1"
+        >
+          <i class="pi pi-times-circle text-base" aria-hidden="true"></i>
+          Je ne savais pas
+        </button>
+
+        <button
+          type="button"
+          class="flex flex-1 items-center justify-center gap-2 rounded-xl border-2 border-green-300 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 transition-colors hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-green-700 dark:bg-green-950 dark:text-green-300 dark:hover:bg-green-900"
+          (click)="submitReview(true)"
+          [disabled]="isSubmitting()"
+          aria-label="Je savais — la carte monte d'une boîte"
+        >
+          <i class="pi pi-check-circle text-base" aria-hidden="true"></i>
+          Je savais
+        </button>
+      </div>
+    }
+
+    <!-- Navigation Précédent / Suivant (mode libre uniquement) -->
+    @if (mode() === 'free') {
+      <div class="flex gap-4">
+        <p-button
+          label="Précédent"
+          icon="pi pi-chevron-left"
+          severity="secondary"
+          (onClick)="prev()"
+          [disabled]="filteredCards().length <= 1"
+          aria-label="Carte précédente"
+        />
+        <p-button
+          label="Suivant"
+          icon="pi pi-chevron-right"
+          iconPos="right"
+          (onClick)="next()"
+          [disabled]="filteredCards().length <= 1"
+          aria-label="Carte suivante"
+        />
+      </div>
+    }
+
+  } @else if (!allReviewed()) {
     <p class="italic text-[var(--color-text-secondary)]" role="status">Aucune carte disponible.</p>
   }
 </div>

@@ -1,5 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { DashboardService, StatCard, ActivityRow } from './dashboard.service';
+import { DashboardService } from './dashboard.service';
+import { firstValueFrom } from 'rxjs';
+import { ActivityRow, StatCard } from '../models/dashboard.model';
 
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 
@@ -32,29 +34,19 @@ export class DashboardState {
     () => this._loadingState() === 'success' && this._stats().length === 0
   );
 
-  /**
-   * Loads all dashboard data and updates state signals.
-   * Safe to call multiple times; cancels in-flight requests via `takeUntilDestroyed`.
-   */
-  load(): void {
+async load(): Promise<void> {
     this._loadingState.set('loading');
     this._error.set(null);
-
-    this.service
-      .getDashboardData()
-      // .pipe(takeUntilDestroyed())
-      .subscribe({
-        next: (data) => {
-          this._stats.set(data.stats);
-          this._activity.set(data.recentActivity);
-          this._loadingState.set('success');
-        },
-        error: (err: unknown) => {
-          const message = err instanceof Error ? err.message : 'Failed to load dashboard data';
-          this._error.set(message);
-          this._loadingState.set('error');
-        },
-      });
+    try {
+      const data = await firstValueFrom(this.service.getDashboardData());
+      this._stats.set(data.stats);
+      this._activity.set(data.recentActivity);
+      this._loadingState.set('success');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to load dashboard data';
+      this._error.set(message);
+      this._loadingState.set('error');
+    }
   }
 
   /** Resets state to initial idle values */

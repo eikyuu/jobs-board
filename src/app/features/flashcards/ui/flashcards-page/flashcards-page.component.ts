@@ -86,9 +86,12 @@ export class FlashcardsPageComponent {
   protected next(): void {
     const len = this.filteredCards().length;
     if (len <= 1) return;
-    const randomIndex = Math.floor(Math.random() * len);
+    const current = this.currentIndex();
+    let randomIndex: number;
+    do {
+      randomIndex = Math.floor(Math.random() * len);
+    } while (randomIndex === current);
     this.currentIndex.set(randomIndex);
-    this.isFlipped.set(false);
   }
 
   protected prev(): void {
@@ -132,6 +135,8 @@ export class FlashcardsPageComponent {
         },
         error: () => {
           this.isSubmitting.set(false);
+          // TODO : Affiche une erreur simple — en production, on pourrait utiliser un service de notification
+          alert('Erreur lors de l\'enregistrement de la révision. Veuillez réessayer.');
         },
       });
   }

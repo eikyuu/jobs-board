@@ -20,101 +20,102 @@
   </header>
 
   @if (state.loading()) {
-  <div class="flex items-center gap-2 py-8" role="status" aria-live="polite" aria-label="Chargement des offres">
-    <span aria-hidden="true"
-      class="inline-block w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
-    <span class="visually-hidden">Chargement…</span>
-  </div>
+    <div class="flex items-center gap-2 py-8" role="status" aria-live="polite" aria-label="Chargement des offres">
+      <span aria-hidden="true"
+        class="inline-block w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+      <span class="visually-hidden">Chargement…</span>
+    </div>
   }
 
   @if (state.hasError()) {
-  <div class="text-red-600 bg-red-50 rounded-lg p-4" role="alert">
-    <p class="m-0">{{ state.error() }}</p>
-  </div>
+    <div class="text-red-600 bg-red-50 rounded-lg p-4" role="alert">
+      <p class="m-0">{{ state.error() }}</p>
+    </div>
   }
 
+  <p-confirmpopup />
+
   @if (!state.loading() && !state.hasError()) {
-  <p-table [value]="filteredJobs()" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 25]"
-    sortMode="multiple" [tableStyle]="{ 'min-width': '60rem' }" class="p-datatable-sm"
-    aria-label="Liste des candidatures">
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="title" scope="col">
-          Poste <p-sortIcon field="title" />
-        </th>
-        <th pSortableColumn="company" scope="col">
-          Entreprise <p-sortIcon field="company" />
-        </th>
-        <th pSortableColumn="location" scope="col">
-          Lieu <p-sortIcon field="location" />
-        </th>
-        <th scope="col">Remote</th>
-        <th pSortableColumn="contractType" scope="col">
-          Contrat <p-sortIcon field="contractType" />
-        </th>
-        <th scope="col">Salaire</th>
-        <th pSortableColumn="status" scope="col">
-          Statut <p-sortIcon field="status" />
-        </th>
-        <th pSortableColumn="applicationType" scope="col">
-          Type <p-sortIcon field="applicationType" />
-        </th>
-        <th pSortableColumn="appliedAt" scope="col">
-          Candidaté le <p-sortIcon field="appliedAt" />
-        </th>
-        <th scope="col"><span class="sr-only">Actions</span></th>
-      </tr>
-    </ng-template>
+    <p-table [value]="filteredJobs()" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 25]"
+      sortMode="multiple" [tableStyle]="{ 'min-width': '60rem' }" class="p-datatable-sm"
+      aria-label="Liste des candidatures">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="title" scope="col">
+            Poste <p-sortIcon field="title" />
+          </th>
+          <th pSortableColumn="company" scope="col">
+            Entreprise <p-sortIcon field="company" />
+          </th>
+          <th pSortableColumn="location" scope="col">
+            Lieu <p-sortIcon field="location" />
+          </th>
+          <th scope="col">Remote</th>
+          <th pSortableColumn="contractType" scope="col">
+            Contrat <p-sortIcon field="contractType" />
+          </th>
+          <th scope="col">Salaire</th>
+          <th pSortableColumn="status" scope="col">
+            Statut <p-sortIcon field="status" />
+          </th>
+          <th pSortableColumn="applicationType" scope="col">
+            Type <p-sortIcon field="applicationType" />
+          </th>
+          <th pSortableColumn="appliedAt" scope="col">
+            Candidaté le <p-sortIcon field="appliedAt" />
+          </th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="body" let-job>
-      <tr>
-        <td>
+      <ng-template pTemplate="body" let-job>
+        <tr>
+          <td>
 
-          @if (job.appliedAt | isOldApplication) {
-          <p-badge severity="warn" value="Relance" />
-          }
-          @if (job.url) {
-          <a [href]="job.url" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+            @if (job.appliedAt | isOldApplication) {
+            <p-badge severity="warn" value="Relance" />
+            }
+            @if (job.url) {
+            <a [href]="job.url" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+              {{ job.title }}
+            </a>
+            } @else {
             {{ job.title }}
-          </a>
-          } @else {
-          {{ job.title }}
-          }
-        </td>
-        <td>{{ job.company }}</td>
-        <td>{{ job.location }}</td>
-        <td>{{ remoteLabel(job.remote) }}</td>
-        <td>{{ job.contractType }}</td>
-        <td>{{ salaryLabel(job) }}</td>
-        <td>
-          <p-tag [value]="statusLabel(job.status)" [severity]="statusSeverity(job.status)" />
-        </td>
-        <td>
-          <p-tag [value]="applicationTypeLabel(job.applicationType)"
-            [severity]="applicationTypeSeverity(job.applicationType)" />
-        </td>
-        <td>
-          <time [attr.datetime]="job.appliedAt">
-            {{ job.appliedAt | date: 'dd/MM/yyyy' }}
-          </time>
-        </td>
-        <td>
-          <div class="flex justify-center gap-1">
-            <p-button icon="pi pi-pencil" severity="secondary" [text]="true" [rounded]="true" size="small"
-              [attr.aria-label]="'Modifier ' + job.title" label="Modifier" [routerLink]="['/jobs', job.id, 'edit']" />
-            <p-confirmpopup />
-            <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" size="small"
-              [attr.aria-label]="'Supprimer ' + job.title" label="Supprimer" (onClick)="onDelete($event, job)" />
-          </div>
-        </td>
-      </tr>
-    </ng-template>
+            }
+          </td>
+          <td>{{ job.company }}</td>
+          <td>{{ job.location }}</td>
+          <td>{{ remoteLabel(job.remote) }}</td>
+          <td>{{ job.contractType }}</td>
+          <td>{{ salaryLabel(job) }}</td>
+          <td>
+            <p-tag [value]="statusLabel(job.status)" [severity]="statusSeverity(job.status)" />
+          </td>
+          <td>
+            <p-tag [value]="applicationTypeLabel(job.applicationType)"
+              [severity]="applicationTypeSeverity(job.applicationType)" />
+          </td>
+          <td>
+            <time [attr.datetime]="job.appliedAt">
+              {{ job.appliedAt | date: 'dd/MM/yyyy' }}
+            </time>
+          </td>
+          <td>
+            <div class="flex justify-center gap-1">
+              <p-button icon="pi pi-pencil" severity="secondary" [text]="true" [rounded]="true" size="small"
+                [attr.aria-label]="'Modifier ' + job.title" label="Modifier" [routerLink]="['/jobs', job.id, 'edit']" />
+              <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" size="small"
+                [attr.aria-label]="'Supprimer ' + job.title" label="Supprimer" (onClick)="onDelete($event, job)" />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="9" class="text-center py-8 text-gray-400">Aucune candidature trouvée.</td>
-      </tr>
-    </ng-template>
-  </p-table>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center py-8 text-gray-400">Aucune candidature trouvée.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   }
 </div>

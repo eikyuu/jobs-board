@@ -65,6 +65,7 @@ export function jobToFormModel(job: Job): JobFormModel {
 
 export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
   return {
+    // TODO : ajouter un champ applicationType dans le form pour pouvoir le renseigner à la création et à la modification
     applicationType: 'standard',
     title: value.title,
     company: value.company,

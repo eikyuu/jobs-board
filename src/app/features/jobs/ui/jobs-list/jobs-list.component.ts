@@ -84,19 +84,25 @@ export class JobsListComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Oui, supprimer',
       rejectLabel: 'Non, annuler',
-      accept: () => {
-        this.state.removeJob(job.id!);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Supprimé',
-          detail: 'La candidature a été supprimée avec succès.',
-        });
+      accept: async () => {
+        try {
+          await this.state.removeJob(job.id!);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Supprimé',
+            detail: 'La candidature a été supprimée avec succès.',
+          });
+        } catch {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Impossible de supprimer la candidature.',
+          });
+        }
       }
     });
-
   }
-
-
+  
   protected exportToPdf(): void {
     const url = `${environment.apiUrl}/jobs/export/pdf`;
     this.document.defaultView?.open(url, '_blank');

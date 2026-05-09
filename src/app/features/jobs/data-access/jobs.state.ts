@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { JobsService } from './jobs.service';
 import { Job } from '../models/job.model';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class JobsState {
@@ -19,66 +20,49 @@ export class JobsState {
     this._jobs().filter((j) => j.appliedAt !== null)
   );
 
-  addJob(job: Job): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.service.createJob(job).subscribe({
-        next: (createdJob) => {
-          this._jobs.update((jobs) => [...jobs, createdJob]);
-          resolve();
-        },
-        error: (err: unknown) => {
-          console.error('Error creating job:', err);
-          reject(err);
-        },
-      });
-    });
+  async addJob(job: Job): Promise<void> {
+    try {
+      const createdJob = await firstValueFrom(this.service.createJob(job));
+      this._jobs.update((jobs) => [...jobs, createdJob]);
+    } catch (err) {
+      console.error('Error creating job:', err);
+      throw err;
+    }
   }
 
-  updateJob(job: Job): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.service.updateJob(job).subscribe({
-        next: (updatedJob) => {
-          this._jobs.update((jobs) =>
-            jobs.map((j) => (j.id === updatedJob.id ? updatedJob : j))
-          );
-          resolve();
-        },
-        error: (err: unknown) => {
-          console.error('Error updating job:', err);
-          reject(err);
-        },
-      });
-    });
+  async updateJob(job: Job): Promise<void> {
+    try {
+      const updatedJob = await firstValueFrom(this.service.updateJob(job));
+      this._jobs.update((jobs) =>
+        jobs.map((j) => (j.id === updatedJob.id ? updatedJob : j))
+      );
+    } catch (err) {
+      console.error('Error updating job:', err);
+      throw err;
+    }
   }
 
-  removeJob(id: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.service.deleteJob(id).subscribe({
-        next: () => {
-          this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
-          resolve();
-        },
-        error: (err: unknown) => {
-          console.error('Error deleting job:', err);
-          reject(err);
-        }
-      });
-    });
+  async removeJob(id: string): Promise<void> {
+    try {
+      await firstValueFrom(this.service.deleteJob(id));
+      this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
+    } catch (err) {
+      console.error('Error removing job:', err);
+      throw err;
+    }
   }
 
-  load(): void {
+  async load(): Promise<void> {
     this._loading.set(true);
     this._error.set(null);
 
-    this.service.getJobs().subscribe({
-      next: (jobs) => {
-        this._jobs.set(jobs);
-        this._loading.set(false);
-      },
-      error: (err: unknown) => {
-        this._error.set(err instanceof Error ? err.message : 'Erreur de chargement');
-        this._loading.set(false);
-      },
-    });
+    try {
+      const jobs = await firstValueFrom(this.service.getJobs());
+      this._jobs.set(jobs);
+    } catch (err: unknown) {
+      this._error.set(err instanceof Error ? err.message : 'Erreur de chargement');
+    } finally {
+      this._loading.set(false);
+    }
   }
 }

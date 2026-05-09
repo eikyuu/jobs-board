@@ -2,31 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { delay, Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-
-/** Key performance metric */
-export interface StatCard {
-  id: string;
-  label: string;
-  value: number;
-  unit?: string;
-  change: number; // percentage vs previous period
-  trend: 'up' | 'down' | 'neutral';
-}
-
-/** Summary row shown in the recent-activity table */
-export interface ActivityRow {
-  id: string;
-  description: string;
-  user: string;
-  timestamp: string; // ISO-8601
-  status: 'success' | 'warning' | 'danger' | 'info';
-}
-
-export interface DashboardData {
-  stats: StatCard[];
-  recentActivity: ActivityRow[];
-}
-
+import { StatCard, ActivityRow } from '../models/dashboard.model';
+import { DashboardData } from '../models/dashboard.model';
 /**
  * Data-access service for the Dashboard feature.
  * All methods return typed Observables and never throw directly.

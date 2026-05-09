@@ -1,4 +1,5 @@
 import { computed, Injectable, inject, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { InterviewsService } from './interviews.service';
 import { Interview } from '../models/interview.model';
 
@@ -32,19 +33,17 @@ export class InterviewsState {
     )
   );
 
-  load(): void {
+  async load(): Promise<void> {
     this._loading.set(true);
     this._error.set(null);
 
-    this.service.getInterviews().subscribe({
-      next: (interviews) => {
-        this._interviews.set(interviews);
-        this._loading.set(false);
-      },
-      error: (err: unknown) => {
-        this._error.set(err instanceof Error ? err.message : 'Erreur de chargement');
-        this._loading.set(false);
-      },
-    });
+    try {
+      const interviews = await firstValueFrom(this.service.getInterviews());
+      this._interviews.set(interviews);
+    } catch (err: unknown) {
+      this._error.set(err instanceof Error ? err.message : 'Erreur de chargement');
+    } finally {
+      this._loading.set(false);
+    }
   }
 }

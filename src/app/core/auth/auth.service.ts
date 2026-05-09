@@ -77,7 +77,6 @@ export class AuthService {
         .post<AuthResponse>(`${environment.apiUrl}/auth/login`, credentials)
         .pipe(
           tap((response) => this.persistSession(response)),
-          catchError((error) => throwError(() => error))
         );
     }
   }

@@ -44,7 +44,9 @@ export class JobEditComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.state.load();
+    if (this.state.jobs().length === 0) {
+      this.state.load();
+    }
   }
 
   protected async onFormSubmit(value: ValidJobFormModel): Promise<void> {

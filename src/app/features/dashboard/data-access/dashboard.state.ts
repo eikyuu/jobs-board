@@ -34,7 +34,7 @@ export class DashboardState {
     () => this._loadingState() === 'success' && this._stats().length === 0
   );
 
-async load(): Promise<void> {
+  async load(): Promise<void> {
     this._loadingState.set('loading');
     this._error.set(null);
     try {

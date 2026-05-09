@@ -13,3 +13,10 @@ export interface Interview {
   scheduledAt: string; // ISO-8601 local datetime
   type: InterviewType;
 }
+
+export interface CalendarDay {
+  date: Date;
+  isCurrentMonth: boolean;
+  hasInterviews: boolean;
+  interviewCount: number;
+}

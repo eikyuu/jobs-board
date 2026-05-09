@@ -42,7 +42,9 @@ export class JobsListComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.state.load();
+    if (this.state.jobs().length === 0) {
+      this.state.load();
+    }
   }
 
   protected statusLabel(status: JobStatus): string {
@@ -102,7 +104,7 @@ export class JobsListComponent implements OnInit {
       }
     });
   }
-  
+
   protected exportToPdf(): void {
     const url = `${environment.apiUrl}/jobs/export/pdf`;
     this.document.defaultView?.open(url, '_blank');

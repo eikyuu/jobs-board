@@ -49,10 +49,7 @@ export class FlashcardsPageComponent {
       .subscribe((cards) => this.allCards.set(cards));
   }
 
-  private get todayIso(): string {
-    // Retourne la date du jour au format YYYY-MM-DD
-    return new Date().toISOString().split('T')[0];
-  }
+  private readonly todayIso = new Date().toISOString().split('T')[0];
 
   protected readonly dueCards = computed(() => {
     const today = this.todayIso;

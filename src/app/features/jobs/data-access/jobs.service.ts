@@ -7,7 +7,7 @@ import { environment } from '../../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class JobsService {
 
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
   getJobs(): Observable<Job[]> {
     return this.httpClient.get<Job[]>(`${environment.apiUrl}/jobs`);

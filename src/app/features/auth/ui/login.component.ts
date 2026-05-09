@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   inject,
   signal,
+  DestroyRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -11,6 +12,7 @@ import { PasswordModule } from 'primeng/password';
 import { CardModule } from 'primeng/card';
 import { AuthService } from '../../../core/auth/auth.service';
 import { Button } from "primeng/button";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * Login page component.
@@ -101,6 +103,7 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly isLoading = signal(false);
   protected readonly serverError = signal<string | null>(null);
@@ -137,7 +140,9 @@ export class LoginComponent {
 
     const { email, password } = this.form.getRawValue();
 
-    this.authService.login({ email: email!, password: password! }).subscribe({
+    this.authService.login({ email: email!, password: password! })
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe({
       next: () => {
         this.isLoading.set(false);
         this.router.navigate(['/dashboard']);

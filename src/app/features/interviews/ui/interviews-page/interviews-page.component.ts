@@ -2,30 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } 
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { InterviewsState } from '../../data-access/interviews.state';
-import { InterviewType } from '../../models/interview.model';
+import { CalendarDay, InterviewType } from '../../models/interview.model';
 import { TitleCasePipe } from '@angular/common';
 import { RouterLink } from "@angular/router";
-
-interface CalendarDay {
-  date: Date;
-  isCurrentMonth: boolean;
-  hasInterviews: boolean;
-  interviewCount: number;
-}
-
-const TYPE_LABEL: Record<InterviewType, string> = {
-  phone: 'Téléphone',
-  hr: 'RH',
-  technical: 'Technique',
-  onsite: 'Sur site',
-};
-
-const TYPE_SEVERITY: Record<InterviewType, 'info' | 'success' | 'warn' | 'danger' | 'secondary' | 'contrast'> = {
-  phone: 'info',
-  hr: 'success',
-  technical: 'warn',
-  onsite: 'danger',
-};
+import { TYPE_LABEL, TYPE_SEVERITY } from '../../constants/interviews.const';
 
 const MONTH_NAMES = [
   'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -106,17 +86,17 @@ export class InterviewsPageComponent implements OnInit {
     this.state.load();
   }
 
-  prevMonth(): void {
+ protected prevMonth(): void {
     const d = this.currentDate();
     this.currentDate.set(new Date(d.getFullYear(), d.getMonth() - 1, 1));
   }
 
-  nextMonth(): void {
+  protected nextMonth(): void {
     const d = this.currentDate();
     this.currentDate.set(new Date(d.getFullYear(), d.getMonth() + 1, 1));
   }
 
-  isToday(date: Date): boolean {
+ protected isToday(date: Date): boolean {
     const now = new Date();
     return (
       date.getDate() === now.getDate() &&
@@ -125,25 +105,25 @@ export class InterviewsPageComponent implements OnInit {
     );
   }
 
-  isPast(dateStr: string): boolean {
+  protected isPast(dateStr: string): boolean {
     return new Date(dateStr) < new Date();
   }
 
-  formatTime(dateStr: string): string {
+  protected formatTime(dateStr: string): string {
     const date = new Date(dateStr);
     return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
   }
 
-  formatDate(dateStr: string): string {
+  protected formatDate(dateStr: string): string {
     const date = new Date(dateStr);
     return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
   }
 
-  typeLabel(type: InterviewType): string {
+  protected typeLabel(type: InterviewType): string {
     return TYPE_LABEL[type] ?? type;
   }
 
-  typeSeverity(type: InterviewType) {
+  protected typeSeverity(type: InterviewType) {
     return TYPE_SEVERITY[type] ?? 'secondary';
   }
 

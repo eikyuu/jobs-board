@@ -51,14 +51,18 @@ export class JobsState {
     });
   }
 
-  removeJob(id: string): void {
-    this.service.deleteJob(id).subscribe({
-      next: () => {
-        this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
-      },
-      error: (err: unknown) => {
-        console.error('Error deleting job:', err);
-      },
+  removeJob(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.service.deleteJob(id).subscribe({
+        next: () => {
+          this._jobs.update((jobs) => jobs.filter((j) => j.id !== id));
+          resolve();
+        },
+        error: (err: unknown) => {
+          console.error('Error deleting job:', err);
+          reject(err);
+        }
+      });
     });
   }
 

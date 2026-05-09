@@ -10,20 +10,23 @@ import { InputIconModule } from 'primeng/inputicon';
 import { JobsState } from '../../data-access/jobs.state';
 import { Job, JobStatus } from '../../models/job.model';
 import { APPLICATION_TYPE_LABEL, APPLICATION_TYPE_SEVERITY, STATUS_LABEL, STATUS_SEVERITY, TagSeverity } from '../../constants/job-status.const';
-import { MessageService } from 'primeng/api'
+import { MessageService, ConfirmationService } from 'primeng/api'
 import { environment } from '../../../../../environments/environment';
 import { Badge } from "primeng/badge";
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { IsOldApplicationPipe } from '../../../../shared/pipes/is-old-application-pipe';
 
 @Component({
   selector: 'app-jobs-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterLink, TableModule, TagModule, ButtonModule, Badge, InputTextModule, IconFieldModule, InputIconModule],
+  imports: [IsOldApplicationPipe, DatePipe, RouterLink, TableModule, TagModule, ButtonModule, Badge, InputTextModule, IconFieldModule, InputIconModule, ConfirmPopupModule],
   styleUrl: './jobs-list.component.scss',
   templateUrl: './jobs-list.component.html',
 })
 export class JobsListComponent implements OnInit {
   private readonly document = inject(DOCUMENT);
   private readonly messageService = inject(MessageService)
+  private readonly confirmationService = inject(ConfirmationService)
   protected readonly state = inject(JobsState);
 
   protected readonly searchQuery = signal('');
@@ -73,31 +76,29 @@ export class JobsListComponent implements OnInit {
     return `${(min / 1000).toFixed(0)}–${(max / 1000).toFixed(0)}k ${currency}`;
   }
 
-  protected onDelete(job: Job): void {
-    if (confirm(`Supprimer la candidature pour "${job.title}" ?`)) {
-      this.state.removeJob(job.id!);
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Supprimé',
-        detail: 'La candidature a été supprimée avec succès.',
-      })
-    }
-
+  protected onDelete(event: Event, job: Job): void {
+    this.confirmationService.confirm({
+      target: event.currentTarget as EventTarget,
+      message: `Supprimer la candidature pour "${job.title}" ?`,
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Oui, supprimer',
+      rejectLabel: 'Non, annuler',
+      accept: () => {
+        this.state.removeJob(job.id!);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Supprimé',
+          detail: 'La candidature a été supprimée avec succès.',
+        });
+      }
+    });
 
   }
+
 
   protected exportToPdf(): void {
     const url = `${environment.apiUrl}/jobs/export/pdf`;
     this.document.defaultView?.open(url, '_blank');
-  }
-
-  protected isOldApplication(appliedAt: string): boolean {
-    if (!appliedAt) return false;
-    const appliedDate = new Date(appliedAt);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - appliedDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 15;
   }
 }

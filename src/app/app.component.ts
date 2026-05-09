@@ -5,7 +5,7 @@ import { Toast } from 'primeng/toast';
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, Toast],
+  imports: [RouterOutlet, Toast,],
   templateUrl: 'app.component.html',
 })
 export class App {}

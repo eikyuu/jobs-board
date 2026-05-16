@@ -68,10 +68,12 @@ export interface JobFormModel {
   salaryCurrency: string;
   notes: string;
   interviews: InterviewFormEntry[];
+  applicationType: ApplicationTypes;
 }
 
 export interface ValidJobFormModel extends JobFormModel {
   remote: RemoteType;
   contractType: ContractType;
   status: JobStatus;
+  applicationType: ApplicationTypes;
 }

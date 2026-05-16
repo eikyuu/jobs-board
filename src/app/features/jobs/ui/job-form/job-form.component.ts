@@ -22,7 +22,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ButtonModule } from 'primeng/button';
-import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS, INTERVIEW_TYPE_OPTIONS } from '../../constants/job-status.const';
+import { REMOTE_OPTIONS, CONTRACT_OPTIONS, STATUS_OPTIONS, INTERVIEW_TYPE_OPTIONS, APPLICATION_TYPE_OPTIONS } from '../../constants/job-status.const';
 import { Job, JobFormModel, ValidJobFormModel, InterviewFormEntry, InterviewType } from '../../models/job.model';
 import { toLocalDateString, toLocalDateTimeString } from '../../../../shared/utils/date.utils';
 
@@ -40,6 +40,7 @@ export const DEFAULT_JOB_FORM: JobFormModel = {
   salaryCurrency: 'EUR',
   notes: '',
   interviews: [],
+  applicationType: 'standard',
 };
 
 export function jobToFormModel(job: Job): JobFormModel {
@@ -60,20 +61,20 @@ export function jobToFormModel(job: Job): JobFormModel {
       scheduledAt: new Date(i.scheduledAt),
       type: i.type ?? null,
     })),
+    applicationType: job.applicationType,
   };
 }
 
 export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
   return {
-    // TODO : ajouter un champ applicationType dans le form pour pouvoir le renseigner à la création et à la modification
-    applicationType: 'standard',
+    applicationType: value.applicationType,
     title: value.title,
     company: value.company,
     location: value.location,
     remote: value.remote,
     contractType: value.contractType,
     status: value.status,
-    appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : null,
+    appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : new Date().toISOString(),
     updatedAt: toLocalDateString(new Date()),
     url: value.url.trim() || undefined,
     salary:
@@ -93,7 +94,7 @@ export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
 }
 
 function isValidJobForm(value: JobFormModel): value is ValidJobFormModel {
-  return value.remote !== null && value.contractType !== null && value.status !== null;
+  return value.remote !== null && value.contractType !== null && value.status !== null && value.applicationType !== null;
 }
 
 const JOB_SCHEMA = schema<JobFormModel>((f) => {
@@ -104,6 +105,7 @@ const JOB_SCHEMA = schema<JobFormModel>((f) => {
   required(f.remote, { message: 'Le type de remote est requis' });
   required(f.contractType, { message: 'Le type de contrat est requis' });
   required(f.status, { message: 'Le statut est requis' });
+  required(f.applicationType, { message: 'Le type de candidature est requis' });
 });
 
 @Component({
@@ -136,6 +138,7 @@ export class JobFormComponent {
   protected readonly remoteOptions = REMOTE_OPTIONS;
   protected readonly contractOptions = CONTRACT_OPTIONS;
   protected readonly statusOptions = STATUS_OPTIONS;
+  protected readonly applicationTypeOptions = APPLICATION_TYPE_OPTIONS;
   protected readonly interviewTypeOptions = INTERVIEW_TYPE_OPTIONS;
 
   protected readonly interviews = computed(() => this.model().interviews);

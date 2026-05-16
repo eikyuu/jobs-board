@@ -90,6 +90,22 @@
     </div>
 
     <div class="flex flex-col gap-1">
+      <label for="applicationType" class="text-sm font-medium">
+        Type de candidature <span aria-hidden="true" class="text-red-500">*</span>
+      </label>
+      <p-select inputId="applicationType" [formField]="$any(jobForm.applicationType)" [options]="applicationTypeOptions"
+        optionLabel="label" optionValue="value" placeholder="Sélectionner"
+        [attr.aria-describedby]="jobForm.applicationType().touched() && jobForm.applicationType().errors().length ? 'applicationType-error' : null"
+        [attr.aria-invalid]="jobForm.applicationType().touched() && jobForm.applicationType().invalid() ? true : null"
+        [class.p-invalid]="jobForm.applicationType().touched() && jobForm.applicationType().errors().length > 0" />
+      @if (jobForm.applicationType().touched() && jobForm.applicationType().errors().length > 0) {
+      <small id="applicationType-error" class="text-red-500" role="alert">
+        {{ jobForm.applicationType().errors()[0].message }}
+      </small>
+      }
+    </div>
+
+    <div class="flex flex-col gap-1">
       <label for="status" class="text-sm font-medium">
         Statut <span aria-hidden="true" class="text-red-500">*</span>
       </label>

@@ -43,6 +43,11 @@ export const CONTRACT_OPTIONS: { label: string; value: ContractType }[] = [
   { label: 'Alternance', value: 'Alternance' },
 ];
 
+export const APPLICATION_TYPE_OPTIONS: { label: string; value: ApplicationTypes }[] = [
+  { label: 'Spontanée', value: 'spontaneous' },
+  { label: 'Standard', value: 'standard' },
+];
+
 export const STATUS_OPTIONS: { label: string; value: JobStatus }[] = [
   { label: 'Sauvegardé', value: 'saved' },
   { label: 'Candidaté', value: 'applied' },

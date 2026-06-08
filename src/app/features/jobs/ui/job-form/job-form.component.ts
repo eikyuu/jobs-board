@@ -75,7 +75,6 @@ export function mapFormToJob(value: ValidJobFormModel): Omit<Job, 'id'> {
     contractType: value.contractType,
     status: value.status,
     appliedAt: value.appliedAt ? toLocalDateString(value.appliedAt) : new Date().toISOString(),
-    updatedAt: toLocalDateString(new Date()),
     url: value.url.trim() || undefined,
     salary:
       value.salaryMin != null && value.salaryMax != null
@@ -183,6 +182,8 @@ export class JobFormComponent {
   protected async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
     this.submitted.set(true);
+
+    console.log('Form value on submit:', this.model());
 
     const hasIncompleteInterview = this.model().interviews.some(
       (e) => e.scheduledAt !== null && e.type === null

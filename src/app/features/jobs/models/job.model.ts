@@ -38,7 +38,6 @@ export interface Job {
   salary?: Salary;
   status: JobStatus;
   appliedAt: string | null;
-  updatedAt: string;
   url?: string;
   description?: string;
   tags: string[];
@@ -55,6 +54,7 @@ export interface InterviewFormEntry {
 }
 
 export interface JobFormModel {
+  jobId?: string;
   title: string;
   company: string;
   location: string;
